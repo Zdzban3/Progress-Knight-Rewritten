@@ -75,8 +75,25 @@ function hideInfo() {
     element.classList.add("hidden");
 }
 
-function loadChangelog() {
-    const element = document.getElementById("changelog");
-    element.innerHTML += "version 0.0.0 / 21/04/2024<br>* hello<br>* added changelog<br>* added main panels<br>* added Hero, Skills, Shop, Amulet, Settings tabs (empty)<br>* added Settings, Stats (empty) and Changelog subtabs to Settings tab"
+async function downloadFile() {
+    let response = await fetch("./changelog.txt");
+
+    if (response.status != 200) {
+        throw new Error("Server Error");
+    }
+
+    // read response stream as text
+    let text_data = await response.text();
+
+    return text_data;
 }
-loadChangelog()
+
+document.querySelector("#changelogButton").addEventListener('click', async function () {
+    try {
+        let text_data = await downloadFile();
+        document.querySelector("#changelog").textContent = text_data;
+    }
+    catch (e) {
+        alert(e.message);
+    }
+});
