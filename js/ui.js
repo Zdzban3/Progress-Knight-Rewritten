@@ -91,7 +91,7 @@ async function downloadFile() {
 document.querySelector("#changelogButton").addEventListener('click', async function () {
     try {
         let text_data = await downloadFile();
-        document.querySelector("#changelog").textContent = text_data;
+        document.querySelector("#changelog-pre").textContent = text_data;
     }
     catch (e) {
         alert(e.message);

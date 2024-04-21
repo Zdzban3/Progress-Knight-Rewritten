@@ -1,6 +1,6 @@
-version 0.0.0 / 21/04/2024 <br>
-* hello <br>
-* added changelog <br>
-* added main panels <br>
-* added Hero, Skills, Shop, Amulet, Settings tabs (empty) <br>
-* added Settings, Stats (empty) and Changelog subtabs to Settings tab <br>
+version 0.0.0 / 21/04/2024
+* hello
+* added changelog
+* added main panels
+* added Hero, Skills, Shop, Amulet, Settings tabs (empty)
+* added Settings, Stats (empty) and Changelog subtabs to Settings tab
