@@ -127,3 +127,7 @@
     text-align: left;
     padding-left: 30px;
 }
+
+#changelog-pre {
+    padding-bottom: 1%;
+}
