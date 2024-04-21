@@ -1,0 +1,20 @@
+:root {
+    --grayed: #888888;
+    --transitioned: #bbbbbb;
+    --normal: beige;
+    --special: #a3bebf;
+    --dark-special: #79898a;
+    --color1: #444444;
+    --color2: #888888;
+    --color3: #bbbbbb;
+    --color4: beige;
+}
+
+body {
+    background-color: #181818;
+}
+
+.tab {
+    background-color: #282828;
+}
+

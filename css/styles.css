@@ -1,0 +1,129 @@
+.rosarivo-regular {
+  font-family: "Rosarivo", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.rosarivo-regular-italic {
+  font-family: "Rosarivo", cursive;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.roboto-regular {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.title {
+    margin: 1% 0 0 1%;
+    color: var(--normal, white);
+}
+
+.title h1 {
+    font-size: 28px;
+}
+
+.title img {
+    position: static;
+    float: left;
+    width: 36px;
+    height: 36px;
+}
+
+.tab {
+    margin: 0% 1% 0 1%;
+    padding-left: 1%;
+}
+
+.space {
+    width: 0;
+    height: 0;
+    padding: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+#info .red-letters {
+    font-size: 22px;
+    color: red;
+    font-weight: 500;
+}
+
+.display .age {
+    font-size: 20px;
+    margin-bottom: 0.5%;
+    margin-top: 0;
+    color: var(--normal, white);
+}
+
+.grayed {
+    font-size: 16px;
+    color: var(--grayed, gray);
+    margin: 0;
+}
+
+.transitioned {
+    font-size: 16px;
+    color: var(--transitioned, #bbbbbb);
+    margin: 0;
+}
+
+.moneyDisplay .grayed {
+    font-size: 18px;
+}
+
+.sidebar {
+    padding: 0.5% max(10px, 1%) max(10px, 1%) max(10px, 1%);
+    margin-right: 5px;
+    height: auto;
+    min-width: 240px;
+}
+
+.menu {
+    margin-bottom: 10px;
+    padding-left: 0;
+    height: 40px;
+    width: 800px;
+    display: inline-flex;
+}
+
+.all-panels {
+    display: flex;
+    flex: row;
+    justify-content: left;
+}
+
+.main-panel {
+    height: auto;
+    width: 800px;
+    padding-left: 0;
+}
+
+.menuButton {
+    height: inherit;
+    width: 100%;
+    text-align: center;
+    color: var(--normal, --color4, white);
+    font-size: 16px;
+    padding-top: 8px;
+}
+
+.menuButton:hover {
+    color: var(--normal, --color4, white);
+    background-color: var(--grayed, --color2, gray);
+}
+
+.menuButton.currentTab {
+    background-color: var(--dark-special, #79898a);
+}
+
+.changelogPanel {
+    color: var(--grayed, color2, gray);
+    font-size: 16px;
+    text-align: left;
+    padding-left: 30px;
+}

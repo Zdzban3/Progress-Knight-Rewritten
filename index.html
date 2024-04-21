@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/dark.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rosarivo:ital@0;1&display=swap"
+        rel="stylesheet">
+    <title>Progress Knight</title>
+</head>
+
+<body>
+    <div>
+        <div class="title">
+            <img src="img/logoPK.png">
+            <h1 class="rosarivo-regular">Progress Knight</h1>
+        </div>
+        <div class="all-panels">
+            <div class="sidebar tab roboto-regular">
+                <div class="hidden" id="info">
+                    <span class="red-letters">Age has caught up to you</span><br>
+                    <span class="grayed">Your age has met your lifespan;<br>use the amulet to rebirth before<br>you pass away</span>
+                    <div class="space"></div>
+                </div>
+                <div class="display timeDisplay">
+                    <p class="age"><span id="ageDisplay">Age 14 Day 0</span></p>
+                    <p class="lifespan grayed">Lifespan: <span id="lifespanDisplay">60</span> Years</p>
+                    <p class="realtime grayed">Real Time: <span id="realtimeDisplay">00:00</span></p>
+                </div>
+                <div class="display moneyDisplay">
+                    <p class="transitioned">Balance:</p>
+                    <div class="money" id="coinDisplay">
+                        <span style="color: red">Error: cant set coins</span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="coinFlow">
+                        <div class="netDisplayBox">
+                            <span style="color:skyblue">Net: </span><span><b id="signDisplay"
+                                    style="color: green;">+</b></span>
+                            <div id="netDisplay" style="display: inline;">
+                                <span style="color: red">Error: cant set coins</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="incomeDisplayBox">
+                            <span style="color:#87eb8a">Income: </span>
+                            <div id="incomeDisplay" style="display: inline;">
+                                <span style="color: red">Error: cant set coins</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="expenseDisplayBox">
+                            <span style="color:#eb8987">Expense: </span>
+                            <div id="expenseDisplay" style="display: inline;">
+                                <span style="color: red">Error: cant set coins</span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-and-main-panel">
+                <div class="menu tab roboto-regular">
+                    <div id="heroButton" class="tabButton menuButton" onclick="setTab(0)">Hero</div>
+                    <div id="skillsButton" class="tabButton menuButton" onclick="setTab(1)">Skills</div>
+                    <div id="shopButton" class="tabButton menuButton" onclick="setTab(2)">Shop</div>
+                    <div id="amuletButton" class="tabButton menuButton" onclick="setTab(3)">Amulet</div>
+                    <div id="settingsButton" class="tabButton menuButton" onclick="setTab(4)">Settings</div>
+                </div>
+                <div class="main-panel tab roboto-regular">
+                    <div class="subpanel heroPanel hidden">
+                        <div class="menuButton">placeholder0</div>
+                    </div>
+                    <div class="subpanel skillsPanel hidden">
+                        <div class="menuButton">placeholder1</div>
+                    </div>
+                    <div class="subpanel shopPanel hidden">
+                        <div class="menuButton">placeholder2</div>
+                    </div>
+                    <div class="subpanel amuletPanel hidden">
+                        <div class="menuButton">placeholder3</div>
+                    </div>
+                    <div class="subpanel settingsPanel">
+                        <div class="menu settingsButtons">
+                            <div class="settingsButton menuButton currentTab" onclick="setSettings(0)">Settings</div>
+                            <div class="settingsButton menuButton" onclick="setSettings(1)">Stats</div>
+                            <div class="settingsButton menuButton" onclick="setSettings(2)">Changelog</div>
+                        </div>
+                        <div class="settingsSubpanel settingsPanel">0</div>
+                        <div class="settingsSubpanel statsPanel hidden">1</div>
+                        <div id="changelog" class="settingsSubpanel changelogPanel hidden"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" src="js/HackTimer.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/break_infinity.js@2"></script> -->
+<script type="text/javascript" src="js/math.js"></script>
+<script type="text/javascript" src="js/classes.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/data.js"></script>
+
+</html>
