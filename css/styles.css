@@ -136,3 +136,11 @@
 .setting {
     color: var(--grayed)
 }
+
+#changelog-pre {
+    padding-left: 20px;
+}
+
+.statsText {
+    text-align: center;
+}
