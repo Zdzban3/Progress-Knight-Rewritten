@@ -1,24 +1,17 @@
 
 function renderSideBar() {
-    const task = gameData.currentJob
-    document.getElementById("ageDisplay").textContent = formatAge(gameData.days)
+    const task = data.currentJob
+    document.getElementById("ageDisplay").textContent = formatAge(data.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
-    document.getElementById("realtimeDisplay").textContent = formatTime(gameData.realtime)
+    document.getElementById("realtimeDisplay").textContent = formatTime(data.stats.realtime)
 
-    formatCoins(gameData.coins, document.getElementById("coinDisplay"))
+    formatCoins(data.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
     formatCoins(getNet(), document.getElementById("netDisplay"))
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
     document.getElementById("happinessDisplay").textContent = format(getHappiness())
-
-    document.getElementById("evilDisplay").textContent = format(gameData.evil)
-    document.getElementById("evilGainDisplay").textContent = format(getEvilGain())
-    document.getElementById("evilGainButtonDisplay").textContent = "+" + format(getEvilGain())
-
-    document.getElementById("timeWarping").hidden = (getUnpausedGameSpeed() / baseGameSpeed) <= 1
-    document.getElementById("timeWarpingDisplay").textContent = "x" + format(getUnpausedGameSpeed() / baseGameSpeed, 2)
 
     // Change sidebar when paused
     if (gameData.paused) {
@@ -44,35 +37,37 @@ function setSignDisplay() {
 }
 
 function setTab(tab) {
+    data.selectedTab = tab
+    if (tab == "settings") {
+        setSettings("settings")
+    } else setSettings("hidden")
     const elements = document.getElementsByClassName("subpanel");
     const buttons = document.getElementsByClassName("tabButton");
     for (let i = 0; i < elements.length; i++) {
         elements[i].classList.add("hidden");
         buttons[i].classList.remove("currentTab");
     }
-    elements[tab].classList.remove("hidden");
-    buttons[tab].classList.add("currentTab");
+    var selectedPanel = tab + "Panel"
+    var selectedButton = tab + "Button"
+    document.getElementById(selectedPanel).classList.remove("hidden");
+    document.getElementById(selectedButton).classList.add("currentTab");
 }
 
 function setSettings(tab) {
     const elements = document.getElementsByClassName("settingsSubpanel");
     const buttons = document.getElementsByClassName("settingsButton");
+    data.selectedSettings = tab
     for (let i = 0; i < elements.length; i++) {
         elements[i].classList.add("hidden");
         buttons[i].classList.remove("currentTab");
     }
-    elements[tab].classList.remove("hidden");
-    buttons[tab].classList.add("currentTab");
-}
+    if (tab !== "hidden") {
+        var selectedSubpanel = tab + "Subpanel"
+        var selectedSubbutton = tab + "Subbutton"
+        document.getElementById(selectedSubpanel).classList.remove("hidden");
+        document.getElementById(selectedSubbutton).classList.add("currentTab");
+    }
 
-function showInfo() {
-    const element = document.getElementById("info");
-    element.classList.remove("hidden");
-}
-
-function hideInfo() {
-    const element = document.getElementById("info");
-    element.classList.add("hidden");
 }
 
 async function downloadFile() {
@@ -88,7 +83,7 @@ async function downloadFile() {
     return text_data;
 }
 
-document.querySelector("#changelogButton").addEventListener('click', async function () {
+document.querySelector("#changelogSubbutton").addEventListener('click', async function () {
     try {
         let text_data = await downloadFile();
         document.querySelector("#changelog-pre").textContent = text_data;
@@ -97,3 +92,31 @@ document.querySelector("#changelogButton").addEventListener('click', async funct
         alert(e.message);
     }
 });
+
+function renderStats() {
+    document.getElementById("startDateDisplay").textContent = data.stats.startDate.toLocaleDateString()
+    const currentDate = new Date()
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - data.stats.startDate.getTime()) / (1000 * 3600 * 24), 2)
+    document.getElementById("playedRealTimeDisplay").textContent = formatTime(data.stats.realtime)
+
+    document.getElementById("playedGameTimeDisplayDays").textContent = format(data.stats.totalDays)
+    document.getElementById("playedGameTimeDisplayYears").textContent = format(daysToYears(data.stats.totalDays))
+
+    document.getElementById("playedHighestTimeDisplayDays").textContent = format(data.stats.highestDays)
+    document.getElementById("playedHighestTimeDisplayYears").textContent = format(daysToYears(data.stats.highestDays))
+}
+
+function switchTheme() {
+    var themeCap = 2 // amount of themes, start counting from 0
+    data.settings.theme++
+    if (data.settings.theme > themeCap) {
+        data.settings.theme = 0
+    }
+}
+
+function updateUI() {
+    if (data.selectedSettings == "stats") {
+        renderStats()
+    }
+    data.stats.realtime += 1 / data.settings.updateSpeed
+}

@@ -40,7 +40,7 @@
 .space {
     width: 0;
     height: 0;
-    padding: 5px;
+    padding: 3px;
 }
 
 .hidden {
@@ -56,7 +56,7 @@
 .display .age {
     font-size: 20px;
     margin-bottom: 0.5%;
-    margin-top: 0;
+    margin-top: 0px;
     color: var(--normal, white);
 }
 
@@ -79,7 +79,7 @@
 .sidebar {
     padding: 0.5% max(10px, 1%) max(10px, 1%) max(10px, 1%);
     margin-right: 5px;
-    height: auto;
+    height: 400px;
     min-width: 240px;
 }
 
@@ -121,13 +121,18 @@
     background-color: var(--dark-special, #79898a);
 }
 
-.changelogPanel {
+.settingsSubpanel {
     color: var(--grayed, color2, gray);
     font-size: 16px;
     text-align: left;
-    padding-left: 30px;
+    padding-bottom: max(2%, 16px);
 }
 
-#changelog-pre {
-    padding-bottom: 1%;
+.setting {
+    padding: 10px;
+    background-color: var(--slightlyDarker);
+}
+
+.setting {
+    color: var(--grayed)
 }

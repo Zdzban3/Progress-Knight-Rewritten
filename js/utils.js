@@ -7,13 +7,13 @@ function format(number, decimals = 1) {
     const tier = Math.log10(number) / 3 | 0;
     if (tier <= 0) return math.floor(number, decimals).toFixed(decimals);
 
-    if ((gameData.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
+    if ((data.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         const suffix = units[tier];
         const scale = Math.pow(10, tier * 3);
         const scaled = number / scale;
         return math.floor(scaled, decimals).toFixed(decimals) + suffix;
     } else {
-        if (gameData.settings.numberNotation == 1) {
+        if (data.settings.numberNotation == 1) {
             const exp = Math.log10(number) | 0;
             const scale = Math.pow(10, exp);
             const scaled = number / scale;
@@ -29,7 +29,7 @@ function format(number, decimals = 1) {
 }
 
 function getCoinsData() {
-    switch (gameData.settings.currencyNotation) {
+    switch (data.settings.currencyNotation) {
         case 0: return [
             { "name": "p", "color": "#79b9c7", "value": 1e6 },
             { "name": "g", "color": "#E5C100", "value": 1e4 },
@@ -104,7 +104,7 @@ function formatCoins(coins, element) {
         c.textContent = "";
     }
 
-    switch (gameData.settings.currencyNotation) {
+    switch (data.settings.currencyNotation) {
         case 0:
         case 1:
         case 2:
