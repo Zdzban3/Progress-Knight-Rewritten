@@ -1,9 +1,9 @@
 
-function renderSideBar() {
+function renderSidebar() {
     const task = data.currentJob
     document.getElementById("ageDisplay").textContent = formatAge(data.days)
-    document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(getLifespan()))
-    document.getElementById("realtimeDisplay").textContent = formatTime(data.stats.realtime)
+    document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(data.lifespan))
+    document.getElementById("realtimeDisplay").textContent = formatTime(data.currentRealtime)
 
     formatCoins(data.coins, document.getElementById("coinDisplay"))
     setSignDisplay()
@@ -11,23 +11,15 @@ function renderSideBar() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = format(getHappiness())
-
-    // Change sidebar when paused
-    if (gameData.paused) {
-        document.getElementById("info").classList.add("game-paused")
-    } else {
-        document.getElementById("info").classList.remove("game-paused")
-    }
+    document.getElementById("happinessDisplay").textContent = format(data.happiness)
 }
 
 function setSignDisplay() {
     const signDisplay = document.getElementById("signDisplay")
-
     if (getNet() > -1 && getNet() < 1) {
         signDisplay.textContent = ""
         signDisplay.style.color = "gray"
-    } else if (getIncome() > getExpense()) {
+    } else if (getNet() >= 1) {
         signDisplay.textContent = "+"
         signDisplay.style.color = "green"
     } else {
@@ -107,10 +99,17 @@ function renderStats() {
 }
 
 function switchTheme() {
-    var themeCap = 2 // amount of themes, start counting from 0
+    var themeCap = 1 // amount of themes, start counting from 0
     data.settings.theme++
     if (data.settings.theme > themeCap) {
         data.settings.theme = 0
+    }
+    if (data.settings.theme == 0) {
+        themeStylesheet.setAttribute('href', 'css/themes/dark.css');
+        document.getElementById("selectedTheme").textContent = "dark"
+    } else if (data.settings.theme == 1) {
+        themeStylesheet.setAttribute('href', 'css/themes/light.css');
+        document.getElementById("selectedTheme").textContent = "light"
     }
 }
 
@@ -119,4 +118,5 @@ function updateUI() {
         renderStats()
     }
     data.stats.realtime += 1 / data.settings.updateSpeed
+    data.currentRealtime += 1 / data.settings.updateSpeed
 }

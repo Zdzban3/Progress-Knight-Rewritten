@@ -123,7 +123,7 @@ function formatCoins(coins, element) {
                     element.children[coinsUsed].className = m.class ? m.class : ""
                     coinsUsed++
                 }
-                if (coinsUsed >= gameData.settings.coinsDisplayed) break;
+                if (coinsUsed >= data.settings.coinsDisplayed) break;
             }
             break;
         case 3:

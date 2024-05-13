@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/dark.css">
+    <link id="themeStylesheet" rel="stylesheet" type="text/css" href="css/themes/dark.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
@@ -36,7 +36,7 @@
                     <div class="space"></div>
                 </div>
                 <div class="display moneyDisplay">
-                    <p class="transitioned">Balance:</p>
+                    <p style="font-size: 16px; margin: 0; color: var(--color1)">Balance:</p>
                     <div class="money" id="coinDisplay">
                         <span style="color: red">Error: cant set coins</span>
                         <span></span>
@@ -49,10 +49,10 @@
                         <span></span>
                         <span></span>
                     </div>
+                    <div class="space"></div>
                     <div class="coinFlow">
                         <div class="netDisplayBox">
-                            <span style="color:skyblue">Net: </span><span><b id="signDisplay"
-                                    style="color: green;">+</b></span>
+                            <span style="color: var(--net)">Net: </span><span><b id="signDisplay" style="color: gray"></b></span>
                             <div id="netDisplay" style="display: inline;">
                                 <span style="color: red">Error: cant set coins</span>
                                 <span></span>
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <div class="incomeDisplayBox">
-                            <span style="color:#87eb8a">Income: </span>
+                            <span style="color: var(--income)">Income: </span>
                             <div id="incomeDisplay" style="display: inline;">
                                 <span style="color: red">Error: cant set coins</span>
                                 <span></span>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         <div class="expenseDisplayBox">
-                            <span style="color:#eb8987">Expense: </span>
+                            <span style="color: var(--expense)">Expense: </span>
                             <div id="expenseDisplay" style="display: inline;">
                                 <span style="color: red">Error: cant set coins</span>
                                 <span></span>
@@ -97,6 +97,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="space"></div>
+                </div>
+                <div class="display happinessDisplay">
+                    <span class="happiness">Happiness: </span><span id="happinessDisplay" class="happiness">[happiness]</span><br>
+                    <span class="grayed">Affects all XP gain</span>
                 </div>
             </div>
             <div class="menu-and-main-panel">
@@ -109,7 +114,8 @@
                 </div>
                 <div class="main-panel tab roboto-regular">
                     <div class="subpanel hidden" id="heroPanel">
-                        <div class="menuButton">placeholder0</div>
+                        <div class="heroPanel" id="heroSubpanel">
+                        </div>
                     </div>
                     <div class="subpanel hidden" id="skillsPanel">
                         <div class="menuButton">placeholder1</div>

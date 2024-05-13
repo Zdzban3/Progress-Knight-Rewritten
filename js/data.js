@@ -3,13 +3,15 @@ var data = {
     coins: 0,
     days: 365 * 14,
     lifespan: 365 * 60,
+    currentRealtime: 0,
+    happiness: 1,
     evil: 0,
     
     selectedTab: "default tab set in main.js",
     selectedSettings: null,
     baseLifespan: 365 * 60,
     baseGameSpeed: 4,
-    paused: true,
+    paused: false,
     maxJobs: 1,
     maxSkills: 1,
     jobXpMult: 1,
@@ -34,27 +36,27 @@ var data = {
         highestDays: 365 * 14,
     },
     job: {
-        "Beggar": { name: "Beggar", xpMult: 1, xp: 0, maxXp: 50, level: 1, income: 5 },
-        "Farmer": { name: "Farmer", xpMult: 1, xp: 0, maxXp: 100, level: 1, income: 9 },
-        "Fisherman": { name: "Fisherman", xpMult: 1, xp: 0, maxXp: 200, level: 1, income: 15 },
-        "Miner": { name: "Miner", xpMult: 1, xp: 0, maxXp: 400, level: 1, income: 40 },
-        "Blacksmith": { name: "Blacksmith", xpMult: 1, xp: 0, maxXp: 800, level: 1, income: 80 },
-        "Merchant": { name: "Merchant", xpMult: 1, xp: 0, maxXp: 1600, level: 1, income: 150 },
+        "Beggar": { name: "Beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 1, income: 5 },
+        "Farmer": { name: "Farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, income: 9, incomeFormula: "less penalty" },
+        "Fisherman": { name: "Fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 1, income: 15 },
+        "Miner": { name: "Miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 1, income: 40 },
+        "Blacksmith": { name: "Blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 1, income: 80 },
+        "Merchant": { name: "Merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 1, income: 150 },
 
-        "Squire": { name: "Squire", xpMult: 1, xp: 0, maxXp: 100, level: 1, income: 5 },
-        "Footman": { name: "Footman", xpMult: 1, xp: 0, maxXp: 1000, level: 1, income: 50 },
-        "Veteran footman": { name: "Veteran footman", xpMult: 1, xp: 0, maxXp: 10000, level: 1, income: 120 },
-        "Knight": { name: "Knight", xpMult: 1, xp: 0, maxXp: 100000, level: 1, income: 300 },
-        "Veteran knight": { name: "Veteran knight", xpMult: 1, xp: 0, maxXp: 1000000, level: 1, income: 1000 },
-        "Elite knight": { name: "Elite knight", xpMult: 1, xp: 0, maxXp: 7500000, level: 1, income: 3000 },
-        "Holy knight": { name: "Holy knight", xpMult: 1, xp: 0, maxXp: 40000000, level: 1, income: 15000 },
-        "Legendary knight": { name: "Legendary knight", xpMult: 1, xp: 0, maxXp: 150000000, level: 1, income: 50000 },
+        "Squire": { name: "Squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, income: 5 },
+        "Footman": { name: "Footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 1, income: 50 },
+        "Veteran footman": { name: "Veteran footman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 1, income: 120 },
+        "Knight": { name: "Knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 1, income: 300 },
+        "Veteran knight": { name: "Veteran knight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 1, income: 1000 },
+        "Elite knight": { name: "Elite knight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 1, income: 3000 },
+        "Holy knight": { name: "Holy knight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 1, income: 15000 },
+        "Legendary knight": { name: "Legendary knight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 1, income: 50000 },
     },
     skill: {
-        "Concentration": { name: "Concentration", xpMult: 1, xp: 0, maxXp: 100, level: 1, effect: 0.01, description: "Skill xp" },
-        "Productivity": { name: "Productivity", xpMult: 1, xp: 0, maxXp: 100, level: 1, effect: 0.01, description: "Job xp" },
-        "Bargaining": { name: "Bargaining", xpMult: 1, xp: 0, maxXp: 100, level: 1, effect: -0.01, description: "Expenses" },
-        "Meditation": { name: "Meditation", xpMult: 1, xp: 0, maxXp: 100, level: 1, effect: 0.01, description: "Happiness" },
+        "Concentration": { name: "Concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Skill xp" },
+        "Productivity": { name: "Productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Job xp" },
+        "Bargaining": { name: "Bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: -0.01, description: "Expenses" },
+        "Meditation": { name: "Meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Happiness" },
     },
     home: {
         "Homeless": { name: "Homeless", owned: true, price: 0, rent: 0, effect: 1 },
@@ -94,15 +96,15 @@ function assignBaseTaskFormula() {
     }
     skillArray = Object.values(data.skill)
     for (i = 0; i < skillArray.length; i++) {
-        if (!skillArray[i].hasOwnProperty("incomeFormula")) {
-            skillName = skillArray[i].name
-            data.skill[skillName].incomeFormula = "normal"
-        }
-    }
-    for (i = 0; i < skillArray.length; i++) {
         if (!skillArray[i].hasOwnProperty("xpFormula")) {
             skillName = skillArray[i].name
             data.skill[skillName].xpFormula = "normal"
+        }
+    }
+    for (i = 0; i < skillArray.length; i++) {
+        if (!skillArray[i].hasOwnProperty("effectFormula")) {
+            skillName = skillArray[i].name
+            data.skill[skillName].effectFormula = "normal"
         }
     }
 }
@@ -179,9 +181,18 @@ const itemBaseData = {
 }
 */
 const jobCategories = {
-    "Common work": ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
-    "Military": ["Squire", "Footman", "Veteran footman", "Knight", "Veteran knight", "Elite knight", "Holy knight", "Legendary knight"],
-    "The Arcane Association": ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"]
+    "Common work": {
+        jobs: ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
+        name: "commonWork"
+    },
+    "Military": {
+        jobs: ["Squire", "Footman", "Veteran footman", "Knight", "Veteran knight", "Elite knight", "Holy knight", "Legendary knight"],
+        name: "military"
+    },
+    "The Arcane Association": {
+        jobs: ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"],
+        name: "theArcaneAssociation"
+    }
 }
 
 const skillCategories = {
