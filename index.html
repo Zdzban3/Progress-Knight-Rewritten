@@ -23,7 +23,7 @@
             <h1 class="rosarivo-regular">Progress Knight</h1>
         </div>
         <div class="all-panels">
-            <div class="sidebar tab roboto-regular">
+            <div id="sidebar" class="sidebar tab roboto-regular">
                 <div class="hidden" id="info">
                     <span class="red-letters">Age has caught up to you</span><br>
                     <span class="grayed">Your age has met your lifespan;<br>use the amulet to rebirth before<br>you pass away</span>
@@ -35,6 +35,7 @@
                     <p class="realtime grayed">Real Time: <span id="realtimeDisplay">00:00</span></p>
                     <div class="space"></div>
                 </div>
+                <div id="pauseButton" onclick="pauseButton()">Pause</div>
                 <div class="display moneyDisplay">
                     <p style="font-size: 16px; margin: 0; color: var(--color1)">Balance:</p>
                     <div class="money" id="coinDisplay">
@@ -99,6 +100,10 @@
                     </div>
                     <div class="space"></div>
                 </div>
+                <div class="display timeSpeedDisplay">
+                    <span class="timeSpeed">Flow of time: </span><span id="timeSpeedDisplay" class="timeSpeed">[number]</span>
+                    <span class="timeSpeed">days/s</span>
+                </div>
                 <div class="display happinessDisplay">
                     <span class="happiness">Happiness: </span><span id="happinessDisplay" class="happiness">[happiness]</span><br>
                     <span class="grayed">Affects all XP gain</span>
@@ -133,7 +138,7 @@
                             <div id="changelogSubbutton" class="settingsButton menuButton" onclick="setSettings('changelog')">Changelog</div>
                         </div>
                         <div id="settingsSubpanel" class="settingsSubpanel settingsPanel hidden">
-                            <div class="setting settingDark menuButton" onclick="switchTheme()"><span>Theme: </span><span id="selectedTheme">Dark</span></div>
+                            <div class="setting settingDark menuButton" onclick="switchTheme(true)"><span>Theme: </span><span id="selectedTheme">Dark</span></div>
                         </div>
                         <div id="statsSubpanel" class="settingsSubpanel statsPanel hidden">
                             <div class="statsText">

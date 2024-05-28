@@ -1,4 +1,4 @@
-var data = {
+var data = { //formerly gameData
     //player
     coins: 0,
     days: 365 * 14,
@@ -27,7 +27,8 @@ var data = {
         layout: 1,
         fontSize: 3,
         enableKeybinds: false,
-        updateSpeed: 20,
+        updateSpeed: 20, //use baseGameSpeed
+        saveSpeed: 5000,
     },
     stats: {
         startDate: new Date(),
@@ -36,27 +37,27 @@ var data = {
         highestDays: 365 * 14,
     },
     job: {
-        "Beggar": { name: "Beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 1, income: 5 },
-        "Farmer": { name: "Farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, income: 9, incomeFormula: "less penalty" },
-        "Fisherman": { name: "Fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 1, income: 15 },
-        "Miner": { name: "Miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 1, income: 40 },
-        "Blacksmith": { name: "Blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 1, income: 80 },
-        "Merchant": { name: "Merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 1, income: 150 },
+        "Beggar": { name: "Beggar", class: "beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 1, maxLevel:1, income: 5 },
+        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 9, incomeFormula: "less penalty" },
+        "Fisherman": { name: "Fisherman", class: "fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 1, maxLevel:1, income: 15 },
+        "Miner": { name: "Miner", class: "miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 1, maxLevel:1, income: 40 },
+        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 1, maxLevel:1, income: 80 },
+        "Merchant": { name: "Merchant", class: "merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 1, maxLevel:1, income: 150 },
 
-        "Squire": { name: "Squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, income: 5 },
-        "Footman": { name: "Footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 1, income: 50 },
-        "Veteran footman": { name: "Veteran footman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 1, income: 120 },
-        "Knight": { name: "Knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 1, income: 300 },
-        "Veteran knight": { name: "Veteran knight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 1, income: 1000 },
-        "Elite knight": { name: "Elite knight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 1, income: 3000 },
-        "Holy knight": { name: "Holy knight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 1, income: 15000 },
-        "Legendary knight": { name: "Legendary knight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 1, income: 50000 },
+        "Squire": { name: "Squire", class: "squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 5 },
+        "Footman": { name: "Footman", class: "footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 1, maxLevel:1, income: 50 },
+        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 1, maxLevel:1, income: 120 },
+        "Knight": { name: "Knight", class: "knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 1, maxLevel:1, income: 300 },
+        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 1, maxLevel:1, income: 1000 },
+        "Elite knight": { name: "Elite knight", class: "eliteKnight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 1, maxLevel:1, income: 3000 },
+        "Holy knight": { name: "Holy knight", class: "holyKnight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 1, maxLevel:1, income: 15000 },
+        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 1, maxLevel:1, income: 50000 },
     },
     skill: {
-        "Concentration": { name: "Concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Skill xp" },
-        "Productivity": { name: "Productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Job xp" },
-        "Bargaining": { name: "Bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: -0.01, description: "Expenses" },
-        "Meditation": { name: "Meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, effect: 0.01, description: "Happiness" },
+        "Concentration": { name: "Concentration", class: "concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Skill xp" },
+        "Productivity": { name: "Productivity", class: "productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Job xp" },
+        "Bargaining": { name: "Bargaining", class: "bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: -0.01, description: "Expenses" },
+        "Meditation": { name: "Meditation", class: "meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Happiness" },
     },
     home: {
         "Homeless": { name: "Homeless", owned: true, price: 0, rent: 0, effect: 1 },

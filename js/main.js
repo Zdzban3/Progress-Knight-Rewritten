@@ -86,12 +86,28 @@ function getNet() {
 function getIncome() {
     var income = 0
     for (i = 0; i < data.selectedJobs.length; i++) {
-        if (data.selectedJobs[i].incomeFormula = "normal") {
+        if (data.selectedJobs[i].incomeFormula == "normal") {
             var incomeMult = math.pow(data.selectedJobs[i].level, 0.5)
-        } else if (data.selectedJobs[i].incomeFormula = "less penalty") {
+        } else if (data.selectedJobs[i].incomeFormula == "less penalty") {
             var incomeMult = math.pow(data.selectedJobs[i].level, 0.9)
         }
-    income += data.selectedJobs[i].income * incomeMult
+        income += data.selectedJobs[i].income * incomeMult
+    }
+    return income
+}
+
+function getIncomeSpecific(jobName) {
+    var income = 0
+    for (i = 0; i < Object.keys(data.job).length; i++) {
+        if (Object.values(data.job)[i].name == jobName) {
+            if (Object.values(data.job)[i].incomeFormula == "normal") {
+                var incomeMult = math.pow(Object.values(data.job)[i].level, 0.5)
+            } else if (Object.values(data.job)[i].incomeFormula == "less penalty") {
+                var incomeMult = math.pow(Object.values(data.job)[i].level, 0.9)
+            }
+            //income = Object.values(data.job)[i].income
+            income += Object.values(data.job)[i].income * incomeMult
+        }
     }
     return income
 }
@@ -113,7 +129,7 @@ function getExpense() {
 function applyExpenses() {
     var coins = applySpeed(getExpense())
     data.coins -= coins
-    if (data.coins < 0) {    
+    if (data.coins < 0) {
         goBankrupt()
     }
 }
@@ -132,7 +148,7 @@ function goBankrupt() {
 }
 
 function getGameSpeed() {
-    var gameSpeed = data.baseGameSpeed * +!data.paused * +isAlive()
+    var gameSpeed = data.baseGameSpeed * +!data.paused
     return gameSpeed
 }
 
@@ -144,6 +160,10 @@ function applySpeed(value) {
 function increaseDays() {
     var increase = applySpeed(1)
     data.days += increase
+    data.stats.totalDays += increase
+    if (data.days > data.stats.highestDays) {
+        data.stats.highestDays = data.days
+    }
 }
 
 function checkIfJobIsNotSelected(jobName) {
@@ -193,6 +213,13 @@ function selectSkill(skillName) {
 }
 
 function doSelectedJobs() {
+    for (i2 = 0; i2 < data.selectedJobs.length; i2++) {
+        for (i3 = 0; i3 < Object.keys(data.job).length; i3++) {
+            if (data.selectedJobs[i2].name == Object.keys(data.job)[i3]) {
+                data.selectedJobs[i2] = Object.values(data.job)[i3]
+            }
+        }
+    }
     for (i = 0; i < data.selectedJobs.length; i++) {
         doCurrentJob(data.selectedJobs[i].name)
     }
@@ -200,12 +227,12 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXp = 10 * currentJob.xpMult * data.jobXpMult * data.happiness / data.settings.updateSpeed
+    var jobXp = getGameSpeed() * currentJob.xpMult * data.jobXpMult * data.happiness / data.settings.updateSpeed
     currentJob.xp += jobXp
-    if (currentJob.xp >= currentJob.maxXp) {
+    while (currentJob.xp >= currentJob.maxXp) {
         currentJob.level++
         if (currentJob.xpFormula = "normal") {
-            currentJob.maxXp = math.pow(1.2, currentJob.level) * currentJob.baseMaxXp
+            currentJob.maxXp = math.pow(1.2, currentJob.level) * currentJob.level * currentJob.baseMaxXp
         }
     }
 }
@@ -218,12 +245,12 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXp = 10 * currentSkill.xpMult * data.skillXpMult * data.happiness / data.settings.updateSpeed
+    var skillXp = getGameSpeed() * currentSkill.xpMult * data.skillXpMult * data.happiness / data.settings.updateSpeed
     currentSkill.xp += skillXp
-    if (currentSkill.xp >= currentSkill.maxXp) {
+    while (currentSkill.xp >= currentSkill.maxXp) {
         currentSkill.level++
         if (currentSkill.xpFormula = "normal") {
-            currentSkill.maxXp = math.pow(1.2, currentSkill.level) * currentSkill.baseMaxXp
+            currentSkill.maxXp = math.pow(1.2, currentSkill.level) * currentSkill.level * currentSkill.baseMaxXp
         }
     }
 }
@@ -240,10 +267,11 @@ function hideInfo() {
 
 function isAlive() {
     if (data.days < data.lifespan) {
-        hideInfo();
-        return true;
+        hideInfo()
+        return true
     } else {
-        showInfo();
+        showInfo()
+        pause()
         return false
     }
 }
@@ -255,15 +283,95 @@ function setupTabs() {
     for (i = 0; i < jobCategoriesArray.length; i++) {
         jobCategoriesContainers[i] = document.createElement("div")
         jobCategoriesContainers[i].classList.add("jobCategoryContainer")
+
         var jobCategoryElement = document.createElement("div")
         var jobCategoryBackground = document.createElement("div")
         var jobCategoryArrayElements = Object.values(jobCategoriesArray[i][1])
+
         jobCategoriesContainers[i].classList.add(jobCategoryArrayElements[1])
         jobCategoryElement.classList.add(jobCategoryArrayElements[1])
         jobCategoryElement.classList.add("jobCategoryElement")
         jobCategoryBackground.classList.add(jobCategoryArrayElements[1])
         jobCategoryBackground.classList.add("jobCategoryBackground")
-        jobCategoryElement.appendChild(document.createTextNode(jobCategoriesArray[i][0]))
+
+        var jobCategoryElementTitle = document.createElement("div")
+        jobCategoryElementTitle.appendChild(document.createTextNode(jobCategoriesArray[i][0]))
+
+        var jobCategoryElementSpace = document.createElement("div")
+        jobCategoryElementSpace.appendChild(document.createTextNode(""))
+
+        var jobCategoryElementLevel = document.createElement("div")
+        jobCategoryElementLevel.appendChild(document.createTextNode("Level"))
+
+        var jobCategoryElementIncome = document.createElement("div")
+        jobCategoryElementIncome.appendChild(document.createTextNode("Income"))
+
+        var jobCategoryElementXP = document.createElement("div")
+        jobCategoryElementXP.appendChild(document.createTextNode("XP"))
+
+        var jobCategoryElementXPLeft = document.createElement("div")
+        jobCategoryElementXPLeft.appendChild(document.createTextNode("XP Left"))
+
+        var jobCategoryElementMaxLevel = document.createElement("div")
+        jobCategoryElementMaxLevel.appendChild(document.createTextNode("Max Level"))
+
+        jobCategoryElement.appendChild(jobCategoryElementTitle)
+        jobCategoryElement.appendChild(jobCategoryElementSpace)
+        jobCategoryElement.appendChild(jobCategoryElementLevel)
+        jobCategoryElement.appendChild(jobCategoryElementIncome)
+        jobCategoryElement.appendChild(jobCategoryElementXP)
+        jobCategoryElement.appendChild(jobCategoryElementXPLeft)
+        jobCategoryElement.appendChild(jobCategoryElementMaxLevel)
+
+        for (i2 = 0; i2 < Object.keys(data.job).length; i2++) {
+            var jobProgressBar = document.createElement("div")
+            jobProgressBar.classList.add("jobProgressBar")
+            jobProgressBar.classList.add(Object.values(data.job)[i2].class + "ProgressBar")
+            jobProgressBar.setAttribute("onclick", ("selectJob(" + "\"" + Object.values(data.job)[i2].name + "\"" + ")"))
+
+            var jobSpace = document.createElement("div")
+            jobSpace.classList.add("jobSpace")
+            var jobLevelDisplay = document.createElement("div")
+            jobLevelDisplay.classList.add("jobLevelDisplay")
+            jobLevelDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].level))
+            var jobIncomeDisplay = document.createElement("div")
+            jobIncomeDisplay.classList.add("jobIncomeDisplay")
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            jobIncomeDisplay.appendChild(document.createElement("span"))
+            var jobXPDisplay = document.createElement("div")
+            jobXPDisplay.classList.add("jobXPDisplay")
+            jobXPDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].xp))
+            var jobXPLeftDisplay = document.createElement("div")
+            jobXPLeftDisplay.classList.add("jobXPLeftDisplay")
+            jobXPLeftDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].maxXp - Object.values(data.job)[i2].xp))
+            var jobMaxLevelDisplay = document.createElement("div")
+            jobMaxLevelDisplay.classList.add("jobMaxLevelDisplay")
+            jobMaxLevelDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].maxLevel))
+
+            var jobType = document.createElement("div")
+            jobType.classList.add("jobType")
+            jobType.classList.add(Object.values(data.job)[i2].class + "Type")
+
+            jobType.appendChild(jobProgressBar)
+            jobType.appendChild(jobSpace)
+            jobType.appendChild(jobLevelDisplay)
+            jobType.appendChild(jobIncomeDisplay)
+            jobType.appendChild(jobXPDisplay)
+            jobType.appendChild(jobXPLeftDisplay)
+            jobType.appendChild(jobMaxLevelDisplay)
+            
+            for (i3 = 0; i3 < jobCategoryArrayElements[0].length; i3++)
+            if (jobCategoryArrayElements[0][i3] == (Object.keys(data.job)[i2])) {
+                jobCategoryBackground.appendChild(jobType)
+            }
+        }
+
         jobCategoriesContainers[i].appendChild(jobCategoryElement)
         jobCategoriesContainers[i].appendChild(jobCategoryBackground)
         heroSubpanel.appendChild(jobCategoriesContainers[i])
@@ -284,6 +392,11 @@ function load() {
     data = JSON.parse(localStorage.getItem("data"));
 }
 
+function reset() {
+    localStorage.setItem("data", "undefined")
+    location.reload()
+}
+
 function update() {
     renderSidebar()
     increaseDays()
@@ -300,9 +413,11 @@ function update() {
 
 setupTabs()
 setTab("hero")
-update()
-if (localStorage["data"] !== undefined) {
+if (localStorage["data"] !== "undefined") {
     load()
 }
+switchTheme(false)
+pause()
+update()
 setInterval(update, 1000 / data.settings.updateSpeed)
-setInterval(save, 3000)
+setInterval(save, data.settings.saveSpeed)

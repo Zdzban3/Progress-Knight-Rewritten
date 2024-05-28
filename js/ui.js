@@ -12,6 +12,7 @@ function renderSidebar() {
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
     document.getElementById("happinessDisplay").textContent = format(data.happiness)
+    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed)
 }
 
 function setSignDisplay() {
@@ -62,6 +63,30 @@ function setSettings(tab) {
 
 }
 
+function pauseButton() {
+    if (data.paused == true) {
+        unpause()
+    } else pause()
+}
+
+function pause() {
+    data.paused = true;
+    document.getElementById("pauseButton").innerText = "Play"
+    document.getElementById("pauseButton").classList.add("paused")
+    for (i = 0; i < document.getElementsByClassName("tab").length; i++) {
+        document.getElementsByClassName("tab")[i].classList.add("paused")
+    }
+}
+
+function unpause() {
+    data.paused = false;
+    document.getElementById("pauseButton").innerText = "Pause"
+    document.getElementById("pauseButton").classList.remove("paused")
+    for (i = 0; i < document.getElementsByClassName("tab").length; i++) {
+        document.getElementsByClassName("tab")[i].classList.remove("paused")
+    }
+}
+
 async function downloadFile() {
     let response = await fetch("./changelog.txt");
 
@@ -86,30 +111,33 @@ document.querySelector("#changelogSubbutton").addEventListener('click', async fu
 });
 
 function renderStats() {
-    document.getElementById("startDateDisplay").textContent = data.stats.startDate.toLocaleDateString()
+    const startDate = new Date(data.stats.startDate)
     const currentDate = new Date()
-    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - data.stats.startDate.getTime()) / (1000 * 3600 * 24), 2)
+    document.getElementById("startDateDisplay").textContent = startDate.toLocaleDateString()
+    document.getElementById("playedDaysDisplay").textContent = format((currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24), 2)
     document.getElementById("playedRealTimeDisplay").textContent = formatTime(data.stats.realtime)
 
     document.getElementById("playedGameTimeDisplayDays").textContent = format(data.stats.totalDays)
-    document.getElementById("playedGameTimeDisplayYears").textContent = format(daysToYears(data.stats.totalDays))
+    document.getElementById("playedGameTimeDisplayYears").textContent = format(data.stats.totalDays / 365)
 
     document.getElementById("playedHighestTimeDisplayDays").textContent = format(data.stats.highestDays)
-    document.getElementById("playedHighestTimeDisplayYears").textContent = format(daysToYears(data.stats.highestDays))
+    document.getElementById("playedHighestTimeDisplayYears").textContent = format(data.stats.highestDays / 365)
 }
 
-function switchTheme() {
-    var themeCap = 1 // amount of themes, start counting from 0
-    data.settings.theme++
+function switchTheme(changeTheme) {
+    const themeCap = 1 // amount of themes, start counting from 0
+    if (changeTheme == true) {
+        data.settings.theme++
+    }
     if (data.settings.theme > themeCap) {
         data.settings.theme = 0
     }
     if (data.settings.theme == 0) {
         themeStylesheet.setAttribute('href', 'css/themes/dark.css');
-        document.getElementById("selectedTheme").textContent = "dark"
+        document.getElementById("selectedTheme").textContent = "Dark"
     } else if (data.settings.theme == 1) {
         themeStylesheet.setAttribute('href', 'css/themes/light.css');
-        document.getElementById("selectedTheme").textContent = "light"
+        document.getElementById("selectedTheme").textContent = "Light"
     }
 }
 
@@ -118,5 +146,35 @@ function updateUI() {
         renderStats()
     }
     data.stats.realtime += 1 / data.settings.updateSpeed
-    data.currentRealtime += 1 / data.settings.updateSpeed
+    if (data.paused == false) {
+        data.currentRealtime += 1 / data.settings.updateSpeed
+    }
+    if (data.selectedTab == "hero") {
+        const heroSubpanel = document.getElementById("heroSubpanel")
+        const jobCategoryContainers = Object.values(heroSubpanel.getElementsByClassName("jobCategoryContainer"))
+        for (i5 = 0; i5 < jobCategoryContainers.length; i5++) {
+            const jobTypes = Object.values(jobCategoryContainers[i5].getElementsByClassName("jobType"))
+            for (i2 = 0; i2 < jobTypes.length; i2++) { //for each job (jobType)
+                const jobName = jobTypes[i2].classList[1].replace("Type", "")
+                for (i3 = 0; i3 < Object.keys(data.job).length; i3++) {
+                    if (jobName == Object.values(data.job)[i3].class) {
+                        const thisJob = Object.values(data.job)[i3]
+                        var jobLevelDisplay = thisJob.level
+                        var jobIncomeDisplay = getIncomeSpecific(thisJob.name)
+                        var jobXPDisplay = thisJob.xp
+                        var jobXPLeftDisplay = thisJob.maxXp - thisJob.xp
+                        var jobMaxLevelDisplay = thisJob.maxLevel
+                    }
+                }
+                //Object.values(jobTypes[i2].getElementsByClassName("jobProgressBar"))[0].innerText = jobProgressBar
+                Object.values(jobTypes[i2].getElementsByClassName("jobLevelDisplay"))[0].innerText = format(jobLevelDisplay, 0)
+
+                formatCoins(jobIncomeDisplay, Object.values(jobTypes[i2].getElementsByClassName("jobIncomeDisplay"))[0])
+
+                Object.values(jobTypes[i2].getElementsByClassName("jobXPDisplay"))[0].innerText = format(jobXPDisplay)
+                Object.values(jobTypes[i2].getElementsByClassName("jobXPLeftDisplay"))[0].innerText = format(jobXPLeftDisplay)
+                Object.values(jobTypes[i2].getElementsByClassName("jobMaxLevelDisplay"))[0].innerText = format(jobMaxLevelDisplay, 0)
+            }
+        }
+    }
 }
