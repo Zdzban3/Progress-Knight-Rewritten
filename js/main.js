@@ -474,12 +474,12 @@ function update() {
 }
 
 function startSetup() {
-    setupTabs()
-    setTab("hero")
-    if (data == null || data == "undefined") {
-        reset(true)
+    if (localStorage.data == undefined) {
+        save()
     }
+    setupTabs()
     load()
+    setTab("hero")
     switchPrimaryTheme(false)
     switchSecondaryTheme(false)
     switchCoinsAmountDisplayed(false)
