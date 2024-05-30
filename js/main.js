@@ -474,8 +474,8 @@ function update() {
 function startSetup() {
     setupTabs()
     setTab("hero")
-    if (data == null) {
-        if (data.settings == null) {
+    if (data == null || data == "undefined") {
+        if (data.settings == null || data.settings == "undefined") {
             reset(true)
         } else reset()
     }
