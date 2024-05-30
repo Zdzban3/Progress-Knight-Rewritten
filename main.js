@@ -474,12 +474,12 @@ function update() {
 function startSetup() {
     setupTabs()
     setTab("hero")
-    load()
     if (data == null) {
         if (data.settings == null) {
             reset(true)
         } else reset()
     }
+    load()
     switchPrimaryTheme(false)
     switchSecondaryTheme(false)
     switchCoinsAmountDisplayed(false)
