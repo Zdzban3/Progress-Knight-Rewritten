@@ -441,15 +441,17 @@ function setSaveSpeed(ms) {
 }
 
 function save() {
-    localStorage.setItem("data", JSON.stringify(data));
-    localStorage.setItem("settings", JSON.stringify(data.settings));
+    localStorage.setItem("data", JSON.stringify(data))
+    localStorage.setItem("settings", JSON.stringify(data.settings))
 }
 
 function load() {
     if (localStorage["data"] !== "undefined") {
-        data = JSON.parse(localStorage.getItem("data"));
+        data = JSON.parse(localStorage.getItem("data"))
     }
-    data.settings = JSON.parse(localStorage.getItem("settings"));
+    if (localStorage["settings"] !== "undefined") {
+        data.settings = JSON.parse(localStorage.getItem("settings"))
+    }
 }
 
 function reset(resetSettings = false) {
