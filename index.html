@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link id="themeStylesheet" rel="stylesheet" type="text/css" href="css/themes/dark.css">
+    <link id="themePrimaryStylesheet" rel="stylesheet" type="text/css" href="css/themes/primary/dark.css">
+    <link id="themeSecondaryStylesheet" rel="stylesheet" type="text/css" href="css/themes/secondary/yellow.css">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Rosarivo:ital@0;1&display=swap" rel="stylesheet">
@@ -26,7 +27,8 @@
             <div id="sidebar" class="sidebar tab roboto-regular">
                 <div class="hidden" id="info">
                     <span class="red-letters">Age has caught up to you</span><br>
-                    <span class="grayed">Your age has met your lifespan;<br>use the amulet to rebirth before<br>you pass away</span>
+                    <span class="grayed">Your age has met your lifespan;<br>use the amulet to rebirth before<br>you pass
+                        away</span>
                     <div class="space"></div>
                 </div>
                 <div class="display timeDisplay">
@@ -53,7 +55,8 @@
                     <div class="space"></div>
                     <div class="coinFlow">
                         <div class="netDisplayBox">
-                            <span style="color: var(--net)">Net: </span><span><b id="signDisplay" style="color: gray"></b></span>
+                            <span style="color: var(--net)">Net: </span><span><b id="signDisplay"
+                                    style="color: gray"></b></span>
                             <div id="netDisplay" style="display: inline;">
                                 <span style="color: red">Error: cant set coins</span>
                                 <span></span>
@@ -101,11 +104,13 @@
                     <div class="space"></div>
                 </div>
                 <div class="display timeSpeedDisplay">
-                    <span class="timeSpeed">Flow of time: </span><span id="timeSpeedDisplay" class="timeSpeed">[number]</span>
+                    <span class="timeSpeed">Flow of time: </span><span id="timeSpeedDisplay"
+                        class="timeSpeed">[number]</span>
                     <span class="timeSpeed">days/s</span>
                 </div>
                 <div class="display happinessDisplay">
-                    <span class="happiness">Happiness: </span><span id="happinessDisplay" class="happiness">[happiness]</span><br>
+                    <span class="happiness">Happiness: </span><span id="happinessDisplay"
+                        class="happiness">[happiness]</span><br>
                     <span class="grayed">Affects all XP gain</span>
                 </div>
             </div>
@@ -133,22 +138,46 @@
                     </div>
                     <div class="subpanel hidden" id="settingsPanel">
                         <div class="menu settingsButtons">
-                            <div id="settingsSubbutton" class="settingsButton menuButton" onclick="setSettings('settings')">Settings</div>
-                            <div id="statsSubbutton" class="settingsButton menuButton" onclick="setSettings('stats')">Stats</div>
-                            <div id="changelogSubbutton" class="settingsButton menuButton" onclick="setSettings('changelog')">Changelog</div>
+                            <div id="settingsSubbutton" class="settingsButton menuButton"
+                                onclick="setSettings('settings')">Settings</div>
+                            <div id="statsSubbutton" class="settingsButton menuButton" onclick="setSettings('stats')">
+                                Stats</div>
+                            <div id="changelogSubbutton" class="settingsButton menuButton"
+                                onclick="setSettings('changelog')">Changelog</div>
                         </div>
                         <div id="settingsSubpanel" class="settingsSubpanel settingsPanel hidden">
-                            <div class="setting settingDark menuButton" onclick="switchTheme(true)"><span>Theme: </span><span id="selectedTheme">Dark</span></div>
+                            <div class="themes">
+                                <div class="setting settingDark menuButton" onclick="switchPrimaryTheme(true)">
+                                    <span>Primary Theme: </span><span id="selectedPrimaryTheme">Dark</span></div>
+                                <div class="setting settingDark menuButton" onclick="switchSecondaryTheme(true)">
+                                    <span>Secondary Theme: </span><span id="selectedSecondaryTheme">Yellow</span></div>
+                            </div>
+                            <div class="setting settingDark menuButton" onclick="switchCoinsAmountDisplayed(true)">
+                                <span>Display </span><span id="selectedCoinsAmountDisplayed">2</span><span> coin type(s)</span>
+                            </div>
+                            <div class="setting settingDark menuButton" onclick="switchCurrencyNotation(true)">
+                                <span>Currency notation: </span><span id="selectedCurrencyNotation">Classic</span>
+                            </div>
+                            <div class="setting settingDark menuButton" onclick="switchUpdateSpeed(true)">
+                                <span>Update rate: </span><span id="selectedUpdateSpeed">20</span><span> Hz</span>
+                            </div>
                         </div>
                         <div id="statsSubpanel" class="settingsSubpanel statsPanel hidden">
                             <div class="statsText">
-                            <span>You started the game on </span><span id="startDateDisplay">[date]</span><span>, </span><span id="playedDaysDisplay">[days]</span><span> days ago.</span><br>
-                            <span>You have played for <span id="playedRealTimeDisplay">[time]</span> (real time).</span><br>
-                            <span>Your existence (total game time) has spanned <span id="playedGameTimeDisplayDays">[days]</span> days (<span id="playedGameTimeDisplayYears">[years]</span> years).</span><br>
-                            <span>Your longest life was <span id="playedHighestTimeDisplayDays">[days]</span> days long (<span id="playedHighestTimeDisplayYears">[years]</span> years).</span><br>
+                                <span>You started the game on </span><span id="startDateDisplay">[date]</span><span>,
+                                </span><span id="playedDaysDisplay">[days]</span><span> days ago.</span><br>
+                                <span>You have played for <span id="playedRealTimeDisplay">[time]</span> (real
+                                    time).</span><br>
+                                <span>Your existence (total game time) has spanned <span
+                                        id="playedGameTimeDisplayDays">[days]</span> days (<span
+                                        id="playedGameTimeDisplayYears">[years]</span> years).</span><br>
+                                <span>Your longest life was <span id="playedHighestTimeDisplayDays">[days]</span> days
+                                    long (<span id="playedHighestTimeDisplayYears">[years]</span> years).</span><br>
                             </div>
                         </div>
-                        <div id="changelogSubpanel" class="settingsSubpanel changelogPanel hidden"><pre id="changelog-pre"></pre></div>
+                        <div id="changelogSubpanel" class="settingsSubpanel changelogPanel hidden">
+                            <pre id="changelog-pre"></pre>
+                        </div>
                     </div>
                 </div>
             </div>

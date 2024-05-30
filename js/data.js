@@ -20,14 +20,16 @@ var data = { //formerly gameData
     selectedSkills: [],
     selectedHome: { name: "Homeless", owned: true, price: 0, rent: 0, effect: 1 },
     settings: {
-        theme: 0,
+        primaryTheme: 0,
+        secondaryTheme: 0,
         currencyNotation: 0,
         numberNotation: 1,
         coinsDisplayed: 2,
         layout: 1,
         fontSize: 3,
         enableKeybinds: false,
-        updateSpeed: 20, //use baseGameSpeed
+        updateSpeed: 20,
+        updateSpeedSetting: 2,
         saveSpeed: 5000,
     },
     stats: {
@@ -38,7 +40,7 @@ var data = { //formerly gameData
     },
     job: {
         "Beggar": { name: "Beggar", class: "beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 1, maxLevel:1, income: 5 },
-        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 9, incomeFormula: "less penalty" },
+        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 9 },
         "Fisherman": { name: "Fisherman", class: "fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 1, maxLevel:1, income: 15 },
         "Miner": { name: "Miner", class: "miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 1, maxLevel:1, income: 40 },
         "Blacksmith": { name: "Blacksmith", class: "blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 1, maxLevel:1, income: 80 },

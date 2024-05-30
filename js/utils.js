@@ -56,7 +56,7 @@ function getCoinsData() {
             { "name": "c", "color": "#a15c2f", "value": 1 },
             { "name": "w", "color": "#633f24", "value": 1e-2 },
         ];
-        case 4: return [
+        case 2: return [
             { "name": "∞", "color": "#000000", "value": 1e50, "class": "currency-shadow-rainbow" },
             { "name": " 𒇫", "color": "#66ccff", "value": 1e44, "class": "currency-shadow" },
             { "name": "Ω", "color": "#e3980e", "value": 1e42, "class": "currency-shadow" },
@@ -83,7 +83,7 @@ function getCoinsData() {
             { "name": "c", "color": "#a15c2f", "value": 1 },
             { "name": "w", "color": "#633f24", "value": 1e-2 },
         ];
-        case 2: return [
+        case 4: return [
             { "name": "", "color": "#E5C100", "value": 240, "prefix": "£" },
             { "name": "s", "color": "#a8a8a8", "value": 12 },
             { "name": "d", "color": "#a15c2f", "value": 1 },
@@ -128,7 +128,7 @@ function formatCoins(coins, element) {
             break;
         case 3:
             element.children[0].textContent = "$" + format(coins / 100, 2)
-            element.children[0].style.color = "#E5C100"
+            element.children[0].style.color = "#267326"
             element.children[0].className = ""
             break;
         default:
@@ -176,9 +176,9 @@ function formatTreshold(number, decimals = 1, treshold = 100000) {
 }
 
 function formatLevel(level) {
-    if (level >= 100000)
+    if (level >= 100000) {
         return format(level)
-
+    }
     return level.toLocaleString()
 }
 
