@@ -452,8 +452,11 @@ function load() {
     data.settings = JSON.parse(localStorage.getItem("settings"));
 }
 
-function reset() {
+function reset(resetSettings = false) {
     localStorage.setItem("data", "undefined")
+    if (resetSettings == true) {
+        localStorage.setItem("settings", "undefined")
+    }
     location.reload()
 }
 
