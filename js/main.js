@@ -477,9 +477,7 @@ function startSetup() {
     setupTabs()
     setTab("hero")
     if (data == null || data == "undefined") {
-        if (data.settings == null || data.settings == "undefined") {
-            reset(true)
-        } else reset()
+        reset(true)
     }
     load()
     switchPrimaryTheme(false)
