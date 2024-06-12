@@ -2,16 +2,8 @@
     --menuWidth: 1200px;
 }
 
-.rosarivo-regular {
-  font-family: "Rosarivo", cursive;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.rosarivo-regular-italic {
-  font-family: "Rosarivo", cursive;
-  font-weight: 400;
-  font-style: italic;
+body {
+    zoom: 1;
 }
 
 .roboto-regular {
@@ -21,12 +13,13 @@
 }
 
 .title {
-    margin: 1% 0 0 1%;
+    margin: 10px 0 0 10px;
     color: var(--color0);
 }
 
 .title h1 {
-    font-size: 28px;
+    font-size: 26px;
+    padding-bottom: 2px;
 }
 
 .title img {
@@ -37,8 +30,8 @@
 }
 
 .tab {
-    margin: 0% 1% 0 1%;
-    padding-left: 1%;
+    margin: 0 0 0 15px;
+    padding-left: 10px;
 }
 
 .space {
@@ -65,16 +58,19 @@
 
 .display .age {
     font-size: 20px;
-    margin-bottom: 0.5%;
+    margin-bottom: 2px;
     margin-top: 0px;
     color: var(--color0);
 }
 
 .sidebar {
-    padding: 0.5% max(10px, 1%) max(10px, 1%) max(10px, 1%);
-    margin-right: 5px;
+    padding: 5px 10px 10px 15px;
     height: fit-content;
-    min-width: 240px;
+    min-width: var(--sidebarWidth, 320px)
+}
+
+.sidebar.zoom0 {
+    zoom: 0.6
 }
 
 .menu {
@@ -90,6 +86,7 @@
     display: flex;
     flex: row;
     justify-content: left;
+    margin-top: 10px;
 }
 
 .main-panel {
@@ -109,6 +106,10 @@
     user-select: none;
 }
 
+.menuButton.small {
+    width: 25%;
+}
+
 .menuButton:hover {
     color: var(--color0);
     background-color: var(--color2);
@@ -119,7 +120,7 @@
 }
 
 .settingsSubpanel {
-    color: var(--color1, color2, gray);
+    color: var(--color1);
     font-size: 16px;
     text-align: left;
     padding-bottom: max(2%, 16px);
@@ -130,7 +131,7 @@
     box-sizing: border-box;
 }
 
-.themes {
+.groupedSettings {
     display: inline-flex;
     width: inherit;
 }
@@ -139,6 +140,30 @@
     padding: 10px;
     background-color: var(--color6);
     margin-bottom: 10px;
+}
+
+.zoom07 {
+    zoom: 0.7
+}
+
+.zoom08 {
+    zoom: 0.8
+}
+
+.zoom09 {
+    zoom: 0.9
+}
+
+.zoom11 {
+    zoom: 1.1
+}
+
+.zoom12 {
+    zoom: 1.2
+}
+
+.zoom13 {
+    zoom: 1.3
 }
 
 #changelog-pre {
@@ -193,116 +218,12 @@
     color: var(--color2);
 }
 
-.heroPanel {
+.setting:hover .grayed {
+    color: var(--color4)
+}
+
+.subsubpanel {
     width: var(--menuWidth);
     height: fit-content;
     padding: 10px 8px 10px 0;
-}
-
-.jobCategoryContainer {
-    width: auto;
-    margin: 0px 10px 10px 10px;
-    height: fit-content;
-    vertical-align: middle;
-    line-height: 30px;
-    font-weight: 500;
-}
-
-.jobCategoryElement {
-    width: auto;
-    height: 30px;
-    padding-left: 10px;
-    display: flex;
-    justify-content: center;
-}
-
-.jobCategoryElement div:not(.jobCategoryElementTitle) {
-    width: 100%;
-    text-align: center;
-}
-
-.jobCategoryBackground {
-    width: auto;
-    height: fit-content;
-    padding: 0.01px 10px 0.01px 10px;
-}
-
-.jobCategoryElementTitle {
-    width: 220%;
-    text-align: left;
-}
-
-.jobType {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-}
-
-.jobType div:not(.jobProgressBar) {
-    width: 100%;
-    height: 30px;
-    text-align: center;
-}
-
-.jobProgressBar {
-    background-color: var(--progressBarBackground);
-    width: 220%;
-    height: 30px;
-}
-
-.jobProgressBarProgress {
-    background-color: var(--progressBarUnselected);
-}
-
-.selected.jobProgressBarProgress {
-    background-color: var(--progressBarSelected);
-}
-
-.selected.jobProgressBar {
-    background-color: var(--progressBarSelectedBackground);
-}
-
-.jobProgressBarText {
-    position: relative;
-    bottom: 30px;
-    padding-left: 5px;
-}
-
-.jobSpace {
-    width: 20% !important;
-}
-
-.jobIncomeDisplay span {
-    margin-right: 3px;
-}
-
-.commonWork .jobCategoryElement {
-    background-color: var(--commonWork);
-    color: var(--color0)
-}
-
-.military .jobCategoryElement {
-    background-color: var(--military);
-    color: var(--color0)
-}
-
-.theArcaneAssociation .jobCategoryElement {
-    background-color: var(--theArcaneAssociation);
-    color: var(--color0)
-}
-
-.commonWork .jobCategoryBackground {
-    background-color: var(--commonWorkBackground);
-    color: var(--color0)
-}
-
-.military .jobCategoryBackground {
-    background-color: var(--militaryBackground);
-    color: var(--color0)
-}
-
-.theArcaneAssociation .jobCategoryBackground {
-    background-color: var(--theArcaneAssociationBackground);
-    color: var(--color0)
 }

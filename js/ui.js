@@ -12,7 +12,7 @@ function renderSidebar() {
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
     document.getElementById("happinessDisplay").textContent = format(data.happiness)
-    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed)
+    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed / 4)
 }
 
 function setSignDisplay() {
@@ -123,6 +123,13 @@ function renderStats() {
 
         document.getElementById("playedHighestTimeDisplayDays").textContent = format(data.stats.highestDays)
         document.getElementById("playedHighestTimeDisplayYears").textContent = format(data.stats.highestDays / 365)
+
+        const offlineTask = data.specialTask["Offline time"]
+        offlineTask.xp = data.storedOfflineTime / 1000
+        doTask(offlineTask)
+        renderProgressBar(100 + 100 * (offlineTask.xp - offlineTask.maxXp) / (offlineTask.maxXp - getTaskMaxXp(offlineTask, 1)), document.getElementById("statsOfflineProgressBar"))
+        document.getElementById("offlineProgressBarProgress").innerText = offlineTask.level
+        document.getElementById("offlineTimeDisplay").innerText = formatTimeAmount(data.storedOfflineTime / 1000)
     }
 }
 
@@ -226,7 +233,116 @@ function switchUpdateSpeed(change) {
             setUpdateSpeed(120)
             break
     }
-    document.getElementById("selectedUpdateSpeed").textContent = data.settings.updateSpeed
+}
+
+function switchSidebarZoom(change) {
+    const cap = 6
+    if (change == true) {
+        data.settings.sidebarZoom++
+    }
+    if (data.settings.sidebarZoom > cap) {
+        data.settings.sidebarZoom = 0
+    }
+    document.getElementById("sidebar").classList.remove("zoom07")
+    document.getElementById("sidebar").classList.remove("zoom08")
+    document.getElementById("sidebar").classList.remove("zoom09")
+    document.getElementById("sidebar").classList.remove("zoom11")
+    document.getElementById("sidebar").classList.remove("zoom12")
+    document.getElementById("sidebar").classList.remove("zoom13")
+    switch (data.settings.sidebarZoom) {
+        case 0:
+            document.getElementById("selectedSidebarZoom").textContent = "0.7x"
+            document.getElementById("sidebar").classList.add("zoom07")
+            break
+        case 1:
+            document.getElementById("selectedSidebarZoom").textContent = "0.8x"
+            document.getElementById("sidebar").classList.add("zoom08")
+            break
+        case 2:
+            document.getElementById("selectedSidebarZoom").textContent = "0.9x"
+            document.getElementById("sidebar").classList.add("zoom09")
+            break
+        case 3:
+            document.getElementById("selectedSidebarZoom").textContent = "normal"
+            break
+        case 4:
+            document.getElementById("selectedSidebarZoom").textContent = "1.1x"
+            document.getElementById("sidebar").classList.add("zoom11")
+            break
+        case 5:
+            document.getElementById("selectedSidebarZoom").textContent = "1.2x"
+            document.getElementById("sidebar").classList.add("zoom12")
+            break
+        case 6:
+            document.getElementById("selectedSidebarZoom").textContent = "1.3x"
+            document.getElementById("sidebar").classList.add("zoom13")
+            break
+    }
+}
+
+function switchMainpanelZoom(change) {
+    const cap = 6
+    if (change == true) {
+        data.settings.mainpanelZoom++
+    }
+    if (data.settings.mainpanelZoom > cap) {
+        data.settings.mainpanelZoom = 0
+    }
+    document.getElementById("mainpanels").classList.remove("zoom07")
+    document.getElementById("mainpanels").classList.remove("zoom08")
+    document.getElementById("mainpanels").classList.remove("zoom09")
+    document.getElementById("mainpanels").classList.remove("zoom11")
+    document.getElementById("mainpanels").classList.remove("zoom12")
+    document.getElementById("mainpanels").classList.remove("zoom13")
+    switch (data.settings.mainpanelZoom) {
+        case 0:
+            document.getElementById("selectedMainpanelZoom").textContent = "0.7x"
+            document.getElementById("mainpanels").classList.add("zoom07")
+            break
+        case 1:
+            document.getElementById("selectedMainpanelZoom").textContent = "0.8x"
+            document.getElementById("mainpanels").classList.add("zoom08")
+            break
+        case 2:
+            document.getElementById("selectedMainpanelZoom").textContent = "0.9x"
+            document.getElementById("mainpanels").classList.add("zoom09")
+            break
+        case 3:
+            document.getElementById("selectedMainpanelZoom").textContent = "normal"
+            break
+        case 4:
+            document.getElementById("selectedMainpanelZoom").textContent = "1.1x"
+            document.getElementById("mainpanels").classList.add("zoom11")
+            break
+        case 5:
+            document.getElementById("selectedMainpanelZoom").textContent = "1.2x"
+            document.getElementById("mainpanels").classList.add("zoom12")
+            break
+        case 6:
+            document.getElementById("selectedMainpanelZoom").textContent = "1.3x"
+            document.getElementById("mainpanels").classList.add("zoom13")
+            break
+    }
+}
+
+function switchMobile(change = true) {
+    cap = 1
+    if (change == true) {
+        data.settings.mobile++
+    }
+    if (data.settings.mobile > cap) {
+        data.settings.mobile = 0
+    }
+    switch (data.settings.mobile) {
+        case 0:
+            document.getElementById("mobileStylesheet").setAttribute('href', 'unset');
+            document.getElementById("selectedMobile").innerText = "false"
+            break
+        case 1:
+            document.getElementById("mobileStylesheet").setAttribute('href', 'css/mobile.css');
+            document.getElementById("selectedMobile").innerText = "true"
+            break
+    }
 }
 
 function renderProgressBar(percentage, element) {
@@ -234,61 +350,99 @@ function renderProgressBar(percentage, element) {
 }
 
 function renderHero() {
-    if (data.selectedTab == "hero") {
-        const heroSubpanel = document.getElementById("heroSubpanel")
-        const jobCategoryContainers = Object.values(heroSubpanel.getElementsByClassName("jobCategoryContainer"))
-        for (i5 = 0; i5 < jobCategoryContainers.length; i5++) {
-            const jobTypes = Object.values(jobCategoryContainers[i5].getElementsByClassName("jobType"))
-            for (i2 = 0; i2 < jobTypes.length; i2++) { //for each job (jobType)
-                const jobName = jobTypes[i2].classList[1].replace("Type", "")
-                for (i3 = 0; i3 < Object.keys(data.job).length; i3++) {
-                    if (jobName == Object.values(data.job)[i3].class) {
-                        var thisJob = Object.values(data.job)[i3]
-                        var jobLevelDisplay = thisJob.level
-                        var jobIncomeDisplay = getIncomeSpecific(thisJob.name)
-                        var jobXPDisplay = thisJob.xp
-                        var jobXPRateDisplay = thisJob.xpMult * data.jobXpMult * data.happiness
-                        var jobXPLeftDisplay = thisJob.maxXp - thisJob.xp
-                        var jobMaxLevelDisplay = thisJob.maxLevel
-                    }
+    if (data.selectedTab === "hero") {
+        const heroSubpanel = document.getElementById("heroSubpanel");
+        const jobCategoryContainers = Array.from(heroSubpanel.getElementsByClassName("jobCategoryContainer"));
+
+        jobCategoryContainers.forEach(container => {
+            const jobTypes = Array.from(container.getElementsByClassName("jobType"));
+
+            jobTypes.forEach(jobType => {
+                const jobName = jobType.classList[1].replace("Type", "");
+                const thisJob = Object.values(data.job).find(job => job.class === jobName);
+
+                if (thisJob) {
+                    const jobLevelDisplay = formatLevel(thisJob.level);
+                    const jobIncomeDisplay = getIncomeSpecific(thisJob.name);
+                    const jobXPDisplay = thisJob.xp;
+                    const jobXPRateDisplay = thisJob.xpMult * data.jobXPMult * data.happiness;
+                    const jobXPLeftDisplay = thisJob.maxXp - thisJob.xp;
+                    const jobMaxLevelDisplay = formatLevel(thisJob.maxLevel);
+
+                    jobType.querySelector(".jobLevelDisplay").innerText = jobLevelDisplay;
+                    formatCoins(jobIncomeDisplay, jobType.querySelector(".jobIncomeDisplay"));
+
+                    const progressBarPercentage = 100 + 100 * (thisJob.xp - thisJob.maxXp) / (thisJob.maxXp - getTaskMaxXp(thisJob, 1));
+                    renderProgressBar(progressBarPercentage, jobType.querySelector(".jobProgressBar"));
+
+                    jobType.querySelector(".jobXPDisplay").innerText = format(jobXPDisplay);
+                    jobType.querySelector(".jobXPRateDisplay").innerText = format(jobXPRateDisplay);
+                    jobType.querySelector(".jobXPLeftDisplay").innerText = format(jobXPLeftDisplay);
+                    jobType.querySelector(".jobMaxLevelDisplay").innerText = jobMaxLevelDisplay;
                 }
-                Object.values(jobTypes[i2].getElementsByClassName("jobLevelDisplay"))[0].innerText = formatLevel(jobLevelDisplay)
+            });
+        });
+    }
+}
 
-                formatCoins(jobIncomeDisplay, Object.values(jobTypes[i2].getElementsByClassName("jobIncomeDisplay"))[0])
+function renderSkills() {
+    if (data.selectedTab === "skills") {
+        const skillSubpanel = document.getElementById("skillSubpanel");
+        const skillCategoryContainers = Array.from(skillSubpanel.getElementsByClassName("skillCategoryContainer"));
 
-                const progressBarPercentage = 100 + 100 * (thisJob.xp - thisJob.maxXp) / (thisJob.maxXp - getTaskMaxXp(data.job[thisJob.name], 1))
-                renderProgressBar(progressBarPercentage, Object.values(jobTypes[i2].getElementsByClassName("jobProgressBar"))[0])
+        skillCategoryContainers.forEach(container => {
+            const skillTypes = Array.from(container.getElementsByClassName("skillType"));
 
-                Object.values(jobTypes[i2].getElementsByClassName("jobXPDisplay"))[0].innerText = format(jobXPDisplay)
-                Object.values(jobTypes[i2].getElementsByClassName("jobXPRateDisplay"))[0].innerText = format(jobXPRateDisplay)
-                Object.values(jobTypes[i2].getElementsByClassName("jobXPLeftDisplay"))[0].innerText = format(jobXPLeftDisplay)
-                Object.values(jobTypes[i2].getElementsByClassName("jobMaxLevelDisplay"))[0].innerText = formatLevel(jobMaxLevelDisplay)
-            }
-        }
+            skillTypes.forEach(skillType => {
+                const skillName = skillType.classList[1].replace("Type", "");
+                const thisSkill = Object.values(data.skill).find(skill => skill.class === skillName);
+
+                if (thisSkill) {
+                    const skillLevelDisplay = formatLevel(thisSkill.level);
+                    const skillEffectDisplay = formatEffect(thisSkill.name);
+                    const skillXPDisplay = thisSkill.xp;
+                    const skillXPRateDisplay = thisSkill.xpMult * data.skillXPMult * data.happiness;
+                    const skillXPLeftDisplay = thisSkill.maxXp - thisSkill.xp;
+                    const skillMaxLevelDisplay = formatLevel(thisSkill.maxLevel);
+
+                    skillType.querySelector(".skillLevelDisplay").innerText = skillLevelDisplay;
+                    skillType.querySelector(".skillEffectDisplay").innerText = skillEffectDisplay
+
+                    const progressBarPercentage = 100 + 100 * (thisSkill.xp - thisSkill.maxXp) / (thisSkill.maxXp - getTaskMaxXp(thisSkill, 1));
+                    renderProgressBar(progressBarPercentage, skillType.querySelector(".skillProgressBar"));
+
+                    skillType.querySelector(".skillXPDisplay").innerText = format(skillXPDisplay);
+                    skillType.querySelector(".skillXPRateDisplay").innerText = format(skillXPRateDisplay);
+                    skillType.querySelector(".skillXPLeftDisplay").innerText = format(skillXPLeftDisplay);
+                    skillType.querySelector(".skillMaxLevelDisplay").innerText = skillMaxLevelDisplay;
+                }
+            });
+        });
     }
 }
 
 function updateProgressBars() {
-    for (var anyJob in Object.values(data.job)) {
-        document.getElementsByClassName(Object.values(data.job)[anyJob].class + "ProgressBarProgress")[0].classList.remove("selected")
-        document.getElementsByClassName(Object.values(data.job)[anyJob].class + "ProgressBar")[0].classList.remove("selected")
+    for (var anyJob in data.job) {
+        document.getElementsByClassName(data.job[anyJob].class + "ProgressBarProgress")[0].classList.remove("selected")
+        document.getElementsByClassName(data.job[anyJob].class + "ProgressBar")[0].classList.remove("selected")
     }
     for (var selectedJob in data.selectedJobs) {
         document.getElementsByClassName(data.selectedJobs[selectedJob].class + "ProgressBarProgress")[0].classList.add("selected")
         document.getElementsByClassName(data.selectedJobs[selectedJob].class + "ProgressBar")[0].classList.add("selected")
     }
-}
-
-function addRealtime() {
-    data.stats.realtime += 1 / data.settings.updateSpeed
-    if (data.paused == false) {
-        data.currentRealtime += 1 / data.settings.updateSpeed
+    for (var anySkill in data.skill) {
+        document.getElementsByClassName((data.skill)[anySkill].class + "ProgressBarProgress")[0].classList.remove("selected")
+        document.getElementsByClassName((data.skill)[anySkill].class + "ProgressBar")[0].classList.remove("selected")
+    }
+    for (var selectedSkill in data.selectedSkills) {
+        document.getElementsByClassName(data.selectedSkills[selectedSkill].class + "ProgressBarProgress")[0].classList.add("selected")
+        document.getElementsByClassName(data.selectedSkills[selectedSkill].class + "ProgressBar")[0].classList.add("selected")
     }
 }
 
 function updateUI() {
-    addRealtime()
     renderSidebar()
     renderStats()
     renderHero()
+    renderSkills()
 }

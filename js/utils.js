@@ -102,6 +102,7 @@ function formatWhole(number, decimals = 1) {
 function formatCoins(coins, element) {
     for (const c of element.children) {
         c.textContent = "";
+        c.classList.remove("usedCoin")
     }
 
     switch (data.settings.currencyNotation) {
@@ -121,6 +122,7 @@ function formatCoins(coins, element) {
                     element.children[coinsUsed].textContent = (m.prefix ?? "") + format(amount, amount < 1000 ? 0 : 2) + m.name
                     element.children[coinsUsed].style.color = m.color
                     element.children[coinsUsed].className = m.class ? m.class : ""
+                    element.children[coinsUsed].className = "usedCoin"
                     coinsUsed++
                 }
                 if (coinsUsed >= data.settings.coinsDisplayed) break;
@@ -129,7 +131,7 @@ function formatCoins(coins, element) {
         case 3:
             element.children[0].textContent = "$" + format(coins / 100, 2)
             element.children[0].style.color = "#267326"
-            element.children[0].className = ""
+            element.children[0].className = "usedCoin"
             break;
         default:
             throw new Error("Invalid currency notation set");
@@ -205,4 +207,16 @@ function daysToYears(days) {
 
 function getCurrentDay(days) {
     return Math.floor(days - daysToYears(days) * 365)
+}
+
+function formatTimeAmount(seconds) {
+    if (seconds >= 3600) {
+        return format(seconds / 3600) + " hours"
+    } else if (seconds >= 60) {
+        return format(seconds / 60) + " minutes"
+    } else return format(seconds) + " seconds"
+}
+
+function formatEffect(skillName) {
+    return format(getEffectSpecific(skillName), 2) + "x " + data.skill[skillName].description
 }

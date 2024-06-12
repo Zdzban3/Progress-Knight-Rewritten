@@ -6,28 +6,32 @@ var data = { //formerly gameData
     currentRealtime: 0,
     happiness: 1,
     evil: 0,
-    
+    storedOfflineTime: 0,
+
     selectedTab: "default tab set in main.js",
     selectedSettings: null,
     baseLifespan: 365 * 60,
     baseGameSpeed: 4,
-    paused: false,
+    paused: true,
     maxJobs: 1,
     maxSkills: 1,
-    jobXpMult: 1,
-    skillXpMult: 1,
+    jobXPMult: 1,
+    skillXPMult: 1,
     selectedJobs: [],
     selectedSkills: [],
-    selectedHome: { name: "Homeless", owned: true, price: 0, rent: 0, effect: 1 },
+    selectedHome: "Homeless",
+
+    lastUpdate: new Date().getTime(),
+    updateTimeDiff: 100,
     settings: {
         primaryTheme: 0,
         secondaryTheme: 0,
         currencyNotation: 0,
         numberNotation: 1,
         coinsDisplayed: 2,
-        layout: 1,
-        fontSize: 3,
-        enableKeybinds: false,
+        sidebarZoom: 3,
+        mainpanelZoom: 3,
+        mobile: false,
         updateSpeed: 20,
         updateSpeedSetting: 2,
         saveSpeed: 5000,
@@ -39,150 +43,86 @@ var data = { //formerly gameData
         highestDays: 365 * 14,
     },
     job: {
-        "Beggar": { name: "Beggar", class: "beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 1, maxLevel:1, income: 5 },
-        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 9 },
-        "Fisherman": { name: "Fisherman", class: "fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 1, maxLevel:1, income: 15 },
-        "Miner": { name: "Miner", class: "miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 1, maxLevel:1, income: 40 },
-        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 1, maxLevel:1, income: 80 },
-        "Merchant": { name: "Merchant", class: "merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 1, maxLevel:1, income: 150 },
+        "Beggar": { name: "Beggar", class: "beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
+        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 9 },
+        "Fisherman": { name: "Fisherman", class: "fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 0, maxLevel: 0, income: 15 },
+        "Miner": { name: "Miner", class: "miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 0, maxLevel: 0, income: 40 },
+        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 0, maxLevel: 0, income: 80 },
+        "Merchant": { name: "Merchant", class: "merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 0, maxLevel: 0, income: 150 },
 
-        "Squire": { name: "Squire", class: "squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, income: 5 },
-        "Footman": { name: "Footman", class: "footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 1, maxLevel:1, income: 50 },
-        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 1, maxLevel:1, income: 120 },
-        "Knight": { name: "Knight", class: "knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 1, maxLevel:1, income: 300 },
-        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 1, maxLevel:1, income: 1000 },
-        "Elite knight": { name: "Elite knight", class: "eliteKnight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 1, maxLevel:1, income: 3000 },
-        "Holy knight": { name: "Holy knight", class: "holyKnight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 1, maxLevel:1, income: 15000 },
-        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 1, maxLevel:1, income: 50000 },
+        "Squire": { name: "Squire", class: "squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 5 },
+        "Footman": { name: "Footman", class: "footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 0, maxLevel: 0, income: 50 },
+        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 0, maxLevel: 0, income: 120 },
+        "Knight": { name: "Knight", class: "knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 0, maxLevel: 0, income: 300 },
+        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 0, maxLevel: 0, income: 1000 },
+        "Elite knight": { name: "Elite knight", class: "eliteKnight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 0, maxLevel: 0, income: 3000 },
+        "Holy knight": { name: "Holy knight", class: "holyKnight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 0, maxLevel: 0, income: 15000 },
+        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 0, maxLevel: 0, income: 50000 },
     },
     skill: {
-        "Concentration": { name: "Concentration", class: "concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Skill xp" },
-        "Productivity": { name: "Productivity", class: "productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Job xp" },
-        "Bargaining": { name: "Bargaining", class: "bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: -0.01, description: "Expenses" },
-        "Meditation": { name: "Meditation", class: "meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 1, maxLevel:1, effect: 0.01, description: "Happiness" },
+        "Concentration": { name: "Concentration", class: "concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Skill XP" },
+        "Productivity": { name: "Productivity", class: "productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Job XP" },
+        "Bargaining": { name: "Bargaining", class: "bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
+        "Meditation": { name: "Meditation", class: "meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Happiness" },
+        "New skill": { name: "New skill", class: "newSkill", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, xpFormula: "squaredSkill", effectFormula: "squared", description: "Happiness" },
     },
-    home: {
-        "Homeless": { name: "Homeless", owned: true, price: 0, rent: 0, effect: 1 },
-        "Tent": { name: "Tent", owned: false, price: 0, rent: 15, effect: 1.4 },
-        "Wooden hut": { name: "Wooden hut", owned: false, price: 0, rent: 100, effect: 2 },
-        "Cottage": { name: "Cottage", owned: false, price: 0, rent: 750, effect: 3.5 },
-        "House": { name: "House", owned: false, price: 0, rent: 3000, effect: 6 },
-        "Large house": { name: "Large house", owned: false, price: 0, rent: 25000, effect: 12 },
-        "Small palace": { name: "Small palace", owned: false, price: 0, rent: 300000, effect: 25 },
-        "Grand palace": { name: "Grand palace", owned: false, price: 0, rent: 5000000, effect: 60 },
+    specialTask: {
+        "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" },
     },
-    item: {
-        "Book": { name: "Book", owned: false, price: 10, upkeep: 0, effect: 1.5, description: "Skill xp" },
-        "Dumbbells": { name: "Dumbbells", owned: false, price: 50, upkeep: 0, effect: 1.5, description: "Strength xp" },
-        "Personal squire": { name: "Personal squire", owned: false, price: 200, upkeep: 0, effect: 2, description: "Job xp" },
-        "Steel longsword": { name: "Steel longsword", owned: false, price: 1000, upkeep: 0, effect: 2, description: "Military xp" },
-        "Butler": { name: "Butler", owned: false, price: 7500, upkeep: 0, effect: 1.5, description: "Happiness" },
-        "Sapphire charm": { name: "Sapphire charm", owned: false, price: 50000, upkeep: 0, effect: 3, description: "Magic xp" },
-        "Study desk": { name: "Study desk", owned: false, price: 1000000, upkeep: 0, effect: 2, description: "Skill xp" },
-        "Library": { name: "Library", owned: false, price: 10000000, upkeep: 0, effect: 1.5, description: "Skill xp" },
+    buyable: {
+        home: {
+            //properties
+            "Homeless": { name: "Homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
+            "Tent": { name: "Tent", owned: false, price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
+            "Wooden hut": { name: "Wooden hut", owned: false, price: 0, upkeep: 100, effect: 2, description: "Happiness" },
+            "Cottage": { name: "Cottage", owned: false, price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
+            "House": { name: "House", owned: false, price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
+            "Large house": { name: "Large house", owned: false, price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
+            "Small palace": { name: "Small palace", owned: false, price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
+            "Grand palace": { name: "Grand palace", owned: false, price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
+        },
+        normal: {
+            //items
+            "Book": { name: "Book", owned: false, price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
+            "Dumbbells": { name: "Dumbbells", owned: false, price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
+            "Steel longsword": { name: "Steel longsword", owned: false, price: 1000, upkeep: 0, effect: 2, description: "Military XP" },
+            "Sapphire charm": { name: "Sapphire charm", owned: false, price: 50000, upkeep: 0, effect: 3, description: "Magic XP" },
+            "Study desk": { name: "Study desk", owned: false, price: 1000000, upkeep: 0, effect: 2, description: "Skill XP" },
+            "Library": { name: "Library", owned: false, price: 10000000, upkeep: 0, effect: 1.5, description: "Skill XP" },
+            //helpers
+            "Personal squire": { name: "Personal squire", owned: false, price: 200, upkeep: 0, effect: 2, description: "Job XP" },
+            "Butler": { name: "Butler", owned: false, price: 7500, upkeep: 0, effect: 1.5, description: "Happiness" },
+        }
     }
 }
 
+
 function assignBaseTaskFormula() {
-    jobArray = Object.values(data.job)
-    for (i = 0; i < jobArray.length; i++) {
-        if (!jobArray[i].hasOwnProperty("xpFormula")) {
-            jobName = jobArray[i].name
-            data.job[jobName].xpFormula = "normal"
+    for (jobName in data.job) {
+        const job = data.job[jobName]
+        if (!job.hasOwnProperty("xpFormula")) {
+            job.xpFormula = "normalJob"
+        }
+        if (!job.hasOwnProperty("incomeFormula")) {
+            job.incomeFormula = "normal"
+        }
+        if (!job.hasOwnProperty("description")) {
+            job.description = "Income"
         }
     }
-    for (i = 0; i < jobArray.length; i++) {
-        if (!jobArray[i].hasOwnProperty("incomeFormula")) {
-            jobName = jobArray[i].name
-            data.job[jobName].incomeFormula = "normal"
+    for (skillName in data.skill) {
+        const skill = data.skill[skillName]
+        if (!skill.hasOwnProperty("xpFormula")) {
+            skill.xpFormula = "normalSkill"
         }
-    }
-    skillArray = Object.values(data.skill)
-    for (i = 0; i < skillArray.length; i++) {
-        if (!skillArray[i].hasOwnProperty("xpFormula")) {
-            skillName = skillArray[i].name
-            data.skill[skillName].xpFormula = "normal"
-        }
-    }
-    for (i = 0; i < skillArray.length; i++) {
-        if (!skillArray[i].hasOwnProperty("effectFormula")) {
-            skillName = skillArray[i].name
-            data.skill[skillName].effectFormula = "normal"
+        if (!skill.hasOwnProperty("effectFormula")) {
+            skill.effectFormula = "normal"
         }
     }
 }
 
 assignBaseTaskFormula()
-/*
-const jobBaseData = {
-    "Beggar": { name: "Beggar", maxXp: 50, income: 5 },
-    "Farmer": { name: "Farmer", maxXp: 100, income: 9 },
-    "Fisherman": { name: "Fisherman", maxXp: 200, income: 15 },
-    "Miner": { name: "Miner", maxXp: 400, income: 40 },
-    "Blacksmith": { name: "Blacksmith", maxXp: 800, income: 80 },
-    "Merchant": { name: "Merchant", maxXp: 1600, income: 150 },
 
-    "Squire": { name: "Squire", maxXp: 100, income: 5 },
-    "Footman": { name: "Footman", maxXp: 1000, income: 50 },
-    "Veteran footman": { name: "Veteran footman", maxXp: 10000, income: 120 },
-    "Knight": { name: "Knight", maxXp: 100000, income: 300 },
-    "Veteran knight": { name: "Veteran knight", maxXp: 1000000, income: 1000 },
-    "Elite knight": { name: "Elite knight", maxXp: 7500000, income: 3000 },
-    "Holy knight": { name: "Holy knight", maxXp: 40000000, income: 15000 },
-    "Legendary knight": { name: "Legendary knight", maxXp: 150000000, income: 50000 },
-
-    "Student": { name: "Student", maxXp: 100000, income: 100 },
-    "Apprentice mage": { name: "Apprentice mage", maxXp: 1000000, income: 1000 },
-    "Mage": { name: "Mage", maxXp: 10000000, income: 7500 },
-    "Wizard": { name: "Wizard", maxXp: 100000000, income: 50000 },
-    "Master wizard": { name: "Master wizard", maxXp: 10000000000, income: 250000 },
-    "Chairman": { name: "Chairman", maxXp: 1000000000000, income: 1000000 },
-}
-
-const skillBaseData = {
-    "Concentration": { name: "Concentration", maxXp: 100, effect: 0.01, description: "Skill xp" },
-    "Productivity": { name: "Productivity", maxXp: 100, effect: 0.01, description: "Job xp" },
-    "Bargaining": { name: "Bargaining", maxXp: 100, effect: -0.01, description: "Expenses" },
-    "Meditation": { name: "Meditation", maxXp: 100, effect: 0.01, description: "Happiness" },
-
-    "Strength": { name: "Strength", maxXp: 100, effect: 0.01, description: "Military pay" },
-    "Battle tactics": { name: "Battle tactics", maxXp: 100, effect: 0.01, description: "Military xp" },
-    "Muscle memory": { name: "Muscle memory", maxXp: 100, effect: 0.01, description: "Strength xp" },
-
-    "Mana control": { name: "Mana control", maxXp: 100, effect: 0.01, description: "T.A.A. xp" },
-    "Immortality": { name: "Immortality", maxXp: 100, effect: 0.01, description: "Longer lifespan" },
-    "Time warping": { name: "Time warping", maxXp: 100, effect: 0.01, description: "Gamespeed" },
-    "Super immortality": { name: "Super immortality", maxXp: 100, effect: 0.01, description: "Longer lifespan" },
-
-    "Dark influence": { name: "Dark influence", maxXp: 100, effect: 0.01, description: "All xp" },
-    "Evil control": { name: "Evil control", maxXp: 100, effect: 0.01, description: "Evil gain" },
-    "Intimidation": { name: "Intimidation", maxXp: 100, effect: -0.01, description: "Expenses" },
-    "Demon training": { name: "Demon training", maxXp: 100, effect: 0.01, description: "All xp" },
-    "Blood meditation": { name: "Blood meditation", maxXp: 100, effect: 0.01, description: "Evil gain" },
-    "Demon's wealth": { name: "Demon's wealth", maxXp: 100, effect: 0.002, description: "Job pay" },
-
-}
-
-const itemBaseData = {
-    "Homeless": { name: "Homeless", expense: 0, effect: 1 },
-    "Tent": { name: "Tent", expense: 15, effect: 1.4 },
-    "Wooden hut": { name: "Wooden hut", expense: 100, effect: 2 },
-    "Cottage": { name: "Cottage", expense: 750, effect: 3.5 },
-    "House": { name: "House", expense: 3000, effect: 6 },
-    "Large house": { name: "Large house", expense: 25000, effect: 12 },
-    "Small palace": { name: "Small palace", expense: 300000, effect: 25 },
-    "Grand palace": { name: "Grand palace", expense: 5000000, effect: 60 },
-
-    "Book": { name: "Book", expense: 10, effect: 1.5, description: "Skill xp" },
-    "Dumbbells": { name: "Dumbbells", expense: 50, effect: 1.5, description: "Strength xp" },
-    "Personal squire": { name: "Personal squire", expense: 200, effect: 2, description: "Job xp" },
-    "Steel longsword": { name: "Steel longsword", expense: 1000, effect: 2, description: "Military xp" },
-    "Butler": { name: "Butler", expense: 7500, effect: 1.5, description: "Happiness" },
-    "Sapphire charm": { name: "Sapphire charm", expense: 50000, effect: 3, description: "Magic xp" },
-    "Study desk": { name: "Study desk", expense: 1000000, effect: 2, description: "Skill xp" },
-    "Library": { name: "Library", expense: 10000000, effect: 1.5, description: "Skill xp" },
-}
-*/
 const jobCategories = {
     "Common work": {
         jobs: ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
@@ -197,29 +137,29 @@ const jobCategories = {
         name: "theArcaneAssociation"
     }
 }
-
 const skillCategories = {
-    "Fundamentals": ["Concentration", "Productivity", "Bargaining", "Meditation"],
-    "Combat": ["Strength", "Battle tactics", "Muscle memory"],
-    "Magic": ["Mana control", "Immortality", "Time warping", "Super immortality"],
-    "Dark magic": ["Dark influence", "Evil control", "Intimidation", "Demon training", "Blood meditation", "Demon's wealth"]
-}
+    "Fundamentals": {
+        skills: ["Concentration", "Productivity", "Bargaining", "Meditation"],
+        name: "fundamentals"
+    },
+    "Combat": {
+        skills: ["Strength", "Battle tactics", "Muscle memory", "New skill"],
+        name: "combat"
+    },
+    "Magic": {
+        skills: ["Mana control", "Immortality", "Time warping", "Super immortality"],
+        name: "magic"
+    },
+    "Dark magic": {
+        skills: ["Dark influence", "Evil control", "Intimidation", "Demon training", "Blood meditation", "Demon's wealth"],
+        name: "darkMagic"
+    }
+};
+
 
 const itemCategories = {
     "Properties": ["Homeless", "Tent", "Wooden hut", "Cottage", "House", "Large house", "Small palace", "Grand palace"],
     "Misc": ["Book", "Dumbbells", "Personal squire", "Steel longsword", "Butler", "Sapphire charm", "Study desk", "Library"]
-}
-
-const headerRowColors = {
-    "Common work": "#55a630",
-    "Military": "#e63946",
-    "The Arcane Association": "#C71585",
-    "Fundamentals": "#4a4e69",
-    "Combat": "#ff704d",
-    "Magic": "#875F9A",
-    "Dark magic": "#73000f",
-    "Properties": "#219ebc",
-    "Misc": "#b56576",
 }
 
 const tooltips = {

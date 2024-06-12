@@ -1,0 +1,231 @@
+.jobCategoryContainer {
+    width: auto;
+    margin: 0px 10px 10px 10px;
+    height: fit-content;
+    vertical-align: middle;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.jobCategoryElement {
+    width: auto;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.jobCategoryElement div:not(.jobCategoryElementTitle) {
+    width: 100%;
+    text-align: center;
+}
+
+.jobCategoryBackground {
+    width: auto;
+    height: fit-content;
+    padding: 0.05px 10px 0.05px 10px;
+}
+
+.jobCategoryElementTitle {
+    width: 220%;
+    text-align: left;
+}
+
+.jobType {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.jobType div:not(.jobProgressBar) {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+}
+
+#statsOfflineProgressBar {
+    color: var(--color0);
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.jobProgressBar {
+    background-color: var(--progressBarBackground);
+    width: 220%;
+    height: 30px;
+}
+
+.jobProgressBarProgress {
+    background-color: var(--progressBarUnselected);
+}
+
+.selected.jobProgressBarProgress {
+    background-color: var(--progressBarSelected);
+}
+
+.selected.jobProgressBar {
+    background-color: var(--progressBarSelectedBackground);
+}
+
+.jobProgressBarText {
+    position: relative;
+    bottom: 30px;
+    padding-left: 5px;
+}
+
+.jobIncomeDisplay span.usedCoin {
+    margin-right: 3px;
+}
+
+.commonWork .jobCategoryElement {
+    background-color: var(--commonWork);
+    color: var(--color0)
+}
+
+.military .jobCategoryElement {
+    background-color: var(--military);
+    color: var(--color0)
+}
+
+.theArcaneAssociation .jobCategoryElement {
+    background-color: var(--theArcaneAssociation);
+    color: var(--color0)
+}
+
+.commonWork .jobCategoryBackground {
+    background-color: var(--commonWorkBackground);
+    color: var(--color0)
+}
+
+.military .jobCategoryBackground {
+    background-color: var(--militaryBackground);
+    color: var(--color0)
+}
+
+.theArcaneAssociation .jobCategoryBackground {
+    background-color: var(--theArcaneAssociationBackground);
+    color: var(--color0)
+}
+
+.skillCategoryContainer {
+    width: auto;
+    margin: 0px 10px 10px 10px;
+    height: fit-content;
+    vertical-align: middle;
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.skillCategoryElement {
+    width: auto;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.skillCategoryElement div:not(.skillCategoryElementTitle) {
+    width: 100%;
+    text-align: center;
+}
+
+.skillCategoryBackground {
+    width: auto;
+    height: fit-content;
+    padding: 0.05px 10px 0.05px 10px;
+}
+
+.skillCategoryElementTitle {
+    width: 220%;
+    text-align: left;
+}
+
+.skillType {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.skillType div:not(.skillProgressBar) {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+}
+
+#statsOfflineProgressBar {
+    color: var(--color0);
+    line-height: 30px;
+    font-weight: 500;
+}
+
+.skillProgressBar {
+    background-color: var(--progressBarBackground);
+    width: 220%;
+    height: 30px;
+}
+
+.skillProgressBarProgress {
+    background-color: var(--progressBarUnselected);
+}
+
+.selected.skillProgressBarProgress {
+    background-color: var(--progressBarSelected);
+}
+
+.selected.skillProgressBar {
+    background-color: var(--progressBarSelectedBackground);
+}
+
+.skillProgressBarText {
+    position: relative;
+    bottom: 30px;
+    padding-left: 5px;
+}
+
+.skillIncomeDisplay span {
+    margin-right: 3px;
+}
+
+.fundamentals .skillCategoryElement {
+    background-color: var(--commonWork);
+    color: var(--color0)
+}
+
+.combat .skillCategoryElement {
+    background-color: var(--military);
+    color: var(--color0)
+}
+
+.magic .skillCategoryElement {
+    background-color: var(--theArcaneAssociation);
+    color: var(--color0)
+}
+
+.darkMagic .skillCategoryElement {
+    background-color: var(--theArcaneAssociation);
+    color: var(--color0)
+}
+
+.fundamentals .skillCategoryBackground {
+    background-color: var(--commonWorkBackground);
+    color: var(--color0)
+}
+
+.combat .skillCategoryBackground {
+    background-color: var(--militaryBackground);
+    color: var(--color0)
+}
+
+.magic .skillCategoryBackground {
+    background-color: var(--theArcaneAssociationBackground);
+    color: var(--color0)
+}
+
+.darkMagic .skillCategoryBackground {
+    background-color: var(--theArcaneAssociationBackground);
+    color: var(--color0)
+}

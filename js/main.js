@@ -1,63 +1,86 @@
-/* function addMultipliers() {
-    for (taskName in data.taskData) {
-        var task = data.taskData[taskName]
-
-        xpMultipliers = []
-        if (task instanceof Job) incomeMultipliers = []
-
-        xpMultipliers.push(getMaxLevelMultiplier.bind(task))
-        xpMultipliers.push(getHappiness)
-        xpMultipliers.push(getBindedTaskEffect("Dark influence"))
-        xpMultipliers.push(getBindedTaskEffect("Demon training"))
-
-        if (task instanceof Job) {
-            incomeMultipliers.push(getLevelMultiplier.bind(task))
-            incomeMultipliers.push(getBindedTaskEffect("Demon's wealth"))
-            xpMultipliers.push(getBindedTaskEffect("Productivity"))
-            xpMultipliers.push(getBindedItemEffect("Personal squire"))    
-        } else if (task instanceof Skill) {
-            xpMultipliers.push(getBindedTaskEffect("Concentration"))
-            xpMultipliers.push(getBindedItemEffect("Book"))
-            xpMultipliers.push(getBindedItemEffect("Study desk"))
-            xpMultipliers.push(getBindedItemEffect("Library"))
-        }
-
-        if (jobCategories["Military"].includes(name)) {
-            incomeMultipliers.push(getBindedTaskEffect("Strength"))
-            xpMultipliers.push(getBindedTaskEffect("Battle tactics"))
-            xpMultipliers.push(getBindedItemEffect("Steel longsword"))
-        } else if (name == "Strength") {
-            xpMultipliers.push(getBindedTaskEffect("Muscle memory"))
-            xpMultipliers.push(getBindedItemEffect("Dumbbells"))
-        } else if (skillCategories["Magic"].includes(name)) {
-            xpMultipliers.push(getBindedItemEffect("Sapphire charm"))
-        } else if (jobCategories["The Arcane Association"].includes(name)) {
-            xpMultipliers.push(getBindedTaskEffect("Mana control"))
-        } else if (skillCategories["Dark magic"].includes(name)) {
-            xpMultipliers.push(getEvil)
-        }
-    }
-
-    for (itemName in data.itemData) {
-        var item = data.itemData[itemName]
-        item.expenseMultipliers = []
-        item.expenseMultipliers.push(getBindedTaskEffect("Bargaining"))
-        item.expenseMultipliers.push(getBindedTaskEffect("Intimidation"))
-    }
+function applyMultipliers() {
+    data.happiness = getHappiness()
+    data.jobXPMult = getJobXPMult()
+    data.skillXPMult = getSkillXPMult()
 }
 
-
-function applyMultipliers(value, multipliers) {
-    var finalMultiplier = 1
-    multipliers.forEach(function(multiplierFunction) {
-        var multiplier = multiplierFunction()
-        finalMultiplier *= multiplier
-    })
-    var finalValue = Math.round(value * finalMultiplier)
-    return finalValue
+function applySkillEffects(effectName) {
+    var effect = 1
+    for (const skillName in data.skill) {
+        const skill = data.skill[skillName]
+        const skillDescription = skill.description
+        if (skillDescription == effectName) {
+            const effectFormula = skill.effectFormula
+            const skillEffect = skill.effect
+            const skillLevel = skill.level
+            switch (effectFormula) {
+                case "normal":
+                    effect *= 1 + (skillEffect * skillLevel)
+                    break
+                case "reductive":
+                    effect *= math.pow(1 + skillEffect, math.log(skillLevel + 1, 1.2))
+                    break
+                case "squared":
+                    effect *= math.pow(1 + (skillEffect * skillLevel), 2)
+            }
+        }
+    }
+    return effect
 }
 
-*/
+function getEffectSpecific(skillName) {
+    var effect = 1
+    const skillLevel = data.skill[skillName].level
+    const effectFormula = data.skill[skillName].effectFormula
+    const skillEffect = data.skill[skillName].effect
+    switch (effectFormula) {
+        case "normal":
+            effect *= 1 + (skillEffect * skillLevel)
+            break
+        case "reductive":
+            effect *= math.pow(1 + skillEffect, math.log(skillLevel + 1, 1.2))
+            break
+        case "squared":
+            effect *= math.pow(1 + (skillEffect * skillLevel), 2)
+    }
+    return effect
+}
+
+function getHappiness() {
+    return applySkillEffects("Happiness")
+}
+
+function getJobXPMult() {
+    return applySkillEffects("Job XP")
+}
+
+function getSkillXPMult() {
+    return applySkillEffects("Skill XP")
+}
+
+function getTaskMaxXp(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
+    var taskLevel = task.level - levelsBelow
+    if (taskLevel == 0) {
+        return task.baseMaxXp
+    } else if (taskLevel == -1) {
+        return 0
+    }
+    taskLevel++
+    switch (task.xpFormula) {
+        case "normalJob":
+            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXp
+            break
+        case "normalSkill":
+            return math.pow(1.005, taskLevel) * taskLevel * task.baseMaxXp
+            break
+        case "squaredSkill":
+            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXp
+            break
+        case "offlineTime":
+            return math.pow(taskLevel, 1.25) * task.baseMaxXp
+            break
+    }
+}
 
 function sellItem(itemName) {
     if (data.item[itemName].owned == true) {
@@ -87,51 +110,61 @@ function getIncome() {
     var income = 0
     for (i = 0; i < data.selectedJobs.length; i++) {
         const job = data.selectedJobs[i]
-        switch (data.selectedJobs[i].incomeFormula) {
-            case "normal":
-                var incomeMult = math.log(math.pow(job.level, 0.5)) + ((job.level - 1) / 10) + 1
-                break
-            case "less penalty":
-                var incomeMult = math.log(math.pow(job.level, 0.6)) + ((job.level - 1) / 9) + 1
-                break
-        }
-        income += job.income * incomeMult
+        if (job.hasOwnProperty("income")) {
+            switch (data.selectedJobs[i].incomeFormula) {
+                case "normal":
+                    var incomeMult = math.log(1 + math.pow(job.level, 0.5)) + ((job.level) / 10) + 1
+                    break
+                case "less penalty":
+                    var incomeMult = math.log(1 + math.pow(job.level, 0.6)) + ((job.level) / 9) + 1
+                    break
+            }
+            income += job.income * incomeMult
+        } else income += 0
     }
     return income
 }
 
 function getIncomeSpecific(jobName) {
-    var income = 0
-    for (i = 0; i < Object.keys(data.job).length; i++) {
-        if (Object.values(data.job)[i].name == jobName) {
-            const job = Object.values(data.job)[i]
-            switch (Object.values(data.job)[i].incomeFormula) {
-                case "normal":
-                    var incomeMult = math.log(math.pow(job.level, 0.5)) + ((job.level - 1) / 10) + 1
-                    break
-                case "less penalty":
-                    var incomeMult = math.log(math.pow(job.level, 0.6)) + ((job.level - 1) / 9) + 1
-                    break
-            }
-            //income = Object.values(data.job)[i].income
-            income += Object.values(data.job)[i].income * incomeMult
+    const job = data.job[jobName]
+    if (job.hasOwnProperty("income")) {
+        switch (data.job[jobName].incomeFormula) {
+            case "normal":
+                var incomeMult = math.log(1 + math.pow(job.level, 0.5)) + ((job.level) / 10) + 1
+                break
+            case "less penalty":
+                var incomeMult = math.log(1 + math.pow(job.level, 0.6)) + ((job.level) / 9) + 1
+                break
         }
-    }
-    return income
+        var income = data.job[jobName].income * incomeMult
+        return income
+    } else return 0
 }
 
 function getExpense() {
     var expense = 0
-    var itemArray = Object.values(data.item)
+    var itemArray = Object.values(data.buyable.normal)
     for (i = 0; i < itemArray.length; i++) {
         if (itemArray[i].owned == true) {
             expense += itemArray[i].upkeep
         }
     }
-    if (data.selectedHome.owned == false) {
-        expense += data.selectedHome.rent
-    }
+    expense += data.buyable.home[data.selectedHome].upkeep
     return expense
+}
+
+function updateTime(value = 1) {
+    return value * (data.updateTimeDiff / 1000)
+}
+
+function getGameSpeed() {
+    var gameSpeed = data.baseGameSpeed * +!data.paused
+    return gameSpeed
+}
+
+function applySpeed(value = 1) {
+    finalValue = value * getGameSpeed() * updateTime()
+    return finalValue
 }
 
 function applyExpenses() {
@@ -146,23 +179,13 @@ function applyIncome() {
     data.coins += applySpeed(getIncome())
 }
 
-function getLifespan() {
-    return data.baseLifespan
-}
-
 function goBankrupt() {
     data.coins = 0
     data.currentHome = data.home["Homeless"] //set it to the best bought house
 }
 
-function getGameSpeed() {
-    var gameSpeed = data.baseGameSpeed * +!data.paused
-    return gameSpeed
-}
-
-function applySpeed(value) {
-    finalValue = value * getGameSpeed() / data.settings.updateSpeed
-    return finalValue
+function getLifespan() {
+    return data.baseLifespan
 }
 
 function increaseDays() {
@@ -211,7 +234,7 @@ function checkIfSkillIsNotSelected(skillName) {
 
 function selectSkill(skillName) {
     if (checkIfSkillIsNotSelected(skillName)) {
-        if (data.selectedSkills.length >= data.maxJobs) {
+        if (data.selectedSkills.length >= data.maxSkills) {
             data.selectedSkills.shift()
         }
         data.selectedSkills.push(data.skill[skillName])
@@ -220,6 +243,7 @@ function selectSkill(skillName) {
             data.selectedSkills.splice(i, 1)
         }
     }
+    updateProgressBars()
 }
 
 function doSelectedJobs() {
@@ -237,7 +261,7 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXp = getGameSpeed() * currentJob.xpMult * data.jobXpMult * data.happiness / data.settings.updateSpeed
+    var jobXp = applySpeed() * currentJob.xpMult * data.jobXPMult * data.happiness
     currentJob.xp += jobXp
     while (currentJob.xp >= currentJob.maxXp) {
         currentJob.level++
@@ -250,19 +274,17 @@ function doCurrentJob(jobName) {
     currentJob.maxXp = getTaskMaxXp(currentJob)
 }
 
-function getTaskMaxXp(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
-    const taskLevel = task.level - levelsBelow
-    if (taskLevel == 1) {
-        return task.baseMaxXp
+function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
+    task.xp += applySpeed() * task.xpMult * data.happiness
+    while (task.xp >= task.maxXp) {
+        task.level++
+        task.maxXp = getTaskMaxXp(task)
     }
-    switch (task.xpFormula) {
-        case "normal":
-            return math.pow(1.05, taskLevel) * taskLevel * task.baseMaxXp
-            break
-        case "decreased":
-            return math.pow(1.03, taskLevel) * taskLevel * task.baseMaxXp
-            break
+    while (task.xp < getTaskMaxXp(task, 1)) {
+        task.level--
+        task.maxXp = getTaskMaxXp(task)
     }
+    task.maxXp = getTaskMaxXp(task)
 }
 
 function doSelectedSkills() {
@@ -273,13 +295,13 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXp = getGameSpeed() * currentSkill.xpMult * data.skillXpMult * data.happiness / data.settings.updateSpeed
+    var skillXp = applySpeed() * currentSkill.xpMult * data.skillXPMult * data.happiness
     currentSkill.xp += skillXp
     while (currentSkill.xp >= currentSkill.maxXp) {
         currentSkill.level++
         currentSkill.maxXp = getTaskMaxXp(currentSkill)
     }
-    while (currentSkill.xp < getTaskMaxXp(currentSkill.maxXp, 1)) {
+    while (currentSkill.xp < getTaskMaxXp(currentSkill, 1)) {
         currentSkill.level--
         currentSkill.maxXp = getTaskMaxXp(currentSkill)
     }
@@ -307,122 +329,6 @@ function isAlive() {
     }
 }
 
-function setupTabs() {
-    const heroSubpanel = document.getElementById("heroSubpanel")
-    const jobCategoriesArray = Object.entries(jobCategories)
-    var jobCategoriesContainers = []
-    for (i = 0; i < jobCategoriesArray.length; i++) {
-        jobCategoriesContainers[i] = document.createElement("div")
-        jobCategoriesContainers[i].classList.add("jobCategoryContainer")
-
-        var jobCategoryElement = document.createElement("div")
-        var jobCategoryBackground = document.createElement("div")
-        var jobCategoryArrayElements = Object.values(jobCategoriesArray[i][1])
-
-        jobCategoriesContainers[i].classList.add(jobCategoryArrayElements[1])
-        jobCategoryElement.classList.add(jobCategoryArrayElements[1])
-        jobCategoryElement.classList.add("jobCategoryElement")
-        jobCategoryBackground.classList.add(jobCategoryArrayElements[1])
-        jobCategoryBackground.classList.add("jobCategoryBackground")
-
-        var jobCategoryElementTitle = document.createElement("div")
-        jobCategoryElementTitle.classList.add("jobCategoryElementTitle")
-        jobCategoryElementTitle.appendChild(document.createTextNode(jobCategoriesArray[i][0]))
-
-        var jobCategoryElementLevel = document.createElement("div")
-        jobCategoryElementLevel.appendChild(document.createTextNode("Level"))
-
-        var jobCategoryElementIncome = document.createElement("div")
-        jobCategoryElementIncome.appendChild(document.createTextNode("Income"))
-
-        var jobCategoryElementXP = document.createElement("div")
-        jobCategoryElementXP.appendChild(document.createTextNode("XP"))
-
-        var jobCategoryElementXPRate = document.createElement("div")
-        jobCategoryElementXPRate.appendChild(document.createTextNode("XP/day"))
-
-        var jobCategoryElementXPLeft = document.createElement("div")
-        jobCategoryElementXPLeft.appendChild(document.createTextNode("XP Left"))
-
-        var jobCategoryElementMaxLevel = document.createElement("div")
-        jobCategoryElementMaxLevel.appendChild(document.createTextNode("Max Level"))
-
-        jobCategoryElement.appendChild(jobCategoryElementTitle)
-        jobCategoryElement.appendChild(jobCategoryElementLevel)
-        jobCategoryElement.appendChild(jobCategoryElementIncome)
-        jobCategoryElement.appendChild(jobCategoryElementXP)
-        jobCategoryElement.appendChild(jobCategoryElementXPRate)
-        jobCategoryElement.appendChild(jobCategoryElementXPLeft)
-        jobCategoryElement.appendChild(jobCategoryElementMaxLevel)
-
-        for (i2 = 0; i2 < Object.keys(data.job).length; i2++) {
-            var jobProgressBar = document.createElement("div")
-            jobProgressBar.classList.add("jobProgressBar")
-            jobProgressBar.classList.add(Object.values(data.job)[i2].class + "ProgressBar")
-            jobProgressBar.setAttribute("onclick", ("selectJob(" + "\"" + Object.values(data.job)[i2].name + "\"" + ")"))
-            var jobProgressBarProgress = document.createElement("div")
-            jobProgressBarProgress.classList.add("jobProgressBarProgress")
-            jobProgressBarProgress.classList.add(Object.values(data.job)[i2].class + "ProgressBarProgress")
-            //jobProgressBarProgress.classList.add(Object.values(data.job)[i2].name.replace(" ", ""))
-            jobProgressBarProgress.setAttribute("style", "width: 20%")
-            jobProgressBar.appendChild(jobProgressBarProgress)
-            var jobProgressBarText = document.createElement("span")
-            jobProgressBarText.classList.add("jobProgressBarText")
-            jobProgressBarText.classList.add(Object.values(data.job)[i2].class + "ProgressBarText")
-            jobProgressBarText.innerText = Object.values(data.job)[i2].name
-            jobProgressBar.appendChild(jobProgressBarText)
-
-            var jobLevelDisplay = document.createElement("div")
-            jobLevelDisplay.classList.add("jobLevelDisplay")
-            jobLevelDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].level))
-            var jobIncomeDisplay = document.createElement("div")
-            jobIncomeDisplay.classList.add("jobIncomeDisplay")
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            jobIncomeDisplay.appendChild(document.createElement("span"))
-            var jobXPDisplay = document.createElement("div")
-            jobXPDisplay.classList.add("jobXPDisplay")
-            jobXPDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].xp))
-            var jobXPRateDisplay = document.createElement("div")
-            jobXPRateDisplay.classList.add("jobXPRateDisplay")
-            jobXPRateDisplay.appendChild(document.createTextNode("1"))
-            var jobXPLeftDisplay = document.createElement("div")
-            jobXPLeftDisplay.classList.add("jobXPLeftDisplay")
-            jobXPLeftDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].maxXp - Object.values(data.job)[i2].xp))
-            var jobMaxLevelDisplay = document.createElement("div")
-            jobMaxLevelDisplay.classList.add("jobMaxLevelDisplay")
-            jobMaxLevelDisplay.appendChild(document.createTextNode(Object.values(data.job)[i2].maxLevel))
-
-            var jobType = document.createElement("div")
-            jobType.classList.add("jobType")
-            jobType.classList.add(Object.values(data.job)[i2].class + "Type")
-
-            jobType.appendChild(jobProgressBar)
-            jobType.appendChild(jobLevelDisplay)
-            jobType.appendChild(jobIncomeDisplay)
-            jobType.appendChild(jobXPDisplay)
-            jobType.appendChild(jobXPRateDisplay)
-            jobType.appendChild(jobXPLeftDisplay)
-            jobType.appendChild(jobMaxLevelDisplay)
-
-            for (i3 = 0; i3 < jobCategoryArrayElements[0].length; i3++)
-                if (jobCategoryArrayElements[0][i3] == (Object.keys(data.job)[i2])) {
-                    jobCategoryBackground.appendChild(jobType)
-                }
-        }
-
-        jobCategoriesContainers[i].appendChild(jobCategoryElement)
-        jobCategoriesContainers[i].appendChild(jobCategoryBackground)
-        heroSubpanel.appendChild(jobCategoriesContainers[i])
-    }
-    return jobCategoriesContainers
-}
-
 function setMenuWidth(width) {
     var root = document.querySelector(':root');
     root.style.setProperty('--menuWidth', width);
@@ -431,7 +337,8 @@ function setMenuWidth(width) {
 function setUpdateSpeed(Hz) {
     data.settings.updateSpeed = Hz
     clearInterval(updateInterval)
-    updateInterval = setInterval(update, 1000 / data.settings.updateSpeed)
+    updateInterval = setInterval(updateWithTime, 1000 / data.settings.updateSpeed)
+    document.getElementById("selectedUpdateSpeed").textContent = data.settings.updateSpeed
 }
 
 function setSaveSpeed(ms) {
@@ -462,7 +369,14 @@ function reset(resetSettings = false) {
     location.reload()
 }
 
+function everySecondUpdate() {
+    data.stats.realtime += 1
+    data.currentRealtime += 1 * +!data.paused
+}
+
 function update() {
+    isAlive()
+    applyMultipliers()
     increaseDays()
     //autoPromote()
     //autoLearn()
@@ -471,25 +385,18 @@ function update() {
     applyExpenses()
     applyIncome()
     updateUI()
+    //getOfflineTime()
 }
 
-function startSetup() {
-    if (localStorage.data == undefined) {
-        save()
+function updateWithTime() {
+    var thisUpdate = new Date().getTime();
+    data.updateTimeDiff = Math.round(thisUpdate - data.lastUpdate);
+    if (data.updateTimeDiff > 1000) {
+        data.storedOfflineTime += data.updateTimeDiff
+        data.updateTimeDiff = 0
     }
-    setupTabs()
-    load()
-    setTab("hero")
-    switchPrimaryTheme(false)
-    switchSecondaryTheme(false)
-    switchCoinsAmountDisplayed(false)
-    switchCurrencyNotation(false)
-    updateInterval = setInterval(update, 1000 / data.settings.updateSpeed)
-    saveInterval = setInterval(save, data.settings.saveSpeed)
-    switchUpdateSpeed(false)
-    pause()
-    updateProgressBars()
-    update()
+    update();
+    data.lastUpdate = thisUpdate;
 }
 
 //init
