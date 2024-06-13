@@ -1,6 +1,6 @@
 :root {
-    --progressBarBackground: #8f8f24;
-    --progressBarUnselected: #c3c322;
-    --progressBarSelectedBackground: #248f8f;
-    --progressBarSelected: #22c3c3;
+    --progressBarBackground: oklch(60% 0.1 90);
+    --progressBarUnselected: oklch(70% 0.12 90);
+    --progressBarSelectedBackground: oklch(60% 0.1 225);
+    --progressBarSelected: oklch(70% 0.12 225);
 }

@@ -13,9 +13,11 @@ var data = { //formerly gameData
     baseLifespan: 365 * 60,
     baseGameSpeed: 4,
     paused: true,
+    autopromote: false,
     maxJobs: 1,
     maxSkills: 1,
     jobXPMult: 1,
+    incomeMult: 1,
     skillXPMult: 1,
     selectedJobs: [],
     selectedSkills: [],
@@ -31,6 +33,9 @@ var data = { //formerly gameData
         coinsDisplayed: 2,
         sidebarZoom: 3,
         mainpanelZoom: 3,
+        textShadow: 2,
+        experimentalSettings: 0,
+        hideTitle: false,
         mobile: false,
         updateSpeed: 20,
         updateSpeedSetting: 2,
@@ -58,16 +63,36 @@ var data = { //formerly gameData
         "Elite knight": { name: "Elite knight", class: "eliteKnight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 0, maxLevel: 0, income: 3000 },
         "Holy knight": { name: "Holy knight", class: "holyKnight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 0, maxLevel: 0, income: 15000 },
         "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 0, maxLevel: 0, income: 50000 },
+
+        "Student": { name: "Student", class: "student", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
     },
     skill: {
         "Concentration": { name: "Concentration", class: "concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Skill XP" },
         "Productivity": { name: "Productivity", class: "productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Job XP" },
         "Bargaining": { name: "Bargaining", class: "bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
         "Meditation": { name: "Meditation", class: "meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Happiness" },
-        "New skill": { name: "New skill", class: "newSkill", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, xpFormula: "squaredSkill", effectFormula: "squared", description: "Happiness" },
+        
+        "Strength": { name: "Strength", class: "strength", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military Income" },
+        "Battle tactics": { name: "Battle tactics", class: "battleTactics", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military XP" },
+        "Muscle memory": { name: "Muscle memory", class: "muscleMemory", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Strength XP" },
+
+        "Mana control": { name: "Mana control", class: "manaControl", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "T.A.A XP" },
     },
     specialTask: {
         "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" },
+    },
+    category: {
+        job: {
+            "Common work": { name: "Common work", xpMult: 1, incomeMult: 1 },
+            "Military": { name: "Military", xpMult: 1, incomeMult: 1 },
+            "The Arcane Association": { name: "The Arcane Association", xpMult: 1, incomeMult: 1 },
+        },
+        skill: {
+            "Fundamentals": { name: "Fundamentals", xpMult: 1 },
+            "Combat": { name: "Combat", xpMult: 1 },
+            "Magic": { name: "Magic", xpMult: 1 },
+            "Dark magic": { name: "Dark magic", xpMult: 1 }
+        }
     },
     buyable: {
         home: {
@@ -126,33 +151,40 @@ assignBaseTaskFormula()
 const jobCategories = {
     "Common work": {
         jobs: ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
-        name: "commonWork"
+        name: "commonWork",
+        nameFull: "Common Work"
     },
     "Military": {
         jobs: ["Squire", "Footman", "Veteran footman", "Knight", "Veteran knight", "Elite knight", "Holy knight", "Legendary knight"],
-        name: "military"
+        name: "military",
+        nameFull: "Military"
     },
     "The Arcane Association": {
         jobs: ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"],
-        name: "theArcaneAssociation"
+        name: "theArcaneAssociation",
+        nameFull: "The Arcane Association"
     }
 }
 const skillCategories = {
     "Fundamentals": {
         skills: ["Concentration", "Productivity", "Bargaining", "Meditation"],
-        name: "fundamentals"
+        name: "fundamentals",
+        nameFull: "Fundamentals"
     },
     "Combat": {
-        skills: ["Strength", "Battle tactics", "Muscle memory", "New skill"],
-        name: "combat"
+        skills: ["Strength", "Battle tactics", "Muscle memory"],
+        name: "combat",
+        nameFull: "Combat"
     },
     "Magic": {
         skills: ["Mana control", "Immortality", "Time warping", "Super immortality"],
-        name: "magic"
+        name: "magic",
+        nameFull: "Magic"
     },
     "Dark magic": {
         skills: ["Dark influence", "Evil control", "Intimidation", "Demon training", "Blood meditation", "Demon's wealth"],
-        name: "darkMagic"
+        name: "darkMagic",
+        nameFull: "Dark magic"
     }
 };
 
@@ -160,6 +192,210 @@ const skillCategories = {
 const itemCategories = {
     "Properties": ["Homeless", "Tent", "Wooden hut", "Cottage", "House", "Large house", "Small palace", "Grand palace"],
     "Misc": ["Book", "Dumbbells", "Personal squire", "Steel longsword", "Butler", "Sapphire charm", "Study desk", "Library"]
+}
+
+const requirements = {
+    //Categories
+    //jobs
+    "commonWork": {
+        job: [],
+        skill: [],
+    },
+    "military": {
+        job: [],
+        skill: [{ name: "Strength", value: 5 }],
+        age: 16,
+        show: {
+            job: [],
+            skill: [{ name: "Productivity", value: 10 }]
+        }
+    },
+    "theArcaneAssociation": {
+        job: [],
+        skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
+        age: 20,
+        show: {
+            job: [],
+            skill: [{ name: "Concentration", value: 30 }, { name: "Productivity", value: 20 }]
+        }
+    },
+    //skills
+    "fundamentals": {
+        job: [],
+        skill: []
+    },
+    "combat": {
+        job: [],
+        skill: [{ name: "Productivity", value: 10}]
+    },
+    "magic": {
+        job: [{ name: "Student", value: 1}],
+        skill: [],
+        show: {
+            job: [{ name: "Student", value: 1}],
+            skill: []
+        }
+    },
+    "darkMagic": {
+        job: [],
+        skill: [],
+        evil: 1,
+        show: {
+            job: [],
+            skill: [],
+            evil: 1
+        }
+    },
+    //Tasks
+    //jobs
+    //common work
+    "beggar": {
+        job: [],
+        skill: []
+    },
+    "farmer": {
+        job: [{ name: "Beggar", value: 10 }],
+        skill: []
+    },
+    "fisherman": {
+        job: [{ name: "Farmer", value: 10 }],
+        skill: [],
+        show: {
+            job: [{ name: "Beggar", value: 10 }],
+            skill: []
+        }
+    },
+    "miner": {
+        job: [{ name: "Fisherman", value: 10 }],
+        skill: [],
+        show: {
+            job: [{ name: "Farmer", value: 10 }],
+            skill: []
+        }
+    },
+    "blacksmith": {
+        job: [{ name: "Miner", value: 10 }],
+        skill: [],
+        show: {
+            job: [{ name: "Fisherman", value: 10 }],
+            skill: []
+        }
+    },
+    "merchant": {
+        job: [{ name: "Blacksmith", value: 10 }],
+        skill: [{ name: "Bargaining", value: 20 }],
+        show: {
+            job: [{ name: "Miner", value: 10 }],
+            skill: []
+        }
+    },
+    //military
+    "squire": {
+        job: [],
+        skill: [{ name: "Strength", value: 5 }]
+    },
+    "footman": {
+        job: [{ name: "Squire", value: 10 }],
+        skill: [{ name: "Strength", value: 20 }]
+    },
+    "veteranFootman": {
+        job: [{ name: "Footman", value: 10 }],
+        skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
+        show: {
+            job: [{ name: "Footman", value: 1 }],
+            skill: []
+        }
+    },
+    "knight": {
+        job: [{ name: "Veteran footman", value: 10 }],
+        skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 40 }],
+        show: {
+            job: [{ name: "Veteran footman", value: 1 }],
+            skill: []
+        }
+    },
+    "veteranKnight": {
+        job: [{ name: "Knight", value: 10 }],
+        skill: [{ name: "Strength", value: 120 }, { name: "Battle tactics", value: 150 }],
+        show: {
+            job: [{ name: "Knight", value: 1 }],
+            skill: []
+        }
+    },
+    "eliteKnight": {
+        job: [{ name: "Veteran knight", value: 10 }],
+        skill: [{ name: "Strength", value: 200 }, { name: "Battle tactics", value: 300 }],
+        show: {
+            job: [{ name: "Veteran knight", value: 1 }],
+            skill: []
+        }
+    },
+    "holyKnight": {
+        job: [{ name: "Elite knight", value: 10 }],
+        skill: [{ name: "Strength", value: 400 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
+        show: {
+            job: [{ name: "Elite knight", value: 1 }],
+            skill: []
+        }
+    },
+    "legendaryKnight": {
+        job: [{ name: "Holy knight", value: 10 }],
+        skill: [{ name: "Strength", value: 1000 }, { name: "Battle tactics", value: 1000 }, { name: "Mana control", value: 1000 }],
+        show: {
+            job: [{ name: "Holy knight", value: 1 }],
+            skill: []
+        }
+    },
+    //t.a.a.
+    "student": {
+        job: [],
+        skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
+    },
+    //skills
+    //fundamentals
+    "concentration": {
+        job: [],
+        skill: []
+    },
+    "productivity": {
+        job: [],
+        skill: [{ name: "Concentration", value: 5 }]
+    },
+    "bargaining": {
+        job: [],
+        skill: [{ name: "Concentration", value: 20 }]
+    },
+    "meditation": {
+        job: [],
+        skill: [{ name: "Concentration", value: 30 }, { name: "Productivity", value: 20 }],
+        show: {
+            job: [],
+            skill: [{ name: "Concentration", value: 5 }]
+        }
+    },
+    //combat
+    "strength": {
+        job: [],
+        skill: []
+    },
+    "battleTactics": {
+        job: [],
+        skill: [{ name: "Concentration", value: 20 }]
+    },
+    "muscleMemory": {
+        job: [],
+        skill: [{ name: "Concentration", value: 30 }, { name: "Strength", value: 30 }],
+        show: {
+            job: [],
+            skill: [{ name: "Concentration", value: 20 }]
+        }
+    },
+    //magic
+    "manaControl": {
+        job: [{ name: "Student", value: 1 }],
+        skill: []
+    },
+
 }
 
 const tooltips = {

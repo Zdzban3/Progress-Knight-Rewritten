@@ -5,6 +5,7 @@
     vertical-align: middle;
     line-height: 30px;
     font-weight: 500;
+    user-select: none;
 }
 
 .jobCategoryElement {
@@ -14,6 +15,7 @@
     padding-right: 10px;
     display: flex;
     justify-content: center;
+    font-size: 14px;
 }
 
 .jobCategoryElement div:not(.jobCategoryElementTitle) {
@@ -25,6 +27,7 @@
     width: auto;
     height: fit-content;
     padding: 0.05px 10px 0.05px 10px;
+    font-size: 14px;
 }
 
 .jobCategoryElementTitle {
@@ -81,32 +84,32 @@
 
 .commonWork .jobCategoryElement {
     background-color: var(--commonWork);
-    color: var(--color0)
+    color: var(--taskText)
 }
 
 .military .jobCategoryElement {
     background-color: var(--military);
-    color: var(--color0)
+    color: var(--taskText)
 }
 
 .theArcaneAssociation .jobCategoryElement {
     background-color: var(--theArcaneAssociation);
-    color: var(--color0)
+    color: var(--taskText)
 }
 
 .commonWork .jobCategoryBackground {
     background-color: var(--commonWorkBackground);
-    color: var(--color0)
+    color: var(--taskTextBackground)
 }
 
 .military .jobCategoryBackground {
     background-color: var(--militaryBackground);
-    color: var(--color0)
+    color: var(--taskTextBackground)
 }
 
 .theArcaneAssociation .jobCategoryBackground {
     background-color: var(--theArcaneAssociationBackground);
-    color: var(--color0)
+    color: var(--taskTextBackground)
 }
 
 .skillCategoryContainer {
@@ -116,6 +119,7 @@
     vertical-align: middle;
     line-height: 30px;
     font-weight: 500;
+    user-select: none;
 }
 
 .skillCategoryElement {
@@ -125,6 +129,7 @@
     padding-right: 10px;
     display: flex;
     justify-content: center;
+    font-size: 14px;
 }
 
 .skillCategoryElement div:not(.skillCategoryElementTitle) {
@@ -136,6 +141,7 @@
     width: auto;
     height: fit-content;
     padding: 0.05px 10px 0.05px 10px;
+    font-size: 14px;
 }
 
 .skillCategoryElementTitle {
@@ -157,7 +163,7 @@
 }
 
 #statsOfflineProgressBar {
-    color: var(--color0);
+    color: var(--taskText);
     line-height: 30px;
     font-weight: 500;
 }
@@ -191,41 +197,98 @@
 }
 
 .fundamentals .skillCategoryElement {
-    background-color: var(--commonWork);
-    color: var(--color0)
+    background-color: var(--fundamentals);
+    color: var(--taskText)
 }
 
 .combat .skillCategoryElement {
-    background-color: var(--military);
-    color: var(--color0)
+    background-color: var(--combat);
+    color: var(--taskText)
 }
 
 .magic .skillCategoryElement {
-    background-color: var(--theArcaneAssociation);
-    color: var(--color0)
+    background-color: var(--magic);
+    color: var(--taskText)
 }
 
 .darkMagic .skillCategoryElement {
-    background-color: var(--theArcaneAssociation);
-    color: var(--color0)
+    background-color: var(--darkMagic);
+    color: var(--taskText)
 }
 
 .fundamentals .skillCategoryBackground {
-    background-color: var(--commonWorkBackground);
-    color: var(--color0)
+    background-color: var(--fundamentalsBackground);
+    color: var(--taskTextBackground)
 }
 
 .combat .skillCategoryBackground {
-    background-color: var(--militaryBackground);
-    color: var(--color0)
+    background-color: var(--combatBackground);
+    color: var(--taskTextBackground)
 }
 
 .magic .skillCategoryBackground {
-    background-color: var(--theArcaneAssociationBackground);
-    color: var(--color0)
+    background-color: var(--magicBackground);
+    color: var(--taskTextBackground)
 }
 
 .darkMagic .skillCategoryBackground {
-    background-color: var(--theArcaneAssociationBackground);
-    color: var(--color0)
+    background-color: var(--darkMagicBackground);
+    color: var(--taskTextBackground)
+}
+
+.skillCategoryRequirement {
+    padding-left: 10px;
+    background-color: var(--color6)
+}
+
+.jobCategoryRequirement {
+    padding-left: 10px;
+    background-color: var(--color6)
+}
+
+.categoryRequirementText {
+    font-size: 15px;
+    color: var(--color11);
+}
+
+.requirementText {
+    color: var(--color10);
+    text-align: left !important;
+    margin-left: 5px
+}
+
+.taskReq span {
+    margin-left: 5px
+}
+
+.taskReq {
+    display: flex;
+}
+
+.fundamentals .taskReq {
+    background-color: color-mix(in oklab, var(--fundamentalsBackground) 90%, #000000 10%)
+}
+
+.combat .taskReq {
+    background-color: color-mix(in oklab, var(--combatBackground) 90%, #000000 10%)
+}
+
+.magic .taskReq {
+    background-color: color-mix(in oklab, var(--magicBackground) 90%, #000000 10%)
+}
+
+.darkMagic .taskReq {
+    background-color: color-mix(in oklab, var(--darkMagicBackground) 90%, #000000 10%)
+}
+
+.commonWork .taskReq {
+    background-color: color-mix(in oklab, var(--commonWorkBackground) 90%, #000000 10%)
+}
+
+.military .taskReq {
+    background-color: color-mix(in oklab, var(--militaryBackground) 90%, #000000 10%)
+}
+
+.theArcaneAssociation .taskReq {
+    background-color: color-mix(in oklab, var(--theArcaneAssociationBackground) 90%, #000000 10%)
 }

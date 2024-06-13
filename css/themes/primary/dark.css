@@ -7,21 +7,34 @@
     --color5: #282828;
     --color6: #222222;
     --color7: #181818;
-    --color10: #527a7a;
-    --color11: #a3c2c2;
-    --paused: #19c3e6;
-    --expense: #eb8686;
-    --income: #86eb86;
-    --net: #86c9eb;
-    --happiness: #ebeb86;
-    --timeSpeed: #b884eb;
+    --color10: oklch(55% 0.045 195);
+    --color11: oklch(75% 0.055 195);
+    --taskText: var(--color0);
+    --taskTextBackground: var(--color0);
+    --paused: oklch(75% 0.1 195);
+    --toggled: oklch(75% 0.1 30);
+    --expense: oklch(80% 0.12 30);
+    --income: oklch(80% 0.12 150);
+    --net: oklch(80% 0.12 270);
+    --happiness: oklch(90% 0.12 105);
+    --timeSpeed: oklch(70% 0.12 305);
     --red: #ff0000;
-    --commonWork: #7a5f52;
-    --commonWorkBackground: #3d3029;
-    --military: #a32929;
-    --militaryBackground: #521414;
-    --theArcaneAssociation: #cc3380;
-    --theArcaneAssociationBackground: #661940;
+    --greenish: oklch(70% 0.12 140);
+    --redish: oklch(70% 0.12 30);
+    --commonWork: oklch(65% 0.15 135);
+    --commonWorkBackground: oklch(45% 0.1 135);
+    --military: oklch(45% 0.15 25);
+    --militaryBackground: oklch(30% 0.1 25);
+    --theArcaneAssociation: oklch(60% 0.2 355);
+    --theArcaneAssociationBackground: oklch(40% 0.16 355);
+    --fundamentals: oklch(50% 0.1 105);
+    --fundamentalsBackground: oklch(35% 0.05 105);
+    --combat: oklch(45% 0.15 45);
+    --combatBackground: oklch(30% 0.1 45);
+    --magic: oklch(60% 0.15 325);
+    --magicBackground: oklch(40% 0.1 325);
+    --darkMagic: oklch(35% 0.08 10);
+    --darkMagicBackground: oklch(22.5% 0.05 10);
 }
 
 body {

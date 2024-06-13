@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/mainpanel.css">
     <link id="themePrimaryStylesheet" rel="stylesheet" type="text/css" href="css/themes/primary/dark.css">
     <link id="themeSecondaryStylesheet" rel="stylesheet" type="text/css" href="css/themes/secondary/yellow.css">
+    <link id="themeTextShadowStylesheet" rel="stylesheet" type="text/css" href="unset">
     <link id="mobileStylesheet" rel="stylesheet" type="text/css" href="unset">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +22,7 @@
 
 <body>
     <div>
-        <div class="title">
+        <div id="title">
             <img src="img/logoPK.png">
             <h1>Progress Knight Rewritten</h1>
         </div>
@@ -37,9 +38,11 @@
                     <p class="age"><span id="ageDisplay">Age 14 Day 0</span></p>
                     <p class="lifespan grayed">Lifespan: <span id="lifespanDisplay">60</span> Years</p>
                     <p class="realtime grayed">Real Time: <span id="realtimeDisplay">00:00</span></p>
-                    <div class="space"></div>
                 </div>
-                <div id="pauseButton" onclick="pauseButton()">Pause</div>
+                <div class="buttonGroup">
+                    <div id="pauseButton" onclick="pauseButton()">Pause</div>
+                    <div id="autoPromote" onclick="toggleAutoPromote(true)">Auto promote</div>
+                </div>
                 <div class="display moneyDisplay">
                     <p style="font-size: 16px; margin: 0; color: var(--color1)">Balance:</p>
                     <div class="money" id="coinDisplay">
@@ -105,9 +108,41 @@
                     </div>
                     <div class="space"></div>
                 </div>
+                <div class="display">
+                    <div id="currentJobsDisplay">
+                        <span class="grayed">Current Jobs (last 3)</span>
+                        <div class="jobDisplay jobProgressBar selected" id="jobDisplay1">
+                            <div class="jobProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="jobProgressBarText"></span>
+                        </div>
+                        <div class="jobDisplay jobProgressBar selected" id="jobDisplay2">
+                            <div class="jobProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="jobProgressBarText"></span>
+                        </div>
+                        <div class="jobDisplay jobProgressBar selected" id="jobDisplay3">
+                            <div class="jobProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="jobProgressBarText"></span>
+                        </div>
+                    </div>
+                    <div id="currentSkillsDisplay">
+                        <span class="grayed">Current Skills (last 3)</span>
+                        <div class="skillDisplay skillProgressBar selected" id="skillDisplay1">
+                            <div class="skillProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="skillProgressBarText"></span>
+                        </div>
+                        <div class="skillDisplay skillProgressBar selected" id="skillDisplay2">
+                            <div class="skillProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="skillProgressBarText"></span>
+                        </div>
+                        <div class="skillDisplay skillProgressBar selected" id="skillDisplay3">
+                            <div class="skillProgressBarProgress selected" style="width: 10%"></div>
+                            <span class="skillProgressBarText"></span>
+                        </div>
+                    </div>
+                </div>
                 <div class="display timeSpeedDisplay">
                     <span class="timeSpeed">Time Warping: </span>
-                    <span id="timeSpeedDisplay" class="timeSpeed">[number]</span><span class="timeSpeed">x</span><br>
+                    <span class="timeSpeed">x</span><span id="timeSpeedDisplay" class="timeSpeed">[number]</span><br>
                     <span class="grayed">Base is 4 days/s</span>
                 </div>
                 <div class="display happinessDisplay">
@@ -154,7 +189,7 @@
                                     <span>Primary Theme: </span><span id="selectedPrimaryTheme">Dark</span>
                                 </div>
                                 <div class="setting settingDark menuButton" onclick="switchSecondaryTheme(true)">
-                                    <span>Secondary Theme: </span><span id="selectedSecondaryTheme">Yellow</span>
+                                    <span>Secondary Theme: </span><span id="selectedSecondaryTheme">Blue</span>
                                 </div>
                             </div>
                             <div class="setting settingDark menuButton" onclick="switchMobile(true)">
@@ -178,6 +213,22 @@
                                 </div>
                                 <div class="setting settingDark menuButton" onclick="switchMainpanelZoom(true)">
                                     <span>Main panel zoom: </span><span id="selectedMainpanelZoom">Error</span>
+                                </div>
+                            </div>
+                            <div class="setting settingDark menuButton" onclick="switchTextShadow(true)">Text shadow:
+                                <span id="textShadow"></span>
+                            </div>
+                            <div class="setting menuButton settingCategory experimentalSettingsButton"
+                                onclick="switchExperimentalSettings(true)">Show experimental/dangerous settings
+                            </div>
+                            <div id="experimentalSettings" hidden>
+                                <div class="subsetting menuButton" onclick="switchHideTitle(true)">Hide title: <span
+                                        id="hideTitle"></span></div>
+                                <div class="groupedSettings resetSettings">
+                                    <div class="subsetting menuButton resetButton" onclick="reset()">Reset<br><span
+                                            class="grayed">Fully resets the game</span></div>
+                                    <div class="subsetting menuButton resetButton" onclick="reset(true)">Full Reset<br><span
+                                            class="grayed">Also resets the settings</span></div>
                                 </div>
                             </div>
                         </div>

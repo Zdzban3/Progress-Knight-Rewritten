@@ -1,7 +1,7 @@
 
 function format(number, decimals = 1) {
     const units = ["", "k", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "O", "N", "D", "Ud", "Dd", "Td", "Qad", "Qid", "Sxd", "Spd", "Od", "Nd", "V", "Uv", "Dv", "Tv",
-    "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
+        "Qav", "Qiv", "Sxv", "Spv", "Ov", "Nv", "Tr", "Ut", "Dt", "Tt"]
 
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
@@ -31,10 +31,10 @@ function format(number, decimals = 1) {
 function getCoinsData() {
     switch (data.settings.currencyNotation) {
         case 0: return [
-            { "name": "p", "color": "#79b9c7", "value": 1e6 },
-            { "name": "g", "color": "#E5C100", "value": 1e4 },
-            { "name": "s", "color": "#a8a8a8", "value": 1e2 },
-            { "name": "c", "color": "#a15c2f", "value": 1 },
+            { "name": "p", "color": "oklch(75% 0.07 215)", "value": 1e6 },
+            { "name": "g", "color": "oklch(75% 0.18 95)", "value": 1e4 },
+            { "name": "s", "color": "oklch(75% 0 0)", "value": 1e2 },
+            { "name": "c", "color": "oklch(55% 0.1 60)", "value": 1 },
         ];
         case 1: return [
             { "name": " 𒀱", "color": "#ffffff", "value": 1e62, "class": "currency-shadow-rainbow" },
@@ -77,16 +77,16 @@ function getCoinsData() {
             { "name": "t", "color": "#ff9924", "value": 1e12 },
             { "name": "a", "color": "#b65fe8", "value": 1e10 },
             { "name": "q", "color": "#f2e6d8", "value": 1e8 },
-            { "name": "p", "color": "#79b9c7", "value": 1e6 },
-            { "name": "g", "color": "#E5C100", "value": 1e4 },
-            { "name": "s", "color": "#a8a8a8", "value": 1e2 },
-            { "name": "c", "color": "#a15c2f", "value": 1 },
-            { "name": "w", "color": "#633f24", "value": 1e-2 },
+            { "name": "p", "color": "oklch(75% 0.07 215)", "value": 1e6 },
+            { "name": "g", "color": "oklch(75% 0.18 95)", "value": 1e4 },
+            { "name": "s", "color": "oklch(75% 0 0)", "value": 1e2 },
+            { "name": "c", "color": "oklch(55% 0.1 60)", "value": 1 },
+            { "name": "w", "color": "oklch(60% 0.08 50)", "value": 1e-2 },
         ];
         case 4: return [
-            { "name": "", "color": "#E5C100", "value": 240, "prefix": "£" },
-            { "name": "s", "color": "#a8a8a8", "value": 12 },
-            { "name": "d", "color": "#a15c2f", "value": 1 },
+            { "name": "", "color": "oklch(75% 0.18 95)", "value": 240, "prefix": "£" },
+            { "name": "s", "color": "oklch(75% 0 0)", "value": 12 },
+            { "name": "d", "color": "oklch(55% 0.1 60)", "value": 1 },
         ];
         default: throw new Error("Invalid currency notation set");
     }
@@ -130,7 +130,7 @@ function formatCoins(coins, element) {
             break;
         case 3:
             element.children[0].textContent = "$" + format(coins / 100, 2)
-            element.children[0].style.color = "#267326"
+            element.children[0].style.color = "oklch(50% 0.14 145)"
             element.children[0].className = "usedCoin"
             break;
         default:
@@ -219,4 +219,88 @@ function formatTimeAmount(seconds) {
 
 function formatEffect(skillName) {
     return format(getEffectSpecific(skillName), 2) + "x " + data.skill[skillName].description
+}
+
+function formatRequirements(name, element, parentElement, taskElement, el1, el2, el3, el4, el5, el6, el7, el8) {
+    var text = ""
+    const jobReqs = requirements[name].job
+    const skillReqs = requirements[name].skill
+    for (var req in jobReqs) {
+        const jobName = jobReqs[req].name
+        const jobValue = jobReqs[req].value
+        if (jobValue > data.job[jobName].level) text += jobName + ": " + data.job[jobName].level + "/" + jobValue + "\xa0\xa0"
+    }
+    for (var req in skillReqs) {
+        const skillName = skillReqs[req].name
+        const skillValue = skillReqs[req].value
+        if (skillValue > data.skill[skillName].level) text += skillName + ": " + data.skill[skillName].level + "/" + skillValue + "\xa0\xa0"
+    }
+    if (requirements[name].age) {
+        const ageReq = requirements[name].age
+        if (ageReq > data.days / 365) text += "Age: " + format(data.days / 365, 0) + "/" + ageReq + "\xa0\xa0"
+    }
+    if (requirements[name].evil) {
+        const evilReq = requirements[name].evil
+        if (evilReq > data.evil) text += "Evil: " + format(data.evil, 0) + "/" + evilReq + "\xa0\xa0"
+    }
+
+    if (requirements[name].show) {
+        const showJobReqs = requirements[name].show.job
+        const showSkillReqs = requirements[name].show.skill
+        var show = true
+        for (var req in showJobReqs) {
+            const jobName = showJobReqs[req].name
+            const jobValue = showJobReqs[req].value
+            if (jobValue > data.job[jobName].level) show = false
+        }
+        for (var req in showSkillReqs) {
+            const skillName = showSkillReqs[req].name
+            const skillValue = showSkillReqs[req].value
+            if (skillValue > data.skill[skillName].level) show = false
+        }
+        if (requirements[name].show.age) {
+            const showAgeReq = requirements[name].show.age
+            if (showAgeReq > data.days / 365) show = false
+        }
+        if (requirements[name].show.evil) {
+            const showEvilReq = requirements[name].show.evil
+            if (showEvilReq > data.evil) show = false
+        }
+        if (show) {
+            parentElement.classList.remove("hidden")
+            taskElement.classList.remove("hidden")
+        } else {
+            parentElement.classList.add("hidden")
+            taskElement.classList.add("hidden")
+        }
+    }
+
+    if (text == "") {
+        element.setAttribute("hidden", "")
+        parentElement.setAttribute("hidden", "")
+
+        if (el1) el1.removeAttribute("hidden")
+        if (el2) el2.removeAttribute("hidden")
+        if (el3) el3.removeAttribute("hidden")
+        if (el4) el4.removeAttribute("hidden")
+        if (el5) el5.removeAttribute("hidden")
+        if (el6) el6.removeAttribute("hidden")
+        if (el7) el7.removeAttribute("hidden")
+        if (el8) el8.removeAttribute("hidden")
+    } else {
+        element.removeAttribute("hidden")
+        parentElement.removeAttribute("hidden")
+
+        if (el1) el1.setAttribute("hidden", "")
+        if (el2) el2.setAttribute("hidden", "")
+        if (el3) el3.setAttribute("hidden", "")
+        if (el4) el4.setAttribute("hidden", "")
+        if (el5) el5.setAttribute("hidden", "")
+        if (el6) el6.setAttribute("hidden", "")
+        if (el7) el7.setAttribute("hidden", "")
+        if (el8) el8.setAttribute("hidden", "")
+    }
+    element.textContent = text
+
+
 }

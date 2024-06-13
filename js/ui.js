@@ -11,8 +11,60 @@ function renderSidebar() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = format(data.happiness)
-    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed / 4)
+    document.getElementById("happinessDisplay").textContent = format(data.happiness, 2)
+    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed / 4, 2)
+
+    if (data.selectedJobs.length >= 1) {
+        const job1 = data.selectedJobs[0]
+        document.querySelector("#jobDisplay1 .jobProgressBarText").innerText = job1.name + " Lv" + job1.level
+        const progressBarPercentage1 = 100 + 100 * (job1.xp - job1.maxXp) / (job1.maxXp - getTaskMaxXp(job1, 1))
+        renderProgressBar(progressBarPercentage1, document.querySelector("#jobDisplay1"))
+        document.querySelector("#jobDisplay1").removeAttribute("hidden")
+        document.querySelector("#currentJobsDisplay").removeAttribute("hidden")
+
+        if (data.selectedJobs.length >= 2) {
+            const job2 = data.selectedJobs[1]
+            document.querySelector("#jobDisplay2 .jobProgressBarText").innerText = job2.name + " Lv" + job2.level
+            const progressBarPercentage2 = 100 + 100 * (job2.xp - job2.maxXp) / (job2.maxXp - getTaskMaxXp(job2, 1))
+            renderProgressBar(progressBarPercentage2, document.querySelector("#jobDisplay2"))
+            document.querySelector("#jobDisplay2").removeAttribute("hidden")
+
+            if (data.selectedJobs.length >= 3) {
+                const job3 = data.selectedJobs[2]
+                document.querySelector("#jobDisplay3 .jobProgressBarText").innerText = job3.name + " Lv" + job3.level
+                const progressBarPercentage3 = 100 + 100 * (job3.xp - job3.maxXp) / (job3.maxXp - getTaskMaxXp(job3, 1))
+                renderProgressBar(progressBarPercentage3, document.querySelector("#jobDisplay3"))
+                document.querySelector("#jobDisplay3").removeAttribute("hidden")
+
+            } else { document.querySelector("#jobDisplay3").setAttribute("hidden", "") }
+        } else { document.querySelector("#jobDisplay2").setAttribute("hidden", ""); document.querySelector("#jobDisplay3").setAttribute("hidden", "") }
+    } else { document.querySelector("#jobDisplay1").setAttribute("hidden", ""); document.querySelector("#jobDisplay2").setAttribute("hidden", ""); document.querySelector("#jobDisplay3").setAttribute("hidden", ""); document.querySelector("#currentJobsDisplay").setAttribute("hidden", "") }
+
+    if (data.selectedSkills.length >= 1) {
+        const skill1 = data.selectedSkills[0]
+        document.querySelector("#skillDisplay1 .skillProgressBarText").innerText = skill1.name + " Lv" + skill1.level
+        const progressBarPercentage1 = 100 + 100 * (skill1.xp - skill1.maxXp) / (skill1.maxXp - getTaskMaxXp(skill1, 1))
+        renderProgressBar(progressBarPercentage1, document.querySelector("#skillDisplay1"))
+        document.querySelector("#skillDisplay1").removeAttribute("hidden")
+        document.querySelector("#currentSkillsDisplay").removeAttribute("hidden")
+
+        if (data.selectedSkills.length >= 2) {
+            const skill2 = data.selectedSkills[1]
+            document.querySelector("#skillDisplay2 .skillProgressBarText").innerText = skill2.name + " Lv" + skill2.level
+            const progressBarPercentage2 = 100 + 100 * (skill2.xp - skill2.maxXp) / (skill2.maxXp - getTaskMaxXp(skill2, 1))
+            renderProgressBar(progressBarPercentage2, document.querySelector("#skillDisplay2"))
+            document.querySelector("#skillDisplay2").removeAttribute("hidden")
+
+            if (data.selectedSkills.length >= 3) {
+                const skill3 = data.selectedSkills[2]
+                document.querySelector("#skillDisplay3 .skillProgressBarText").innerText = skill3.name + " Lv" + skill3.level
+                const progressBarPercentage3 = 100 + 100 * (skill3.xp - skill3.maxXp) / (skill3.maxXp - getTaskMaxXp(skill3, 1))
+                renderProgressBar(progressBarPercentage3, document.querySelector("#skillDisplay3"))
+                document.querySelector("#skillDisplay3").removeAttribute("hidden")
+
+            } else { document.querySelector("#skillDisplay3").setAttribute("hidden", "") }
+        } else { document.querySelector("#skillDisplay2").setAttribute("hidden", ""); document.querySelector("#skillDisplay3").setAttribute("hidden", "") }
+    } else { document.querySelector("#skillDisplay1").setAttribute("hidden", ""); document.querySelector("#skillDisplay2").setAttribute("hidden", ""); document.querySelector("#skillDisplay3").setAttribute("hidden", ""); document.querySelector("#currentSkillsDisplay").setAttribute("hidden", "") }
 }
 
 function setSignDisplay() {
@@ -22,10 +74,10 @@ function setSignDisplay() {
         signDisplay.style.color = "gray"
     } else if (getNet() >= 1) {
         signDisplay.textContent = "+"
-        signDisplay.style.color = "green"
+        signDisplay.style.color = "var(--greenish)"
     } else {
         signDisplay.textContent = "-"
-        signDisplay.style.color = "red"
+        signDisplay.style.color = "var(--redish)"
     }
 }
 
@@ -44,6 +96,12 @@ function setTab(tab) {
     var selectedButton = tab + "Button"
     document.getElementById(selectedPanel).classList.remove("hidden");
     document.getElementById(selectedButton).classList.add("currentTab");
+    if (tab == 'hero') {
+        renderHero()
+    }
+    if (tab == 'skills') {
+        renderSkills()
+    }
 }
 
 function setSettings(tab) {
@@ -67,6 +125,54 @@ function pauseButton() {
     if (data.paused == true) {
         unpause()
     } else pause()
+}
+
+function toggleAutoPromote(change) {
+    if (change) {
+        if (data.autopromote) {
+            data.autopromote = false
+        } else data.autopromote = true
+    }
+    if (data.autopromote) { document.getElementById("autoPromote").classList.add("toggled") } else document.getElementById("autoPromote").classList.remove("toggled")
+}
+
+function autopromote() {
+    for (const key in data.job) {
+        const job = data.job[key]
+        if (isComplete(requirements[data.job[key].class])) {
+            const income = getIncomeSpecific(key);
+            var isSelected = false
+            for (const selectedJob in data.selectedJobs) {
+                if (data.selectedJobs[selectedJob].name == job.name) isSelected = true
+            }
+            if (!isSelected) selectJob(key)
+        }
+    }
+}
+
+function isComplete(requirement) { //requirement = data.requirement[key]
+    var isComplete = true
+    const jobReqs = requirement.job
+    const skillReqs = requirement.skill
+    for (var req in jobReqs) {
+        const jobName = jobReqs[req].name
+        const jobValue = jobReqs[req].value
+        if (jobValue > data.job[jobName].level) isComplete = false
+    }
+    for (var req in skillReqs) {
+        const skillName = skillReqs[req].name
+        const skillValue = skillReqs[req].value
+        if (skillValue > data.skill[skillName].level) isComplete = false
+    }
+    if (requirement.age) {
+        const ageReq = requirement.age
+        if (ageReq > data.days / 365) isComplete = false
+    }
+    if (requirement.evil) {
+        const evilReq = requirement.evil
+        if (evilReq > data.evil) isComplete = false
+    }
+    return isComplete
 }
 
 function pause() {
@@ -162,8 +268,8 @@ function switchSecondaryTheme(change) {
         themeSecondaryStylesheet.setAttribute('href', 'css/themes/secondary/yellow.css');
         document.getElementById("selectedSecondaryTheme").textContent = "Yellow"
     } else if (data.settings.secondaryTheme == 1) {
-        themeSecondaryStylesheet.setAttribute('href', 'css/themes/secondary/cyan.css');
-        document.getElementById("selectedSecondaryTheme").textContent = "Cyan"
+        themeSecondaryStylesheet.setAttribute('href', 'css/themes/secondary/blue.css');
+        document.getElementById("selectedSecondaryTheme").textContent = "Blue"
     }
 }
 
@@ -326,22 +432,66 @@ function switchMainpanelZoom(change) {
 }
 
 function switchMobile(change = true) {
-    cap = 1
     if (change == true) {
-        data.settings.mobile++
+        if (data.settings.mobile) { data.settings.mobile = false } else data.settings.mobile = true
     }
-    if (data.settings.mobile > cap) {
-        data.settings.mobile = 0
+    if (data.settings.mobile) {
+        document.getElementById("mobileStylesheet").setAttribute('href', 'css/mobile.css');
+        document.getElementById("selectedMobile").innerText = "true"
+    } else {
+        document.getElementById("mobileStylesheet").setAttribute('href', 'unset');
+        document.getElementById("selectedMobile").innerText = "false"
     }
-    switch (data.settings.mobile) {
-        case 0:
-            document.getElementById("mobileStylesheet").setAttribute('href', 'unset');
-            document.getElementById("selectedMobile").innerText = "false"
-            break
-        case 1:
-            document.getElementById("mobileStylesheet").setAttribute('href', 'css/mobile.css');
-            document.getElementById("selectedMobile").innerText = "true"
-            break
+}
+
+function switchExperimentalSettings(change) {
+    const cap = 1 // amount of themes, start counting from 0
+    if (change == true) {
+        data.settings.experimentalSettings++
+    }
+    if (data.settings.experimentalSettings > cap) {
+        data.settings.experimentalSettings = 0
+    }
+    if (data.settings.experimentalSettings == 0) {
+        document.getElementById("experimentalSettings").setAttribute("hidden", "")
+    } else if (data.settings.experimentalSettings == 1) {
+        document.getElementById("experimentalSettings").removeAttribute("hidden")
+    }
+}
+
+function switchTextShadow(change) {
+    const cap = 3
+    if (change == true) {
+        data.settings.textShadow++
+    }
+    if (data.settings.textShadow > cap) {
+        data.settings.textShadow = 0
+    }
+    if (data.settings.textShadow == 0) {
+        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "unset")
+        document.getElementById("textShadow").textContent = "None"
+    } else if (data.settings.textShadow == 1) {
+        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "css/themes/text-shadow/small.css")
+        document.getElementById("textShadow").textContent = "Small"
+    } else if (data.settings.textShadow == 2) {
+        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "css/themes/text-shadow/medium.css")
+        document.getElementById("textShadow").textContent = "Medium"
+    } else if (data.settings.textShadow == 3) {
+        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "css/themes/text-shadow/large.css")
+        document.getElementById("textShadow").textContent = "Large"
+    }
+}
+
+function switchHideTitle(change = true) {
+    if (change == true) {
+        if (data.settings.hideTitle) { data.settings.hideTitle = false } else data.settings.hideTitle = true
+    }
+    if (data.settings.hideTitle) {
+        document.getElementById("hideTitle").innerText = "true"
+        document.getElementById("title").setAttribute("hidden", "")
+    } else {
+        document.getElementById("hideTitle").innerText = "false"
+        document.getElementById("title").removeAttribute("hidden")
     }
 }
 
@@ -355,7 +505,15 @@ function renderHero() {
         const jobCategoryContainers = Array.from(heroSubpanel.getElementsByClassName("jobCategoryContainer"));
 
         jobCategoryContainers.forEach(container => {
-            const jobTypes = Array.from(container.getElementsByClassName("jobType"));
+
+            const jobTypes = Array.from(container.getElementsByClassName("jobType"))
+
+            formatRequirements(container.classList[1],
+                container.querySelector(".categoryRequirementText"),
+                container.querySelector(".jobCategoryRequirement"),
+                container.querySelector(".jobCategoryRequirement"),
+                container.querySelector(".jobCategoryElement"),
+                container.querySelector(".jobCategoryBackground"))
 
             jobTypes.forEach(jobType => {
                 const jobName = jobType.classList[1].replace("Type", "");
@@ -379,6 +537,17 @@ function renderHero() {
                     jobType.querySelector(".jobXPRateDisplay").innerText = format(jobXPRateDisplay);
                     jobType.querySelector(".jobXPLeftDisplay").innerText = format(jobXPLeftDisplay);
                     jobType.querySelector(".jobMaxLevelDisplay").innerText = jobMaxLevelDisplay;
+                    formatRequirements(jobName,
+                        jobType.querySelector(".requirementText"),
+                        jobType.querySelector(".taskReq"),
+                        jobType,
+                        jobType.querySelector(".jobProgressBar"),
+                        jobType.querySelector(".jobXPDisplay"),
+                        jobType.querySelector(".jobXPRateDisplay"),
+                        jobType.querySelector(".jobXPLeftDisplay"),
+                        jobType.querySelector(".jobLevelDisplay"),
+                        jobType.querySelector(".jobIncomeDisplay"),
+                        jobType.querySelector(".jobMaxLevelDisplay"))
                 }
             });
         });
@@ -392,6 +561,13 @@ function renderSkills() {
 
         skillCategoryContainers.forEach(container => {
             const skillTypes = Array.from(container.getElementsByClassName("skillType"));
+
+            formatRequirements(container.classList[1],
+                container.querySelector(".categoryRequirementText"),
+                container.querySelector(".skillCategoryRequirement"),
+                container.querySelector(".skillCategoryRequirement"),
+                container.querySelector(".skillCategoryElement"),
+                container.querySelector(".skillCategoryBackground"))
 
             skillTypes.forEach(skillType => {
                 const skillName = skillType.classList[1].replace("Type", "");
@@ -415,6 +591,17 @@ function renderSkills() {
                     skillType.querySelector(".skillXPRateDisplay").innerText = format(skillXPRateDisplay);
                     skillType.querySelector(".skillXPLeftDisplay").innerText = format(skillXPLeftDisplay);
                     skillType.querySelector(".skillMaxLevelDisplay").innerText = skillMaxLevelDisplay;
+                    formatRequirements(skillName,
+                        skillType.querySelector(".requirementText"),
+                        skillType.querySelector(".taskReq"),
+                        skillType,
+                        skillType.querySelector(".skillProgressBar"),
+                        skillType.querySelector(".skillXPDisplay"),
+                        skillType.querySelector(".skillXPRateDisplay"),
+                        skillType.querySelector(".skillXPLeftDisplay"),
+                        skillType.querySelector(".skillLevelDisplay"),
+                        skillType.querySelector(".skillEffectDisplay"),
+                        skillType.querySelector(".skillMaxLevelDisplay"))
                 }
             });
         });

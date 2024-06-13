@@ -13,12 +13,19 @@ function setupHeroTab() {
         const jobCategoryBackground = document.createElement("div");
         jobCategoryBackground.classList.add(name, "jobCategoryBackground");
 
-        const createElementWithText = (tag, text, className) => {
+        const jobCategoryRequirement = document.createElement("div");
+        jobCategoryRequirement.classList.add(name, "jobCategoryRequirement");
+
+        const createElementWithText = (tag, text, className, attribute, attributeValue) => {
             const element = document.createElement(tag);
             if (className) element.classList.add(className);
             element.appendChild(document.createTextNode(text));
+            if (attribute) element.setAttribute(attribute, attributeValue)
             return element;
         };
+
+        jobCategoryRequirement.appendChild(createElementWithText("span", "Required: ", "grayed"))
+        jobCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
 
         const elementsData = [
             { text: categoryName, className: "jobCategoryElementTitle" },
@@ -36,14 +43,26 @@ function setupHeroTab() {
 
         jobDataEntries.forEach(([jobKey, jobData]) => {
             if (jobs.includes(jobKey)) {
+                const jobReq = document.createElement("div");
+                jobReq.classList.add("taskReq", jobData.class + "Requirement");
+
+                jobReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
+                jobReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+
                 const jobProgressBar = document.createElement("div");
-                jobProgressBar.classList.add("jobProgressBar", jobData.class + "ProgressBar");
+                jobProgressBar.classList.add("jobProgressBar", jobData.class + "ProgressBar", "tooltip");
+                jobProgressBar.id = (jobData.class + "ProgressBar");
                 jobProgressBar.setAttribute("onclick", "selectJob('" + jobData.name + "')");
 
                 const jobProgressBarProgress = document.createElement("div");
                 jobProgressBarProgress.classList.add("jobProgressBarProgress", jobData.class + "ProgressBarProgress");
                 jobProgressBarProgress.setAttribute("style", "width: 20%");
                 jobProgressBar.appendChild(jobProgressBarProgress);
+
+                const jobTooltip = document.createElement("span");
+                jobTooltip.classList.add("tooltiptext", jobData.class + "Tooltiptext");
+                jobTooltip.innerText = tooltips[jobKey]
+                jobProgressBar.appendChild(jobTooltip);
 
                 const jobProgressBarText = createElementWithText("span", jobData.name, "jobProgressBarText", jobData.class + "ProgressBarText");
                 jobProgressBar.appendChild(jobProgressBarText);
@@ -61,7 +80,7 @@ function setupHeroTab() {
 
                 const jobType = document.createElement("div");
                 jobType.classList.add("jobType", jobData.class + "Type");
-                [jobProgressBar, jobLevelDisplay, jobIncomeDisplay, jobXPDisplay, jobXPRateDisplay, jobXPLeftDisplay, jobMaxLevelDisplay].forEach(el => jobType.appendChild(el));
+                [jobReq, jobProgressBar, jobLevelDisplay, jobIncomeDisplay, jobXPDisplay, jobXPRateDisplay, jobXPLeftDisplay, jobMaxLevelDisplay].forEach(el => jobType.appendChild(el));
 
                 jobCategoryBackground.appendChild(jobType);
             }
@@ -69,6 +88,7 @@ function setupHeroTab() {
 
         jobCategoryContainer.appendChild(jobCategoryElement);
         jobCategoryContainer.appendChild(jobCategoryBackground);
+        jobCategoryContainer.appendChild(jobCategoryRequirement);
         heroSubpanel.appendChild(jobCategoryContainer);
     });
 }
@@ -87,12 +107,19 @@ function setupSkillTab() {
         const skillCategoryBackground = document.createElement("div");
         skillCategoryBackground.classList.add(name, "skillCategoryBackground");
 
-        const createElementWithText = (tag, text, className) => {
+        const skillCategoryRequirement = document.createElement("div");
+        skillCategoryRequirement.classList.add(name, "skillCategoryRequirement");
+
+        const createElementWithText = (tag, text, className, attribute, attributeValue) => {
             const element = document.createElement(tag);
             if (className) element.classList.add(className);
             element.appendChild(document.createTextNode(text));
+            if (attribute) element.setAttribute(attribute, attributeValue)
             return element;
         };
+
+        skillCategoryRequirement.appendChild(createElementWithText("span", "Required: ", "grayed"))
+        skillCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
 
         const elementsData = [
             { text: categoryName, className: "skillCategoryElementTitle" },
@@ -110,14 +137,25 @@ function setupSkillTab() {
 
         skillDataEntries.forEach(([skillKey, skillData]) => {
             if (skills.includes(skillKey)) {
+                const skillReq = document.createElement("div");
+                skillReq.classList.add("taskReq", skillData.class + "Requirement");
+
+                skillReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
+                skillReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+
                 const skillProgressBar = document.createElement("div");
-                skillProgressBar.classList.add("skillProgressBar", skillData.class + "ProgressBar");
+                skillProgressBar.classList.add("skillProgressBar", skillData.class + "ProgressBar", "tooltip");
                 skillProgressBar.setAttribute("onclick", "selectSkill('" + skillData.name + "')");
 
                 const skillProgressBarProgress = document.createElement("div");
                 skillProgressBarProgress.classList.add("skillProgressBarProgress", skillData.class + "ProgressBarProgress");
                 skillProgressBarProgress.setAttribute("style", `width: ${skillData.xp / skillData.maxXp * 100}%`);
                 skillProgressBar.appendChild(skillProgressBarProgress);
+
+                const skillTooltip = document.createElement("span");
+                skillTooltip.classList.add("tooltiptext", skillData.class + "Tooltiptext");
+                skillTooltip.innerText = tooltips[skillKey]
+                skillProgressBar.appendChild(skillTooltip);
 
                 const skillProgressBarText = createElementWithText("span", skillData.name, "skillProgressBarText", skillData.class + "ProgressBarText");
                 skillProgressBar.appendChild(skillProgressBarText);
@@ -134,7 +172,7 @@ function setupSkillTab() {
 
                 const skillType = document.createElement("div");
                 skillType.classList.add("skillType", skillData.class + "Type");
-                [skillProgressBar, skillLevelDisplay, skillEffectDisplay, skillXPDisplay, skillXPRateDisplay, skillXPLeftDisplay, skillMaxLevelDisplay].forEach(el => skillType.appendChild(el));
+                [skillReq, skillProgressBar, skillLevelDisplay, skillEffectDisplay, skillXPDisplay, skillXPRateDisplay, skillXPLeftDisplay, skillMaxLevelDisplay].forEach(el => skillType.appendChild(el));
 
                 skillCategoryBackground.appendChild(skillType);
             }
@@ -142,6 +180,7 @@ function setupSkillTab() {
 
         skillCategoryContainer.appendChild(skillCategoryElement);
         skillCategoryContainer.appendChild(skillCategoryBackground);
+        skillCategoryContainer.appendChild(skillCategoryRequirement);
         skillSubpanel.appendChild(skillCategoryContainer);
     });
 }
@@ -158,7 +197,10 @@ function startSetup() {
     }
     setupTabs()
     load()
+    renderHero()
+    renderSkills()
     setTab("hero")
+    toggleAutoPromote(false)
     switchPrimaryTheme(false)
     switchSecondaryTheme(false)
     switchCoinsAmountDisplayed(false)
@@ -166,6 +208,9 @@ function startSetup() {
     switchSidebarZoom(false)
     switchMainpanelZoom(false)
     switchMobile(false)
+    switchTextShadow(false)
+    switchExperimentalSettings(false)
+    switchHideTitle(false)
     everySecondInterval = setInterval(everySecondUpdate, 1000);
     updateInterval = setInterval(updateWithTime, 1000 / data.settings.updateSpeed)
     saveInterval = setInterval(save, data.settings.saveSpeed)

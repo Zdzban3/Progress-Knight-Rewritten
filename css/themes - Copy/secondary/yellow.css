@@ -1,0 +1,6 @@
+:root {
+    --progressBarBackground: #8f8f24;
+    --progressBarUnselected: #c3c322;
+    --progressBarSelectedBackground: #248f8f;
+    --progressBarSelected: #22c3c3;
+}

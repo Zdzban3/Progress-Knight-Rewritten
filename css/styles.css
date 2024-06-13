@@ -12,17 +12,17 @@ body {
     font-style: normal;
 }
 
-.title {
+#title {
     margin: 10px 0 0 10px;
     color: var(--color0);
 }
 
-.title h1 {
+#title h1 {
     font-size: 26px;
     padding-bottom: 2px;
 }
 
-.title img {
+#title img {
     position: static;
     float: left;
     width: 36px;
@@ -112,7 +112,7 @@ body {
 
 .menuButton:hover {
     color: var(--color0);
-    background-color: var(--color2);
+    background-color: var(--color1);
 }
 
 .menuButton.currentTab {
@@ -133,13 +133,34 @@ body {
 
 .groupedSettings {
     display: inline-flex;
-    width: inherit;
+    width: 100%
 }
 
 .setting {
     padding: 10px;
     background-color: var(--color6);
     margin-bottom: 10px;
+}
+
+.subsetting {
+    padding: 10px;
+    background-color: color-mix(in oklab, var(--color6), var(--color7));
+}
+
+.resetSettings {
+    border: 4px solid red;
+}
+
+.resetSettings .subsetting {
+    background-color: #550000
+}
+
+.resetSettings .subsetting:hover {
+    background-color: #aa0000
+}
+
+.experimentalSettingsButton {
+    margin-bottom: 0px;
 }
 
 .zoom07 {
@@ -176,7 +197,6 @@ body {
 
 #pauseButton {
     padding: 5px 10px 5px 10px;
-    margin: 5px 0 5px 0;
     width: fit-content;
     background-color: var(--color6);
     color: var(--color0);
@@ -192,7 +212,39 @@ body {
     border: 4px solid var(--color2);
 }
 
+#autoPromote {
+    padding: 2px 4px 2px 4px;
+    margin-left: 10px;
+    width: fit-content;
+    height: fit-content;
+    background-color: var(--color6);
+    color: var(--color0);
+    font-size: 16px;
+    user-select: none;
+}
+
+#autoPromote:hover {
+    background-color: var(--color3);
+}
+
+#autoPromote:not(.toggled) {
+    border: 4px solid var(--color2);
+}
+
+#autoPromote.toggled {
+    border: 4px solid var(--toggled);
+}
+
+.buttonGroup {
+    display: flex;
+    margin: 5px 0 5px 0px;
+}
+
 .paused {
+    border: 2px solid var(--paused);
+}
+
+.paused#pauseButton {
     border: 4px solid var(--paused);
 }
 
@@ -213,9 +265,12 @@ body {
 }
 
 .grayed {
-    font-size: 16px;
     margin: 0;
     color: var(--color2);
+}
+
+#sidebar .grayed {
+    font-size: 16px
 }
 
 .setting:hover .grayed {
@@ -226,4 +281,76 @@ body {
     width: var(--menuWidth);
     height: fit-content;
     padding: 10px 8px 10px 0;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 240px;
+    background-color: var(--color5);
+    color: var(--color0);
+    text-align: center;
+    padding: 5px;
+    border-radius: 6px;
+    line-height: 1.4;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    top: -5px;
+    left: 105%;
+    margin-left: -10px;
+    border: 6px solid var(--color6);
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.jobDisplay {
+    width: 90% !important;
+    margin-bottom: 10px;
+    margin-top: 2px
+}
+
+.jobDisplay div {
+    height: 100%
+}
+
+.jobDisplay span {
+    text-align: center;
+    font-size: 15px;
+    line-height: 30px;
+    font-weight: 500;
+    color: var(--color0)
+}
+
+.skillDisplay {
+    width: 90% !important;
+    margin-bottom: 10px;
+    margin-top: 2px
+}
+
+.skillDisplay div {
+    height: 100%
+}
+
+.skillDisplay span {
+    text-align: center;
+    font-size: 15px;
+    line-height: 30px;
+    font-weight: 500;
+    color: var(--color0)
 }

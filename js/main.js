@@ -1,7 +1,10 @@
 function applyMultipliers() {
-    data.happiness = getHappiness()
-    data.jobXPMult = getJobXPMult()
-    data.skillXPMult = getSkillXPMult()
+    data.happiness = applySkillEffects("Happiness")
+    data.jobXPMult = applySkillEffects("Job XP")
+    data.skillXPMult = applySkillEffects("Skill XP")
+    for (const category in data.category.job) {
+        data.category.job[category].incomeMult = applySkillEffects(data.category.job[category].name + " Income")
+    }
 }
 
 function applySkillEffects(effectName) {
@@ -44,18 +47,6 @@ function getEffectSpecific(skillName) {
             effect *= math.pow(1 + (skillEffect * skillLevel), 2)
     }
     return effect
-}
-
-function getHappiness() {
-    return applySkillEffects("Happiness")
-}
-
-function getJobXPMult() {
-    return applySkillEffects("Job XP")
-}
-
-function getSkillXPMult() {
-    return applySkillEffects("Skill XP")
 }
 
 function getTaskMaxXp(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
@@ -113,10 +104,10 @@ function getIncome() {
         if (job.hasOwnProperty("income")) {
             switch (data.selectedJobs[i].incomeFormula) {
                 case "normal":
-                    var incomeMult = math.log(1 + math.pow(job.level, 0.5)) + ((job.level) / 10) + 1
+                    var incomeMult = ((job.level) / 10) + 1
                     break
                 case "less penalty":
-                    var incomeMult = math.log(1 + math.pow(job.level, 0.6)) + ((job.level) / 9) + 1
+                    var incomeMult = ((job.level) / 9) + 1
                     break
             }
             income += job.income * incomeMult
@@ -130,13 +121,21 @@ function getIncomeSpecific(jobName) {
     if (job.hasOwnProperty("income")) {
         switch (data.job[jobName].incomeFormula) {
             case "normal":
-                var incomeMult = math.log(1 + math.pow(job.level, 0.5)) + ((job.level) / 10) + 1
+                var incomeMult = ((job.level) / 10) + 1
                 break
             case "less penalty":
-                var incomeMult = math.log(1 + math.pow(job.level, 0.6)) + ((job.level) / 9) + 1
+                var incomeMult = ((job.level) / 9) + 1
                 break
         }
-        var income = data.job[jobName].income * incomeMult
+        var categoryMult = 1
+        for (const category in jobCategories) { 
+            for (const job in jobCategories[category].jobs) {
+                if (jobName == jobCategories[category].jobs[job]) {
+                    categoryMult = data.category.job[category].incomeMult
+                }
+            }
+        }
+        var income = data.job[jobName].income * incomeMult * data.incomeMult * categoryMult
         return income
     } else return 0
 }
@@ -213,7 +212,6 @@ function selectJob(jobName) {
             data.selectedJobs.shift()
         }
         data.selectedJobs.push(data.job[jobName])
-        //document.getElementsByClassName(jobName.replace(" ", "")).classList.add("progressBarProgressSelected")
     } else for (i = 0; i < data.selectedJobs.length; i++) {
         if (data.selectedJobs[i].name == jobName) {
             data.selectedJobs.splice(i, 1)
@@ -288,6 +286,13 @@ function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
 }
 
 function doSelectedSkills() {
+    for (i2 = 0; i2 < data.selectedSkills.length; i2++) {
+        for (i3 = 0; i3 < Object.keys(data.skill).length; i3++) {
+            if (data.selectedSkills[i2].name == Object.keys(data.skill)[i3]) {
+                data.selectedSkills[i2] = Object.values(data.skill)[i3]
+            }
+        }
+    }
     for (i = 0; i < data.selectedSkills.length; i++) {
         doCurrentSkill(data.selectedSkills[i].name)
     }
@@ -385,6 +390,7 @@ function update() {
     applyExpenses()
     applyIncome()
     updateUI()
+    if (data.autopromote == true) autopromote()
     //getOfflineTime()
 }
 

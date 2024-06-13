@@ -1,0 +1,36 @@
+:root {
+    --color0: #f0f0f0;
+    --color1: #bbbbbb;
+    --color2: #888888;
+    --color3: #666666;
+    --color4: #444444;
+    --color5: #282828;
+    --color6: #222222;
+    --color7: #181818;
+    --color10: #527a7a;
+    --color11: #a3c2c2;
+    --taskText: var(--color0);
+    --taskTextBackground: var(--color0);
+    --paused: #19c3e6;
+    --expense: #eb8686;
+    --income: #86eb86;
+    --net: #86c9eb;
+    --happiness: #ebeb86;
+    --timeSpeed: #b884eb;
+    --red: #ff0000;
+    --commonWork: #7a5f52;
+    --commonWorkBackground: #3d3029;
+    --military: #a32929;
+    --militaryBackground: #521414;
+    --theArcaneAssociation: #cc3380;
+    --theArcaneAssociationBackground: #661940;
+}
+
+body {
+    background-color: var(--color7);
+}
+
+.tab {
+    background-color: var(--color5);
+}
+
