@@ -172,7 +172,7 @@ const jobCategories = {
         name: "military",
         nameFull: "Military"
     },
-    "The Arcane Association": {
+    "T.A.A": {
         jobs: ["Student"],
         name: "theArcaneAssociation",
         nameFull: "The Arcane Association"
