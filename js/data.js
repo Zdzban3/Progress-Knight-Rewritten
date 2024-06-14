@@ -330,7 +330,8 @@ const requirements = {
 
 const advancements = {
     "Amulet": {
-        age: 25
+        age: 25,
+        reached: false
     }
 }
 
