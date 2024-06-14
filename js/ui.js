@@ -43,7 +43,7 @@ function renderSidebar() {
     if (data.selectedSkills.length >= 1) {
         const skill1 = data.selectedSkills.at(-1)
         document.querySelector("#skillDisplay1 .skillProgressBarText").innerText = skill1.name + " Lv" + skill1.level
-        const progressBarPercentage1 = 100 + 100 * (skill1.xp - skill1.maxXP) / (skill1.maxXP - getTaskMaxXp(skill1, 1))
+        const progressBarPercentage1 = math.min(100 + 100 * (skill1.xp - skill1.maxXP) / (skill1.maxXP - getTaskMaxXp(skill1, 1)), 100)
         renderProgressBar(progressBarPercentage1, document.querySelector("#skillDisplay1"))
         document.querySelector("#skillDisplay1").removeAttribute("hidden")
         document.querySelector("#currentSkillsDisplay").removeAttribute("hidden")
@@ -51,14 +51,14 @@ function renderSidebar() {
         if (data.selectedSkills.length >= 2) {
             const skill2 = data.selectedSkills.at(-2)
             document.querySelector("#skillDisplay2 .skillProgressBarText").innerText = skill2.name + " Lv" + skill2.level
-            const progressBarPercentage2 = 100 + 100 * (skill2.xp - skill2.maxXP) / (skill2.maxXP - getTaskMaxXp(skill2, 1))
+            const progressBarPercentage2 = math.min(100 + 100 * (skill2.xp - skill2.maxXP) / (skill2.maxXP - getTaskMaxXp(skill2, 1)), 100)
             renderProgressBar(progressBarPercentage2, document.querySelector("#skillDisplay2"))
             document.querySelector("#skillDisplay2").removeAttribute("hidden")
 
             if (data.selectedSkills.length >= 3) {
                 const skill3 = data.selectedSkills.at(-3)
                 document.querySelector("#skillDisplay3 .skillProgressBarText").innerText = skill3.name + " Lv" + skill3.level
-                const progressBarPercentage3 = 100 + 100 * (skill3.xp - skill3.maxXP) / (skill3.maxXP - getTaskMaxXp(skill3, 1))
+                const progressBarPercentage3 = math.min(100 + 100 * (skill3.xp - skill3.maxXP) / (skill3.maxXP - getTaskMaxXp(skill3, 1)), 100)
                 renderProgressBar(progressBarPercentage3, document.querySelector("#skillDisplay3"))
                 document.querySelector("#skillDisplay3").removeAttribute("hidden")
 
@@ -539,7 +539,7 @@ function renderHero() {
                     jobType.querySelector(".jobLevelDisplay").innerText = jobLevelDisplay;
                     formatCoins(jobIncomeDisplay, jobType.querySelector(".jobIncomeDisplay"));
 
-                    const progressBarPercentage = 100 + 100 * (thisJob.xp - thisJob.maxXP) / (thisJob.maxXP - getTaskMaxXp(thisJob, 1));
+                    const progressBarPercentage = math.min(100 + 100 * (thisJob.xp - thisJob.maxXP) / (thisJob.maxXP - getTaskMaxXp(thisJob, 1)), 100);
                     renderProgressBar(progressBarPercentage, jobType.querySelector(".jobProgressBar"));
 
                     jobType.querySelector(".jobXPDisplay").innerText = format(jobXPDisplay);
@@ -593,7 +593,7 @@ function renderSkills() {
                     skillType.querySelector(".skillLevelDisplay").innerText = skillLevelDisplay;
                     skillType.querySelector(".skillEffectDisplay").innerText = skillEffectDisplay
 
-                    const progressBarPercentage = 100 + 100 * (thisSkill.xp - thisSkill.maxXP) / (thisSkill.maxXP - getTaskMaxXp(thisSkill, 1));
+                    const progressBarPercentage = math.min(100 + 100 * (thisSkill.xp - thisSkill.maxXP) / (thisSkill.maxXP - getTaskMaxXp(thisSkill, 1)), 100);
                     renderProgressBar(progressBarPercentage, skillType.querySelector(".skillProgressBar"));
 
                     skillType.querySelector(".skillXPDisplay").innerText = format(skillXPDisplay);

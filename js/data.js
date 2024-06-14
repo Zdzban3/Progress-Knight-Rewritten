@@ -223,15 +223,18 @@ const requirements = {
     //military
     "squire": {
         job: [],
-        skill: [{ name: "Strength", value: 5 }]
+        skill: [{ name: "Strength", value: 5 }],
+        age: 16
     },
     "footman": {
         job: [{ name: "Squire", value: 10 }],
-        skill: [{ name: "Strength", value: 20 }]
+        skill: [{ name: "Strength", value: 20 }],
+        age: 16
     },
     "veteranFootman": {
         job: [{ name: "Footman", value: 10 }],
         skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
+        age: 16,
         show: {
             job: [{ name: "Footman", value: 1 }],
             skill: []
@@ -240,6 +243,7 @@ const requirements = {
     "knight": {
         job: [{ name: "Veteran footman", value: 10 }],
         skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 40 }],
+        age: 16,
         show: {
             job: [{ name: "Veteran footman", value: 1 }],
             skill: []
@@ -248,6 +252,7 @@ const requirements = {
     "veteranKnight": {
         job: [{ name: "Knight", value: 10 }],
         skill: [{ name: "Strength", value: 120 }, { name: "Battle tactics", value: 150 }],
+        age: 16,
         show: {
             job: [{ name: "Knight", value: 1 }],
             skill: []
@@ -256,6 +261,7 @@ const requirements = {
     "eliteKnight": {
         job: [{ name: "Veteran knight", value: 10 }],
         skill: [{ name: "Strength", value: 200 }, { name: "Battle tactics", value: 300 }],
+        age: 16,
         show: {
             job: [{ name: "Veteran knight", value: 1 }],
             skill: []
@@ -264,6 +270,7 @@ const requirements = {
     "holyKnight": {
         job: [{ name: "Elite knight", value: 10 }],
         skill: [{ name: "Strength", value: 400 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
+        age: 16,
         show: {
             job: [{ name: "Elite knight", value: 1 }],
             skill: []
@@ -272,6 +279,7 @@ const requirements = {
     "legendaryKnight": {
         job: [{ name: "Holy knight", value: 10 }],
         skill: [{ name: "Strength", value: 1000 }, { name: "Battle tactics", value: 1000 }, { name: "Mana control", value: 1000 }],
+        age: 16,
         show: {
             job: [{ name: "Holy knight", value: 1 }],
             skill: []
@@ -280,7 +288,8 @@ const requirements = {
     //t.a.a.
     "student": {
         job: [],
-        skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
+        skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
+        age: 20
     },
     //skills
     //fundamentals

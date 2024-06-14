@@ -486,12 +486,12 @@ function rebirth(rebirthStage) {
     if (rebirthStage == 1) {
         for (const key in data.job) {
             const task = data.job[key]
-            task.maxLevel = task.level
+            task.maxLevel = math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
         for (const key in data.skill) {
             const task = data.skill[key]
-            task.maxLevel = task.level
+            task.maxLevel = math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
         data.days = 365 * 14
