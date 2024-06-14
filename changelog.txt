@@ -1,3 +1,6 @@
+version 0.0.3α [3] 14/06/2024
+* added Autopromote and Autoskill
+
 version 0.0.2α [2] 14/06/2024
 * fixed skill effects
 

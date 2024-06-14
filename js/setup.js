@@ -201,6 +201,7 @@ function startSetup() {
     renderSkills()
     setTab("hero")
     toggleAutoPromote(false)
+    toggleAutoSkill(false)
     switchPrimaryTheme(false)
     switchSecondaryTheme(false)
     switchCoinsAmountDisplayed(false)

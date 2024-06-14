@@ -87,23 +87,23 @@ function getEffectSpecific(skillName) {
 function getTaskMaxXp(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
     var taskLevel = task.level - levelsBelow
     if (taskLevel == 0) {
-        return task.baseMaxXp
+        return task.baseMaxXP
     } else if (taskLevel == -1) {
         return 0
     }
     taskLevel++
     switch (task.xpFormula) {
         case "normalJob":
-            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXp
+            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXP
             break
         case "normalSkill":
-            return math.pow(1.005, taskLevel) * taskLevel * task.baseMaxXp
+            return math.pow(1.005, taskLevel) * taskLevel * task.baseMaxXP
             break
         case "squaredSkill":
-            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXp
+            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXP
             break
         case "offlineTime":
-            return math.pow(taskLevel, 1.25) * task.baseMaxXp
+            return math.pow(taskLevel, 1.25) * task.baseMaxXP
             break
     }
 }
@@ -169,7 +169,7 @@ function getIncomeSpecific(jobName) {
 
 function getExpense() {
     var expense = 0
-    var itemArray = Object.values(data.buyable.normal)
+    var itemArray = Object.values(data.buyable.other)
     for (i = 0; i < itemArray.length; i++) {
         if (itemArray[i].owned == true) {
             expense += itemArray[i].upkeep
@@ -234,10 +234,10 @@ function checkIfJobIsNotSelected(jobName) {
     return boolean
 }
 
-function selectJob(jobName) {
+function selectJob(jobName, removeIndex = 0) {
     if (checkIfJobIsNotSelected(jobName)) {
         if (data.selectedJobs.length >= data.maxJobs) {
-            data.selectedJobs.shift()
+            data.selectedJobs.splice(removeIndex, 1)
         }
         data.selectedJobs.push(data.job[jobName])
     } else for (i = 0; i < data.selectedJobs.length; i++) {
@@ -287,30 +287,30 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXp = applySpeed() * currentJob.xpMult * data.jobXPMult * data.happiness
-    currentJob.xp += jobXp
-    while (currentJob.xp >= currentJob.maxXp) {
+    var jobXP = applySpeed() * currentJob.xpMult * data.jobXPMult * data.happiness
+    currentJob.xp += jobXP
+    while (currentJob.xp >= currentJob.maxXP) {
         currentJob.level++
-        currentJob.maxXp = getTaskMaxXp(currentJob)
+        currentJob.maxXP = getTaskMaxXp(currentJob)
     }
     while (currentJob.xp < getTaskMaxXp(currentJob, 1)) {
         currentJob.level--
-        currentJob.maxXp = getTaskMaxXp(currentJob)
+        currentJob.maxXP = getTaskMaxXp(currentJob)
     }
-    currentJob.maxXp = getTaskMaxXp(currentJob)
+    currentJob.maxXP = getTaskMaxXp(currentJob)
 }
 
 function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
     task.xp += applySpeed() * task.xpMult * data.happiness
-    while (task.xp >= task.maxXp) {
+    while (task.xp >= task.maxXP) {
         task.level++
-        task.maxXp = getTaskMaxXp(task)
+        task.maxXP = getTaskMaxXp(task)
     }
     while (task.xp < getTaskMaxXp(task, 1)) {
         task.level--
-        task.maxXp = getTaskMaxXp(task)
+        task.maxXP = getTaskMaxXp(task)
     }
-    task.maxXp = getTaskMaxXp(task)
+    task.maxXP = getTaskMaxXp(task)
 }
 
 function doSelectedSkills() {
@@ -328,17 +328,17 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXp = applySpeed() * currentSkill.xpMult * data.skillXPMult * data.happiness
-    currentSkill.xp += skillXp
-    while (currentSkill.xp >= currentSkill.maxXp) {
+    var skillXP = applySpeed() * currentSkill.xpMult * data.skillXPMult * data.happiness
+    currentSkill.xp += skillXP
+    while (currentSkill.xp >= currentSkill.maxXP) {
         currentSkill.level++
-        currentSkill.maxXp = getTaskMaxXp(currentSkill)
+        currentSkill.maxXP = getTaskMaxXp(currentSkill)
     }
     while (currentSkill.xp < getTaskMaxXp(currentSkill, 1)) {
         currentSkill.level--
-        currentSkill.maxXp = getTaskMaxXp(currentSkill)
+        currentSkill.maxXP = getTaskMaxXp(currentSkill)
     }
-    currentSkill.maxXp = getTaskMaxXp(currentSkill)
+    currentSkill.maxXP = getTaskMaxXp(currentSkill)
 }
 
 function showInfo() {
@@ -361,6 +361,104 @@ function isAlive() {
         return false
     }
 }
+
+function jobInWhatCategory(task) {
+    for (const category in jobCategories) {
+        if (jobCategories[category].jobs.find((element) => element == task)) return jobCategories[category].name
+    }
+}
+
+function skillInWhatCategory(task) {
+    for (const category in skillCategories) {
+        if (skillCategories[category].skills.find((element) => element == task)) return skillCategories[category].name
+    }
+}
+
+function jobIndexInCategory(task) {
+    for (const category in jobCategories) {
+        if (jobCategories[category].jobs.find((element) => element == task)) return jobCategories[category].jobs.indexOf(task)
+    }
+}
+
+function autopromote() {
+    if (data.selectedJobs[0] == undefined) selectJob("Beggar")
+    if (data.selectedJobs.length < data.maxJobs) {
+        for (const selectedJob in data.selectedJobs) {
+            for (const key in data.job) {
+                const job = data.job[key]
+                var isSelected = false
+                if (isComplete(requirements[data.job[key].class])) {
+                    for (const selectedJob in data.selectedJobs) {
+                        if (data.selectedJobs[selectedJob].name == job.name) isSelected = true
+                    }
+                    if (!isSelected) {
+                        selectJob(key)
+                    }
+                }
+            }
+        }
+    }
+    for (const selectedJob in data.selectedJobs) {
+        var nextSelectedJob = undefined
+        for (const key in data.job) {
+            const job = data.job[key]
+            var isSelected = false
+            if (isComplete(requirements[data.job[key].class])) {
+                for (const selectedJob in data.selectedJobs) {
+                    if (data.selectedJobs[selectedJob].name == job.name) isSelected = true
+                }
+                if (!isSelected && jobInWhatCategory(key) == jobInWhatCategory(data.selectedJobs[selectedJob].name)) {
+                    nextSelectedJob = key
+                }
+            }
+        }
+        var selectJobBool = false
+        for (const selectedJob2 in data.selectedJobs) {
+            if (nextSelectedJob !== undefined && data.selectedJobs[selectedJob2].name !== nextSelectedJob && jobIndexInCategory(data.selectedJobs[selectedJob].name) < jobIndexInCategory(nextSelectedJob)) {
+                selectJobBool = true
+            }
+        }
+        if (selectJobBool) selectJob(nextSelectedJob, selectedJob)
+    }
+}
+
+function autoskill() {
+    if (data.selectedSkills[0] == undefined) {
+        selectSkill("Concentration")
+    } else {
+        var xpDict = {}
+        for (const key in data.skill) {
+            const skill = data.skill[key]
+            if (isComplete(requirements[data.skill[key].class])) xpDict[key] = skill.level
+        }
+        const entries = getSortedKeysFromDict(xpDict)
+        for (let i = 0; i < data.maxSkills; i++) {
+            if (entries[i] && checkIfSkillIsNotSelected(entries[i])) {
+                selectSkill(entries[i])
+            }
+        }
+    }
+}
+
+function getSortedKeysFromDict(dict) {
+    var values = []
+    var entries = []
+    for (const key in dict) {
+        var value = dict[key]
+        values.push(value)
+    }
+    values.sort(function (a, b) { return a - b })
+    for (const key in dict) {
+        var value = dict[key]
+        for (const num in values) {
+            if (value == values[num]) {
+                entries[num] = key
+            }
+        }
+    }
+    return entries
+}
+
 
 function setMenuWidth(width) {
     var root = document.querySelector(':root');
@@ -411,15 +509,17 @@ function update() {
     isAlive()
     applyMultipliers()
     increaseDays()
-    //autoPromote()
+    if (data.autopromote == true) autopromote()
+    if (data.autoskill == true) autoskill()
     //autoLearn()
     doSelectedSkills()
     doSelectedJobs()
     applyExpenses()
     applyIncome()
     updateUI()
-    if (data.autopromote == true) autopromote()
     //getOfflineTime()
+    if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
+    if (data.selectedSkills.length > data.maxSkills) selectSkill(data.selectedSkills[0].name)
 }
 
 function updateWithTime() {

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="An incremental game based on Progress Knight">
-    <meta name="keywords" content="Incremental game, Idle game, PK Rewritten, Progress knight rewritten, Progress knight, PK, PK 2, Progress knight 2, PK Quest, Progress knight quest">
+    <meta name="keywords"
+        content="Incremental game, Idle game, PK Rewritten, Progress knight rewritten, Progress knight, PK, PK 2, Progress knight 2, PK Quest, Progress knight quest">
     <meta name="author" content="Zdzban">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
@@ -44,10 +45,13 @@
                 </div>
                 <div class="buttonGroup">
                     <div id="pauseButton" onclick="pauseButton()">Pause</div>
-                    <div id="autoPromote" onclick="toggleAutoPromote(true)">Auto promote</div>
+                    <div class="verticalButtonGroup">
+                        <div id="autoPromote" class="toggleButton" onclick="toggleAutoPromote(true)">Auto promote</div>
+                        <div id="autoSkill" class="toggleButton" onclick="toggleAutoSkill(true)">Auto skill</div>
+                    </div>
                 </div>
                 <div class="display moneyDisplay">
-                    <p style="font-size: 16px; margin: 0; color: var(--color1)">Balance:</p>
+                    <p style="font-size: 16px; margin: -35px 0 0 0; color: var(--color1)">Balance:</p>
                     <div class="money" id="coinDisplay">
                         <span style="color: red">Error: cant set coins</span>
                         <span></span>
@@ -227,11 +231,13 @@
                             <div id="experimentalSettings" hidden>
                                 <div class="subsetting menuButton" onclick="switchHideTitle(true)">Hide title: <span
                                         id="hideTitle"></span></div>
+                                <div class="subsetting menuButton" onclick="switchQuestMode()">PK Quest Mode: <span
+                                        id="questMode">false</span></div>
                                 <div class="groupedSettings resetSettings">
                                     <div class="subsetting menuButton resetButton" onclick="reset()">Reset<br><span
                                             class="grayed">Fully resets the game</span></div>
-                                    <div class="subsetting menuButton resetButton" onclick="reset(true)">Full Reset<br><span
-                                            class="grayed">Also resets the settings</span></div>
+                                    <div class="subsetting menuButton resetButton" onclick="reset(true)">Full
+                                        Reset<br><span class="grayed">Also resets the settings</span></div>
                                 </div>
                             </div>
                         </div>

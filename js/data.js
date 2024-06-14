@@ -1,166 +1,3 @@
-var data = { //formerly gameData
-    //player
-    coins: 0,
-    days: 365 * 14,
-    lifespan: 365 * 60,
-    currentRealtime: 0,
-    happiness: 1,
-    evil: 0,
-    storedOfflineTime: 0,
-
-    selectedTab: "default tab set in main.js",
-    selectedSettings: null,
-    baseLifespan: 365 * 60,
-    baseGameSpeed: 4,
-    paused: true,
-    autopromote: false,
-    maxJobs: 1,
-    maxSkills: 1,
-    jobXPMult: 1,
-    incomeMult: 1,
-    skillXPMult: 1,
-    expenseMult: 1,
-    selectedJobs: [],
-    selectedSkills: [],
-    selectedHome: "Homeless",
-
-    lastUpdate: new Date().getTime(),
-    updateTimeDiff: 100,
-    settings: {
-        primaryTheme: 0,
-        secondaryTheme: 0,
-        currencyNotation: 0,
-        numberNotation: 1,
-        coinsDisplayed: 2,
-        sidebarZoom: 3,
-        mainpanelZoom: 3,
-        textShadow: 2,
-        experimentalSettings: 0,
-        hideTitle: false,
-        mobile: false,
-        updateSpeed: 20,
-        updateSpeedSetting: 2,
-        saveSpeed: 5000,
-    },
-    stats: {
-        startDate: new Date(),
-        totalDays: 0,
-        realtime: 0,
-        highestDays: 365 * 14,
-    },
-    job: {
-        "Beggar": { name: "Beggar", class: "beggar", xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
-        "Farmer": { name: "Farmer", class: "farmer", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 9 },
-        "Fisherman": { name: "Fisherman", class: "fisherman", xp: 0, maxXp: 200, baseMaxXp: 200, level: 0, maxLevel: 0, income: 15 },
-        "Miner": { name: "Miner", class: "miner", xp: 0, maxXp: 400, baseMaxXp: 400, level: 0, maxLevel: 0, income: 40 },
-        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xp: 0, maxXp: 800, baseMaxXp: 800, level: 0, maxLevel: 0, income: 80 },
-        "Merchant": { name: "Merchant", class: "merchant", xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 0, maxLevel: 0, income: 150 },
-
-        "Squire": { name: "Squire", class: "squire", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 5 },
-        "Footman": { name: "Footman", class: "footman", xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 0, maxLevel: 0, income: 50 },
-        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 0, maxLevel: 0, income: 120 },
-        "Knight": { name: "Knight", class: "knight", xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 0, maxLevel: 0, income: 300 },
-        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 0, maxLevel: 0, income: 1000 },
-        "Elite knight": { name: "Elite knight", class: "eliteKnight", xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 0, maxLevel: 0, income: 3000 },
-        "Holy knight": { name: "Holy knight", class: "holyKnight", xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 0, maxLevel: 0, income: 15000 },
-        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 0, maxLevel: 0, income: 50000 },
-
-        "Student": { name: "Student", class: "student", xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
-    },
-    skill: {
-        "Concentration": { name: "Concentration", class: "concentration", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Skill XP" },
-        "Productivity": { name: "Productivity", class: "productivity", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Job XP" },
-        "Bargaining": { name: "Bargaining", class: "bargaining", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
-        "Meditation": { name: "Meditation", class: "meditation", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Happiness" },
-        
-        "Strength": { name: "Strength", class: "strength", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military Income" },
-        "Battle tactics": { name: "Battle tactics", class: "battleTactics", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military XP" },
-        "Muscle memory": { name: "Muscle memory", class: "muscleMemory", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Strength XP" },
-
-        "Mana control": { name: "Mana control", class: "manaControl", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "T.A.A XP" },
-    },
-    specialTask: {
-        "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" },
-    },
-    category: {
-        job: {
-            "Common work": { name: "Common work", xpMult: 1, incomeMult: 1 },
-            "Military": { name: "Military", xpMult: 1, incomeMult: 1 },
-            "T.A.A": { name: "The Arcane Association", xpMult: 1, incomeMult: 1 },
-        },
-        skill: {
-            "Fundamentals": { name: "Fundamentals", xpMult: 1 },
-            "Combat": { name: "Combat", xpMult: 1 },
-            "Magic": { name: "Magic", xpMult: 1 },
-            "Dark magic": { name: "Dark magic", xpMult: 1 }
-        }
-    },
-    buyable: {
-        home: {
-            //properties
-            "Homeless": { name: "Homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
-            "Tent": { name: "Tent", owned: false, price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
-            "Wooden hut": { name: "Wooden hut", owned: false, price: 0, upkeep: 100, effect: 2, description: "Happiness" },
-            "Cottage": { name: "Cottage", owned: false, price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
-            "House": { name: "House", owned: false, price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
-            "Large house": { name: "Large house", owned: false, price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
-            "Small palace": { name: "Small palace", owned: false, price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
-            "Grand palace": { name: "Grand palace", owned: false, price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
-        },
-        normal: {
-            //items
-            "Book": { name: "Book", owned: false, price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
-            "Dumbbells": { name: "Dumbbells", owned: false, price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
-            "Steel longsword": { name: "Steel longsword", owned: false, price: 1000, upkeep: 0, effect: 2, description: "Military XP" },
-            "Sapphire charm": { name: "Sapphire charm", owned: false, price: 50000, upkeep: 0, effect: 3, description: "Magic XP" },
-            "Study desk": { name: "Study desk", owned: false, price: 1000000, upkeep: 0, effect: 2, description: "Skill XP" },
-            "Library": { name: "Library", owned: false, price: 10000000, upkeep: 0, effect: 1.5, description: "Skill XP" },
-            //helpers
-            "Personal squire": { name: "Personal squire", owned: false, price: 200, upkeep: 0, effect: 2, description: "Job XP" },
-            "Butler": { name: "Butler", owned: false, price: 7500, upkeep: 0, effect: 1.5, description: "Happiness" },
-        }
-    }
-}
-
-
-function assignBaseTaskFormula() {
-    for (jobName in data.job) {
-        const task = data.job[jobName]
-        if (!task.hasOwnProperty("xpFormula")) {
-            task.xpFormula = "normalJob"
-        }
-        if (!task.hasOwnProperty("incomeFormula")) {
-            task.incomeFormula = "normal"
-        }
-        if (!task.hasOwnProperty("description")) {
-            task.description = "Income"
-        }
-        if (!task.hasOwnProperty("incomeMult")) {
-            task.incomeMult = 1
-        }
-        if (!task.hasOwnProperty("xpMult")) {
-            task.xpMult = 1
-        }
-    }
-    for (skillName in data.skill) {
-        const task = data.skill[skillName]
-        if (!task.hasOwnProperty("xpFormula")) {
-            task.xpFormula = "normalSkill"
-        }
-        if (!task.hasOwnProperty("effectFormula")) {
-            task.effectFormula = "normal"
-        }
-        if (!task.hasOwnProperty("effectMult")) {
-            task.effectMult = 1
-        }
-        if (!task.hasOwnProperty("xpMult")) {
-            task.xpMult = 1
-        }
-    }
-}
-
-assignBaseTaskFormula()
-
 const jobCategories = {
     "Common work": {
         jobs: ["Beggar", "Farmer", "Fisherman", "Miner", "Blacksmith", "Merchant"],
@@ -207,6 +44,87 @@ const itemCategories = {
     "Misc": ["Book", "Dumbbells", "Personal squire", "Steel longsword", "Butler", "Sapphire charm", "Study desk", "Library"]
 }
 
+const jobs = {
+    //Common work
+    "Beggar": { name: "Beggar", class: "beggar", baseMaxXP: 50, income: 5 },
+    "Farmer": { name: "Farmer", class: "farmer", baseMaxXP: 100, income: 9 },
+    "Fisherman": { name: "Fisherman", class: "fisherman", baseMaxXP: 200, income: 15 },
+    "Miner": { name: "Miner", class: "miner", baseMaxXP: 400, income: 40 },
+    "Blacksmith": { name: "Blacksmith", class: "blacksmith", baseMaxXP: 800, income: 80 },
+    "Merchant": { name: "Merchant", class: "merchant", baseMaxXP: 1600, income: 150 },
+    //Military
+    "Squire": { name: "Squire", class: "squire", baseMaxXP: 100, income: 5 },
+    "Footman": { name: "Footman", class: "footman", baseMaxXP: 1000, income: 50 },
+    "Veteran footman": { name: "Veteran footman", class: "veteranFootman", baseMaxXP: 10000, income: 120 },
+    "Knight": { name: "Knight", class: "knight", baseMaxXP: 1e5, income: 300 },
+    "Veteran knight": { name: "Veteran knight", class: "veteranKnight", baseMaxXP: 1e6, income: 1000 },
+    "Elite knight": { name: "Elite knight", class: "eliteKnight", baseMaxXP: 7.5e6, income: 3000 },
+    "Holy knight": { name: "Holy knight", class: "holyKnight", baseMaxXP: 4e7, income: 15000 },
+    "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", baseMaxXP: 1.5e8, income: 50000 },
+    //T.A.A
+    "Student": { name: "Student", class: "student", baseMaxXP: 50, income: 5 },
+}
+
+const skills = {
+    //Fundamentals
+    "Concentration": { name: "Concentration", class: "concentration", baseMaxXP: 100, effect: 0.01, description: "Skill XP" },
+    "Productivity": { name: "Productivity", class: "productivity", baseMaxXP: 100, effect: 0.01, description: "Job XP" },
+    "Bargaining": { name: "Bargaining", class: "bargaining", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
+    "Meditation": { name: "Meditation", class: "meditation", baseMaxXP: 100, effect: 0.01, description: "Happiness" },
+    //Combat
+    "Strength": { name: "Strength", class: "strength", baseMaxXP: 100, effect: 0.01, description: "Military Income" },
+    "Battle tactics": { name: "Battle tactics", class: "battleTactics", baseMaxXP: 100, effect: 0.01, description: "Military XP" },
+    "Muscle memory": { name: "Muscle memory", class: "muscleMemory", baseMaxXP: 100, effect: 0.01, description: "Strength XP" },
+    //Magic
+    "Mana control": { name: "Mana control", class: "manaControl", baseMaxXP: 100, effect: 0.01, description: "T.A.A XP" },
+}
+
+const specialTasks = {
+    "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXP: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" }
+}
+
+const buyableHomes = {
+    "Homeless": { name: "Homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
+    "Tent": { name: "Tent", owned: false, price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
+    "Wooden hut": { name: "Wooden hut", owned: false, price: 0, upkeep: 100, effect: 2, description: "Happiness" },
+    "Cottage": { name: "Cottage", owned: false, price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
+    "House": { name: "House", owned: false, price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
+    "Large house": { name: "Large house", owned: false, price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
+    "Small palace": { name: "Small palace", owned: false, price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
+    "Grand palace": { name: "Grand palace", owned: false, price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
+}
+
+const buyableOther = {
+    //items
+    "Book": { name: "Book", owned: false, price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
+    "Dumbbells": { name: "Dumbbells", owned: false, price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
+    "Steel longsword": { name: "Steel longsword", owned: false, price: 1000, upkeep: 0, effect: 2, description: "Military XP" },
+    "Sapphire charm": { name: "Sapphire charm", owned: false, price: 50000, upkeep: 0, effect: 3, description: "Magic XP" },
+    "Study desk": { name: "Study desk", owned: false, price: 1000000, upkeep: 0, effect: 2, description: "Skill XP" },
+    "Library": { name: "Library", owned: false, price: 10000000, upkeep: 0, effect: 1.5, description: "Skill XP" },
+    //helpers
+    "Personal squire": { name: "Personal squire", owned: false, price: 200, upkeep: 0, effect: 2, description: "Job XP" },
+    "Butler": { name: "Butler", owned: false, price: 7500, upkeep: 0, effect: 1.5, description: "Happiness" },
+}
+
+const settings = {
+    primaryTheme: 0,
+    secondaryTheme: 0,
+    currencyNotation: 2,
+    numberNotation: 1,
+    coinsDisplayed: 2,
+    sidebarZoom: 3,
+    mainpanelZoom: 3,
+    textShadow: 2,
+    experimentalSettings: 0,
+    hideTitle: false,
+    mobile: false,
+    updateSpeed: 20,
+    updateSpeedSetting: 2,
+    saveSpeed: 5000,
+
+}
+
 const requirements = {
     //Categories
     //jobs
@@ -239,13 +157,13 @@ const requirements = {
     },
     "combat": {
         job: [],
-        skill: [{ name: "Productivity", value: 10}]
+        skill: [{ name: "Productivity", value: 10 }]
     },
     "magic": {
-        job: [{ name: "Student", value: 1}],
+        job: [{ name: "Student", value: 1 }],
         skill: [],
         show: {
-            job: [{ name: "Student", value: 1}],
+            job: [{ name: "Student", value: 1 }],
             skill: []
         }
     },
@@ -389,7 +307,7 @@ const requirements = {
     //combat
     "strength": {
         job: [],
-        skill: []
+        skill: [{ name: "Productivity", value: 10 }]
     },
     "battleTactics": {
         job: [],
@@ -474,3 +392,139 @@ const tooltips = {
     "Study desk": "A dedicated area which provides many fine stationary and equipment designed for furthering your progress in research.",
     "Library": "Stores a collection of books, each containing vast amounts of information from basic life skills to complex magic spells.",
 }
+
+var data = { //formerly gameData
+    //player
+    coins: 0,
+    days: 365 * 14,
+    lifespan: 365 * 60,
+    currentRealtime: 0,
+    happiness: 1,
+    evil: 0,
+    storedOfflineTime: 0,
+
+    selectedTab: "default tab set in main.js",
+    selectedSettings: null,
+    baseLifespan: 365 * 60,
+    baseGameSpeed: 4,
+    paused: true,
+    autopromote: false,
+    autoskill: false,
+    maxJobs: 1,
+    maxSkills: 1,
+    jobXPMult: 1,
+    incomeMult: 1,
+    skillXPMult: 1,
+    expenseMult: 1,
+    selectedJobs: [],
+    selectedSkills: [],
+    selectedHome: "Homeless",
+
+    lastUpdate: new Date().getTime(),
+    updateTimeDiff: 100,
+    settings: {},
+    stats: {
+        startDate: new Date(),
+        totalDays: 0,
+        realtime: 0,
+        highestDays: 365 * 14,
+    },
+    job: {},
+    skill: {},
+    specialTask: {},
+    category: {
+        job: {},
+        skill: {}
+    },
+    buyable: {
+        home: {},
+        other: {}
+    }
+}
+
+function assignBaseTasks() {
+    for (const jobName in jobs) {
+        if (!data.job.hasOwnProperty(jobName)) {
+            data.job[jobName] = jobs[jobName]
+        }
+    }
+    for (const skillName in skills) {
+        if (!data.skill.hasOwnProperty(skillName)) {
+            data.skill[skillName] = skills[skillName]
+        }
+    }
+    for (const taskName in specialTasks) {
+        if (!data.specialTask.hasOwnProperty(taskName)) {
+            data.specialTask[taskName] = specialTasks[taskName]
+        }
+    }
+    for (const category in jobCategories) {
+        if (!data.category.job.hasOwnProperty(category)) {
+            data.category.job[category] = { name: jobCategories[category].nameFull, xpMult: 1, incomeMult: 1 }
+        }
+    }
+    for (const category in skillCategories) {
+        if (!data.category.skill.hasOwnProperty(category)) {
+            data.category.skill[category] = { name: skillCategories[category].nameFull, xpMult: 1, effectMult: 1 }
+        }
+    }
+    for (const buyable in buyableHomes) {
+        if (!data.buyable.home.hasOwnProperty(buyable)) {
+            data.buyable.home[buyable] = buyableHomes[buyable]
+        }
+    }
+    for (const buyable in buyableOther) {
+        if (!data.buyable.home.hasOwnProperty(buyable)) {
+            data.buyable.other[buyable] = buyableOther[buyable]
+        }
+    }
+    for (const setting in settings) {
+        if (!data.settings.hasOwnProperty(setting)) {
+            data.settings[setting] = settings[setting]
+
+        }
+    }
+    for (jobName in data.job) {
+        const task = data.job[jobName]
+        if (!task.hasOwnProperty("xp")) {
+            task.xp = 0
+            task.maxXP = task.baseMaxXP
+            task.level = 0
+            task.maxLevel = 0
+            task.xpMult = 1
+        }
+        if (!task.hasOwnProperty("xpFormula")) {
+            task.xpFormula = "normalJob"
+        }
+        if (!task.hasOwnProperty("incomeFormula")) {
+            task.incomeFormula = "normal"
+        }
+        if (!task.hasOwnProperty("description")) {
+            task.description = "Income"
+        }
+        if (!task.hasOwnProperty("incomeMult")) {
+            task.incomeMult = 1
+        }
+    }
+    for (skillName in data.skill) {
+        const task = data.skill[skillName]
+        if (!task.hasOwnProperty("xp")) {
+            task.xp = 0
+            task.maxXP = task.baseMaxXP
+            task.level = 0
+            task.maxLevel = 0
+            task.xpMult = 1
+        }
+        if (!task.hasOwnProperty("xpFormula")) {
+            task.xpFormula = "normalSkill"
+        }
+        if (!task.hasOwnProperty("effectFormula")) {
+            task.effectFormula = "normal"
+        }
+        if (!task.hasOwnProperty("effectMult")) {
+            task.effectMult = 1
+        }
+    }
+}
+
+assignBaseTasks()

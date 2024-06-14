@@ -15,24 +15,24 @@ function renderSidebar() {
     document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed / 4, 2)
 
     if (data.selectedJobs.length >= 1) {
-        const job1 = data.selectedJobs[0]
+        const job1 = data.selectedJobs.at(-1)
         document.querySelector("#jobDisplay1 .jobProgressBarText").innerText = job1.name + " Lv" + job1.level
-        const progressBarPercentage1 = 100 + 100 * (job1.xp - job1.maxXp) / (job1.maxXp - getTaskMaxXp(job1, 1))
+        const progressBarPercentage1 = 100 + 100 * (job1.xp - job1.maxXP) / (job1.maxXP - getTaskMaxXp(job1, 1))
         renderProgressBar(progressBarPercentage1, document.querySelector("#jobDisplay1"))
         document.querySelector("#jobDisplay1").removeAttribute("hidden")
         document.querySelector("#currentJobsDisplay").removeAttribute("hidden")
 
         if (data.selectedJobs.length >= 2) {
-            const job2 = data.selectedJobs[1]
+            const job2 = data.selectedJobs.at(-2)
             document.querySelector("#jobDisplay2 .jobProgressBarText").innerText = job2.name + " Lv" + job2.level
-            const progressBarPercentage2 = 100 + 100 * (job2.xp - job2.maxXp) / (job2.maxXp - getTaskMaxXp(job2, 1))
+            const progressBarPercentage2 = 100 + 100 * (job2.xp - job2.maxXP) / (job2.maxXP - getTaskMaxXp(job2, 1))
             renderProgressBar(progressBarPercentage2, document.querySelector("#jobDisplay2"))
             document.querySelector("#jobDisplay2").removeAttribute("hidden")
 
             if (data.selectedJobs.length >= 3) {
-                const job3 = data.selectedJobs[2]
+                const job3 = data.selectedJobs.at(-3)
                 document.querySelector("#jobDisplay3 .jobProgressBarText").innerText = job3.name + " Lv" + job3.level
-                const progressBarPercentage3 = 100 + 100 * (job3.xp - job3.maxXp) / (job3.maxXp - getTaskMaxXp(job3, 1))
+                const progressBarPercentage3 = 100 + 100 * (job3.xp - job3.maxXP) / (job3.maxXP - getTaskMaxXp(job3, 1))
                 renderProgressBar(progressBarPercentage3, document.querySelector("#jobDisplay3"))
                 document.querySelector("#jobDisplay3").removeAttribute("hidden")
 
@@ -41,24 +41,24 @@ function renderSidebar() {
     } else { document.querySelector("#jobDisplay1").setAttribute("hidden", ""); document.querySelector("#jobDisplay2").setAttribute("hidden", ""); document.querySelector("#jobDisplay3").setAttribute("hidden", ""); document.querySelector("#currentJobsDisplay").setAttribute("hidden", "") }
 
     if (data.selectedSkills.length >= 1) {
-        const skill1 = data.selectedSkills[0]
+        const skill1 = data.selectedSkills.at(-1)
         document.querySelector("#skillDisplay1 .skillProgressBarText").innerText = skill1.name + " Lv" + skill1.level
-        const progressBarPercentage1 = 100 + 100 * (skill1.xp - skill1.maxXp) / (skill1.maxXp - getTaskMaxXp(skill1, 1))
+        const progressBarPercentage1 = 100 + 100 * (skill1.xp - skill1.maxXP) / (skill1.maxXP - getTaskMaxXp(skill1, 1))
         renderProgressBar(progressBarPercentage1, document.querySelector("#skillDisplay1"))
         document.querySelector("#skillDisplay1").removeAttribute("hidden")
         document.querySelector("#currentSkillsDisplay").removeAttribute("hidden")
 
         if (data.selectedSkills.length >= 2) {
-            const skill2 = data.selectedSkills[1]
+            const skill2 = data.selectedSkills.at(-2)
             document.querySelector("#skillDisplay2 .skillProgressBarText").innerText = skill2.name + " Lv" + skill2.level
-            const progressBarPercentage2 = 100 + 100 * (skill2.xp - skill2.maxXp) / (skill2.maxXp - getTaskMaxXp(skill2, 1))
+            const progressBarPercentage2 = 100 + 100 * (skill2.xp - skill2.maxXP) / (skill2.maxXP - getTaskMaxXp(skill2, 1))
             renderProgressBar(progressBarPercentage2, document.querySelector("#skillDisplay2"))
             document.querySelector("#skillDisplay2").removeAttribute("hidden")
 
             if (data.selectedSkills.length >= 3) {
-                const skill3 = data.selectedSkills[2]
+                const skill3 = data.selectedSkills.at(-3)
                 document.querySelector("#skillDisplay3 .skillProgressBarText").innerText = skill3.name + " Lv" + skill3.level
-                const progressBarPercentage3 = 100 + 100 * (skill3.xp - skill3.maxXp) / (skill3.maxXp - getTaskMaxXp(skill3, 1))
+                const progressBarPercentage3 = 100 + 100 * (skill3.xp - skill3.maxXP) / (skill3.maxXP - getTaskMaxXp(skill3, 1))
                 renderProgressBar(progressBarPercentage3, document.querySelector("#skillDisplay3"))
                 document.querySelector("#skillDisplay3").removeAttribute("hidden")
 
@@ -136,18 +136,13 @@ function toggleAutoPromote(change) {
     if (data.autopromote) { document.getElementById("autoPromote").classList.add("toggled") } else document.getElementById("autoPromote").classList.remove("toggled")
 }
 
-function autopromote() {
-    for (const key in data.job) {
-        const job = data.job[key]
-        if (isComplete(requirements[data.job[key].class])) {
-            const income = getIncomeSpecific(key);
-            var isSelected = false
-            for (const selectedJob in data.selectedJobs) {
-                if (data.selectedJobs[selectedJob].name == job.name) isSelected = true
-            }
-            if (!isSelected) selectJob(key)
-        }
+function toggleAutoSkill(change) {
+    if (change) {
+        if (data.autoskill) {
+            data.autoskill = false
+        } else data.autoskill = true
     }
+    if (data.autoskill) { document.getElementById("autoSkill").classList.add("toggled") } else document.getElementById("autoSkill").classList.remove("toggled")
 }
 
 function isComplete(requirement) { //requirement = data.requirement[key]
@@ -233,7 +228,7 @@ function renderStats() {
         const offlineTask = data.specialTask["Offline time"]
         offlineTask.xp = data.storedOfflineTime / 1000
         doTask(offlineTask)
-        renderProgressBar(100 + 100 * (offlineTask.xp - offlineTask.maxXp) / (offlineTask.maxXp - getTaskMaxXp(offlineTask, 1)), document.getElementById("statsOfflineProgressBar"))
+        renderProgressBar(100 + 100 * (offlineTask.xp - offlineTask.maxXP) / (offlineTask.maxXP - getTaskMaxXp(offlineTask, 1)), document.getElementById("statsOfflineProgressBar"))
         document.getElementById("offlineProgressBarProgress").innerText = offlineTask.level
         document.getElementById("offlineTimeDisplay").innerText = formatTimeAmount(data.storedOfflineTime / 1000)
     }
@@ -495,6 +490,20 @@ function switchHideTitle(change = true) {
     }
 }
 
+var questMode = false
+function switchQuestMode() {
+    if (questMode) {questMode = false} else questMode = true
+    if (questMode) {
+        data.maxJobs = 30
+        data.maxSkills = 30
+        document.getElementById("questMode").innerText = "true"
+    } else {
+        data.maxJobs = 1
+        data.maxSkills = 1
+        document.getElementById("questMode").innerText = "false"
+    }
+}
+
 function renderProgressBar(percentage, element) {
     element.children[0].setAttribute("style", "width: " + percentage + "%")
 }
@@ -524,17 +533,17 @@ function renderHero() {
                     const jobIncomeDisplay = getIncomeSpecific(thisJob.name);
                     const jobXPDisplay = thisJob.xp;
                     const jobXPRateDisplay = thisJob.xpMult * data.jobXPMult * data.happiness;
-                    const jobXPLeftDisplay = thisJob.maxXp - thisJob.xp;
+                    const jobXPLeftDisplay = thisJob.maxXP - thisJob.xp;
                     const jobMaxLevelDisplay = formatLevel(thisJob.maxLevel);
 
                     jobType.querySelector(".jobLevelDisplay").innerText = jobLevelDisplay;
                     formatCoins(jobIncomeDisplay, jobType.querySelector(".jobIncomeDisplay"));
 
-                    const progressBarPercentage = 100 + 100 * (thisJob.xp - thisJob.maxXp) / (thisJob.maxXp - getTaskMaxXp(thisJob, 1));
+                    const progressBarPercentage = 100 + 100 * (thisJob.xp - thisJob.maxXP) / (thisJob.maxXP - getTaskMaxXp(thisJob, 1));
                     renderProgressBar(progressBarPercentage, jobType.querySelector(".jobProgressBar"));
 
                     jobType.querySelector(".jobXPDisplay").innerText = format(jobXPDisplay);
-                    jobType.querySelector(".jobXPRateDisplay").innerText = format(jobXPRateDisplay);
+                    jobType.querySelector(".jobXPRateDisplay").innerText = format(jobXPRateDisplay, 2);
                     jobType.querySelector(".jobXPLeftDisplay").innerText = format(jobXPLeftDisplay);
                     jobType.querySelector(".jobMaxLevelDisplay").innerText = jobMaxLevelDisplay;
                     formatRequirements(jobName,
@@ -578,17 +587,17 @@ function renderSkills() {
                     const skillEffectDisplay = formatEffect(thisSkill.name);
                     const skillXPDisplay = thisSkill.xp;
                     const skillXPRateDisplay = thisSkill.xpMult * data.skillXPMult * data.happiness;
-                    const skillXPLeftDisplay = thisSkill.maxXp - thisSkill.xp;
+                    const skillXPLeftDisplay = thisSkill.maxXP - thisSkill.xp;
                     const skillMaxLevelDisplay = formatLevel(thisSkill.maxLevel);
 
                     skillType.querySelector(".skillLevelDisplay").innerText = skillLevelDisplay;
                     skillType.querySelector(".skillEffectDisplay").innerText = skillEffectDisplay
 
-                    const progressBarPercentage = 100 + 100 * (thisSkill.xp - thisSkill.maxXp) / (thisSkill.maxXp - getTaskMaxXp(thisSkill, 1));
+                    const progressBarPercentage = 100 + 100 * (thisSkill.xp - thisSkill.maxXP) / (thisSkill.maxXP - getTaskMaxXp(thisSkill, 1));
                     renderProgressBar(progressBarPercentage, skillType.querySelector(".skillProgressBar"));
 
                     skillType.querySelector(".skillXPDisplay").innerText = format(skillXPDisplay);
-                    skillType.querySelector(".skillXPRateDisplay").innerText = format(skillXPRateDisplay);
+                    skillType.querySelector(".skillXPRateDisplay").innerText = format(skillXPRateDisplay, 2);
                     skillType.querySelector(".skillXPLeftDisplay").innerText = format(skillXPLeftDisplay);
                     skillType.querySelector(".skillMaxLevelDisplay").innerText = skillMaxLevelDisplay;
                     formatRequirements(skillName,
