@@ -163,7 +163,7 @@
                     <div id="heroButton" class="tabButton menuButton" onclick="setTab('hero')">Hero</div>
                     <div id="skillsButton" class="tabButton menuButton" onclick="setTab('skills')">Skills</div>
                     <div id="shopButton" class="tabButton menuButton" onclick="setTab('shop')">Shop</div>
-                    <div id="amuletButton" class="tabButton menuButton" onclick="setTab('amulet')">Amulet</div>
+                    <div hidden id="amuletButton" class="tabButton menuButton" onclick="setTab('amulet')">Amulet</div>
                     <div id="settingsButton" class="tabButton menuButton" onclick="setTab('settings')">Settings</div>
                 </div>
                 <div class="main-panel tab roboto-regular">
@@ -179,7 +179,31 @@
                         <div class="menuButton">placeholder2</div>
                     </div>
                     <div class="subpanel hidden" id="amuletPanel">
-                        <div class="menuButton">placeholder3</div>
+                        <div class="subsubpanel amuletPanel" id="amuletSubpanel">
+                            <div hidden class="amuletText" id="amuletText25">You stumble across a strange looking amulet
+                                on
+                                your 25th birthday. It does not look like it has any worth on the market given that it's
+                                made from cheap-looking copper. However, you feel a weird urge to keep the amulet, so
+                                you slip it into your pocket for safekeeping. </div>
+                            <div hidden class="amuletText" id="amuletText40">On your 40th birthday, you feel the amulet
+                                shiver uncontrollably in your pocket. You take it out and the constant shivering
+                                suddenly stops. More to your bizarre surprise, you notice a strange etching on the
+                                centre of the amulet. </div>
+                            <div hidden class="amuletText" id="amuletText55">
+                                <div>On your 55th birthday, you once again encounter the strange, unexplained shivering
+                                    from your amulet. But this time, a living eyeball emerges from the centre. Although
+                                    terribly frightened, you realise you do not have many years to live left anyway so
+                                    you consider touching the eye to see what happens. </div>
+                                <div class="grayed"><i>By touching the eyeball, you will be reborn and have to restart life
+                                    again, losing all your levels and coins. However, you will gain xp multipliers for
+                                    your heroes and skills equivalent to: 1 + the max level of the hero or skill / 10.
+                                    This means you will learn everything again much more quickly than you did in your
+                                    previous life. <span style="color: red">Something tells you that the amulet might
+                                        evolve after living for 2 whole centuries... </i></span>
+                                        <div class="rebirthButton" id="rebirth1" onclick="rebirth(1)">Touch the eye</div>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="subpanel hidden" id="settingsPanel">
                         <div class="menu settingsButtons">
@@ -288,6 +312,7 @@
 <script type="text/javascript" src="js/setup.js"></script>
 <script type="text/javascript" src="js/utils.js"></script>
 <script type="text/javascript" src="js/ui.js"></script>
+<script type="text/javascript" src="js/advancements.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 
 </html>

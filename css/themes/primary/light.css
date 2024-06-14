@@ -9,8 +9,8 @@
     --color7: #e9e9e9;
     --color10: oklch(75% 0.055 195);
     --color11: oklch(55% 0.045 195);
-    --taskText: var(--color0);
-    --taskTextBackground: var(--color0);
+    --taskText: var(--color7);
+    --taskTextBackground: var(--color7);
     --paused: oklch(75% 0.1 195);
     --toggled: oklch(75% 0.1 30);
     --expense: oklch(45% 0.1 30);

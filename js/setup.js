@@ -200,6 +200,7 @@ function startSetup() {
     renderHero()
     renderSkills()
     setTab("hero")
+    setupAllAdvancements()
     toggleAutoPromote(false)
     toggleAutoSkill(false)
     switchPrimaryTheme(false)

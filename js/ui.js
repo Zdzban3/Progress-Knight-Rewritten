@@ -532,7 +532,7 @@ function renderHero() {
                     const jobLevelDisplay = formatLevel(thisJob.level);
                     const jobIncomeDisplay = getIncomeSpecific(thisJob.name);
                     const jobXPDisplay = thisJob.xp;
-                    const jobXPRateDisplay = thisJob.xpMult * data.jobXPMult * data.happiness;
+                    const jobXPRateDisplay = thisJob.xpMult * (1 + thisJob.maxLevel / 10)  * data.jobXPMult * data.happiness;
                     const jobXPLeftDisplay = thisJob.maxXP - thisJob.xp;
                     const jobMaxLevelDisplay = formatLevel(thisJob.maxLevel);
 
@@ -586,7 +586,7 @@ function renderSkills() {
                     const skillLevelDisplay = formatLevel(thisSkill.level);
                     const skillEffectDisplay = formatEffect(thisSkill.name);
                     const skillXPDisplay = thisSkill.xp;
-                    const skillXPRateDisplay = thisSkill.xpMult * data.skillXPMult * data.happiness;
+                    const skillXPRateDisplay = thisSkill.xpMult * (1 + thisSkill.maxLevel / 10) * data.skillXPMult * data.happiness;
                     const skillXPLeftDisplay = thisSkill.maxXP - thisSkill.xp;
                     const skillMaxLevelDisplay = formatLevel(thisSkill.maxLevel);
 

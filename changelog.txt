@@ -1,3 +1,6 @@
+version 0.0.4α [4] 15/06/2024
+* added Amulet and rebirth 1
+
 version 0.0.3α [3] 14/06/2024
 * added Autopromote and Autoskill
 

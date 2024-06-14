@@ -287,7 +287,7 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXP = applySpeed() * currentJob.xpMult * data.jobXPMult * data.happiness
+    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.jobXPMult * data.happiness 
     currentJob.xp += jobXP
     while (currentJob.xp >= currentJob.maxXP) {
         currentJob.level++
@@ -301,7 +301,7 @@ function doCurrentJob(jobName) {
 }
 
 function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
-    task.xp += applySpeed() * task.xpMult * data.happiness
+    task.xp += applySpeed() * task.xpMult * data.happiness * (1 + task.maxLevel / 10)
     while (task.xp >= task.maxXP) {
         task.level++
         task.maxXP = getTaskMaxXp(task)
@@ -328,7 +328,7 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXP = applySpeed() * currentSkill.xpMult * data.skillXPMult * data.happiness
+    var skillXP = applySpeed() * currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.skillXPMult * data.happiness
     currentSkill.xp += skillXP
     while (currentSkill.xp >= currentSkill.maxXP) {
         currentSkill.level++
@@ -459,6 +459,46 @@ function getSortedKeysFromDict(dict) {
     return entries
 }
 
+function updateAdvancements() {
+    for (const adv in data.advancements) {
+        if (data.advancements[adv].reached == false) {
+            var finished = true
+            if (data.advancements[adv].age) {
+                if (data.advancements[adv].age > data.days / 365) finished = false
+            }
+
+            if (finished) {
+                data.advancements[adv].reached = true
+                window[`advancement${adv}`]()
+            }
+        }
+    }
+}
+
+function rebirthTask(task, rebirthStage) {
+    if (rebirthStage == 1) {
+        task.level = 0
+        task.xp = 0
+    }
+}
+
+function rebirth(rebirthStage) {
+    if (rebirthStage == 1) {
+        for (const key in data.job) {
+            const task = data.job[key]
+            task.maxLevel = task.level
+            rebirthTask(task, 1)
+        }
+        for (const key in data.skill) {
+            const task = data.skill[key]
+            task.maxLevel = task.level
+            rebirthTask(task, 1)
+        }
+        data.days = 365 * 14
+        setTab('hero')
+    }
+}
+
 
 function setMenuWidth(width) {
     var root = document.querySelector(':root');
@@ -509,17 +549,17 @@ function update() {
     isAlive()
     applyMultipliers()
     increaseDays()
+    updateAdvancements()
     if (data.autopromote == true) autopromote()
     if (data.autoskill == true) autoskill()
-    //autoLearn()
     doSelectedSkills()
     doSelectedJobs()
+    if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
+    if (data.selectedSkills.length > data.maxSkills) selectSkill(data.selectedSkills[0].name)
     applyExpenses()
     applyIncome()
     updateUI()
-    //getOfflineTime()
-    if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
-    if (data.selectedSkills.length > data.maxSkills) selectSkill(data.selectedSkills[0].name)
+    amuletText()
 }
 
 function updateWithTime() {

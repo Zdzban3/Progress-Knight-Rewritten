@@ -301,6 +301,4 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
         if (el8) el8.setAttribute("hidden", "")
     }
     element.textContent = text
-
-
 }
