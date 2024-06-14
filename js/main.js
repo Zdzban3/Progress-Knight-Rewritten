@@ -2,9 +2,44 @@ function applyMultipliers() {
     data.happiness = applySkillEffects("Happiness")
     data.jobXPMult = applySkillEffects("Job XP")
     data.skillXPMult = applySkillEffects("Skill XP")
+    for (const task in data.job) {
+        data.job[task].xpMult = 1
+        data.job[task].incomeMult = 1
+        data.job[task].xpMult *= applySkillEffects(task + " XP")
+        data.job[task].incomeMult *= applySkillEffects(task + " Income")
+    }
+    for (const task in data.skill) {
+        data.skill[task].xpMult = 1
+        data.skill[task].effectMult = 1
+        data.skill[task].xpMult *= applySkillEffects(task + " XP")
+        data.skill[task].effectMult *= applySkillEffects(task + " Effect")
+    }
     for (const category in data.category.job) {
         data.category.job[category].incomeMult = applySkillEffects(data.category.job[category].name + " Income")
+        for (const job of jobCategories[category].jobs) {
+            data.job[job].incomeMult *= data.category.job[category].incomeMult
+        }
     }
+    for (const category in data.category.job) {
+        data.category.job[category].xpMult = applySkillEffects(data.category.job[category].name + " XP")
+        for (const job of jobCategories[category].jobs) {
+            data.job[job].xpMult *= data.category.job[category].xpMult
+        }
+    }
+    for (const category in data.category.skill) {
+        data.category.skill[category].effectMult = applySkillEffects(data.category.skill[category].name + " Effect")
+        for (const skill of skillCategories[category].skills) {
+            data.skill[skill].effectMult *= data.category.skill[category].effectMult
+        }
+    }
+    for (const category in data.category.skill) {
+        data.category.skill[category].xpMult = applySkillEffects(data.category.skill[category].name + " XP")
+        for (const skill of skillCategories[category].skills) {
+            data.skill[skill].xpMult *= data.category.skill[category].xpMult
+        }
+    }
+    data.expenseMult = 1
+    data.expenseMult *= applySkillEffects("Expenses")
 }
 
 function applySkillEffects(effectName) {
@@ -14,7 +49,7 @@ function applySkillEffects(effectName) {
         const skillDescription = skill.description
         if (skillDescription == effectName) {
             const effectFormula = skill.effectFormula
-            const skillEffect = skill.effect
+            const skillEffect = skill.effect * skill.effectMult
             const skillLevel = skill.level
             switch (effectFormula) {
                 case "normal":
@@ -35,7 +70,7 @@ function getEffectSpecific(skillName) {
     var effect = 1
     const skillLevel = data.skill[skillName].level
     const effectFormula = data.skill[skillName].effectFormula
-    const skillEffect = data.skill[skillName].effect
+    const skillEffect = data.skill[skillName].effect * data.skill[skillName].effectMult
     switch (effectFormula) {
         case "normal":
             effect *= 1 + (skillEffect * skillLevel)
@@ -110,7 +145,7 @@ function getIncome() {
                     var incomeMult = ((job.level) / 9) + 1
                     break
             }
-            income += job.income * incomeMult
+            income += job.income * incomeMult * job.incomeMult
         } else income += 0
     }
     return income
@@ -127,15 +162,7 @@ function getIncomeSpecific(jobName) {
                 var incomeMult = ((job.level) / 9) + 1
                 break
         }
-        var categoryMult = 1
-        for (const category in jobCategories) { 
-            for (const job in jobCategories[category].jobs) {
-                if (jobName == jobCategories[category].jobs[job]) {
-                    categoryMult = data.category.job[category].incomeMult
-                }
-            }
-        }
-        var income = data.job[jobName].income * incomeMult * data.incomeMult * categoryMult
+        var income = data.job[jobName].income * incomeMult * data.job[jobName].incomeMult
         return income
     } else return 0
 }
@@ -149,6 +176,7 @@ function getExpense() {
         }
     }
     expense += data.buyable.home[data.selectedHome].upkeep
+    expense *= data.expenseMult
     return expense
 }
 

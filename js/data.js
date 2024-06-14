@@ -19,6 +19,7 @@ var data = { //formerly gameData
     jobXPMult: 1,
     incomeMult: 1,
     skillXPMult: 1,
+    expenseMult: 1,
     selectedJobs: [],
     selectedSkills: [],
     selectedHome: "Homeless",
@@ -48,35 +49,35 @@ var data = { //formerly gameData
         highestDays: 365 * 14,
     },
     job: {
-        "Beggar": { name: "Beggar", class: "beggar", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
-        "Farmer": { name: "Farmer", class: "farmer", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 9 },
-        "Fisherman": { name: "Fisherman", class: "fisherman", xpMult: 1, xp: 0, maxXp: 200, baseMaxXp: 200, level: 0, maxLevel: 0, income: 15 },
-        "Miner": { name: "Miner", class: "miner", xpMult: 1, xp: 0, maxXp: 400, baseMaxXp: 400, level: 0, maxLevel: 0, income: 40 },
-        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xpMult: 1, xp: 0, maxXp: 800, baseMaxXp: 800, level: 0, maxLevel: 0, income: 80 },
-        "Merchant": { name: "Merchant", class: "merchant", xpMult: 1, xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 0, maxLevel: 0, income: 150 },
+        "Beggar": { name: "Beggar", class: "beggar", xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
+        "Farmer": { name: "Farmer", class: "farmer", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 9 },
+        "Fisherman": { name: "Fisherman", class: "fisherman", xp: 0, maxXp: 200, baseMaxXp: 200, level: 0, maxLevel: 0, income: 15 },
+        "Miner": { name: "Miner", class: "miner", xp: 0, maxXp: 400, baseMaxXp: 400, level: 0, maxLevel: 0, income: 40 },
+        "Blacksmith": { name: "Blacksmith", class: "blacksmith", xp: 0, maxXp: 800, baseMaxXp: 800, level: 0, maxLevel: 0, income: 80 },
+        "Merchant": { name: "Merchant", class: "merchant", xp: 0, maxXp: 1600, baseMaxXp: 1600, level: 0, maxLevel: 0, income: 150 },
 
-        "Squire": { name: "Squire", class: "squire", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 5 },
-        "Footman": { name: "Footman", class: "footman", xpMult: 1, xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 0, maxLevel: 0, income: 50 },
-        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xpMult: 1, xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 0, maxLevel: 0, income: 120 },
-        "Knight": { name: "Knight", class: "knight", xpMult: 1, xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 0, maxLevel: 0, income: 300 },
-        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xpMult: 1, xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 0, maxLevel: 0, income: 1000 },
-        "Elite knight": { name: "Elite knight", class: "eliteKnight", xpMult: 1, xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 0, maxLevel: 0, income: 3000 },
-        "Holy knight": { name: "Holy knight", class: "holyKnight", xpMult: 1, xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 0, maxLevel: 0, income: 15000 },
-        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xpMult: 1, xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 0, maxLevel: 0, income: 50000 },
+        "Squire": { name: "Squire", class: "squire", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, income: 5 },
+        "Footman": { name: "Footman", class: "footman", xp: 0, maxXp: 1000, baseMaxXp: 1000, level: 0, maxLevel: 0, income: 50 },
+        "Veteran footman": { name: "Veteran footman", class: "veteranFootman", xp: 0, maxXp: 10000, baseMaxXp: 10000, level: 0, maxLevel: 0, income: 120 },
+        "Knight": { name: "Knight", class: "knight", xp: 0, maxXp: 1e5, baseMaxXp: 1e5, level: 0, maxLevel: 0, income: 300 },
+        "Veteran knight": { name: "Veteran knight", class: "veteranKnight", xp: 0, maxXp: 1e6, baseMaxXp: 1e6, level: 0, maxLevel: 0, income: 1000 },
+        "Elite knight": { name: "Elite knight", class: "eliteKnight", xp: 0, maxXp: 7.5e6, baseMaxXp: 7.5e6, level: 0, maxLevel: 0, income: 3000 },
+        "Holy knight": { name: "Holy knight", class: "holyKnight", xp: 0, maxXp: 4e7, baseMaxXp: 4e7, level: 0, maxLevel: 0, income: 15000 },
+        "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", xp: 0, maxXp: 1.5e8, baseMaxXp: 1.5e8, level: 0, maxLevel: 0, income: 50000 },
 
-        "Student": { name: "Student", class: "student", xpMult: 1, xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
+        "Student": { name: "Student", class: "student", xp: 0, maxXp: 50, baseMaxXp: 50, level: 0, maxLevel: 0, income: 5 },
     },
     skill: {
-        "Concentration": { name: "Concentration", class: "concentration", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Skill XP" },
-        "Productivity": { name: "Productivity", class: "productivity", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Job XP" },
-        "Bargaining": { name: "Bargaining", class: "bargaining", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
-        "Meditation": { name: "Meditation", class: "meditation", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Happiness" },
+        "Concentration": { name: "Concentration", class: "concentration", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Skill XP" },
+        "Productivity": { name: "Productivity", class: "productivity", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Job XP" },
+        "Bargaining": { name: "Bargaining", class: "bargaining", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
+        "Meditation": { name: "Meditation", class: "meditation", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Happiness" },
         
-        "Strength": { name: "Strength", class: "strength", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military Income" },
-        "Battle tactics": { name: "Battle tactics", class: "battleTactics", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military XP" },
-        "Muscle memory": { name: "Muscle memory", class: "muscleMemory", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Strength XP" },
+        "Strength": { name: "Strength", class: "strength", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military Income" },
+        "Battle tactics": { name: "Battle tactics", class: "battleTactics", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Military XP" },
+        "Muscle memory": { name: "Muscle memory", class: "muscleMemory", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "Strength XP" },
 
-        "Mana control": { name: "Mana control", class: "manaControl", xpMult: 1, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "T.A.A XP" },
+        "Mana control": { name: "Mana control", class: "manaControl", xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0.01, description: "T.A.A XP" },
     },
     specialTask: {
         "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXp: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" },
@@ -85,7 +86,7 @@ var data = { //formerly gameData
         job: {
             "Common work": { name: "Common work", xpMult: 1, incomeMult: 1 },
             "Military": { name: "Military", xpMult: 1, incomeMult: 1 },
-            "The Arcane Association": { name: "The Arcane Association", xpMult: 1, incomeMult: 1 },
+            "T.A.A": { name: "The Arcane Association", xpMult: 1, incomeMult: 1 },
         },
         skill: {
             "Fundamentals": { name: "Fundamentals", xpMult: 1 },
@@ -124,24 +125,36 @@ var data = { //formerly gameData
 
 function assignBaseTaskFormula() {
     for (jobName in data.job) {
-        const job = data.job[jobName]
-        if (!job.hasOwnProperty("xpFormula")) {
-            job.xpFormula = "normalJob"
+        const task = data.job[jobName]
+        if (!task.hasOwnProperty("xpFormula")) {
+            task.xpFormula = "normalJob"
         }
-        if (!job.hasOwnProperty("incomeFormula")) {
-            job.incomeFormula = "normal"
+        if (!task.hasOwnProperty("incomeFormula")) {
+            task.incomeFormula = "normal"
         }
-        if (!job.hasOwnProperty("description")) {
-            job.description = "Income"
+        if (!task.hasOwnProperty("description")) {
+            task.description = "Income"
+        }
+        if (!task.hasOwnProperty("incomeMult")) {
+            task.incomeMult = 1
+        }
+        if (!task.hasOwnProperty("xpMult")) {
+            task.xpMult = 1
         }
     }
     for (skillName in data.skill) {
-        const skill = data.skill[skillName]
-        if (!skill.hasOwnProperty("xpFormula")) {
-            skill.xpFormula = "normalSkill"
+        const task = data.skill[skillName]
+        if (!task.hasOwnProperty("xpFormula")) {
+            task.xpFormula = "normalSkill"
         }
-        if (!skill.hasOwnProperty("effectFormula")) {
-            skill.effectFormula = "normal"
+        if (!task.hasOwnProperty("effectFormula")) {
+            task.effectFormula = "normal"
+        }
+        if (!task.hasOwnProperty("effectMult")) {
+            task.effectMult = 1
+        }
+        if (!task.hasOwnProperty("xpMult")) {
+            task.xpMult = 1
         }
     }
 }
@@ -160,7 +173,7 @@ const jobCategories = {
         nameFull: "Military"
     },
     "The Arcane Association": {
-        jobs: ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"],
+        jobs: ["Student"],
         name: "theArcaneAssociation",
         nameFull: "The Arcane Association"
     }
@@ -177,12 +190,12 @@ const skillCategories = {
         nameFull: "Combat"
     },
     "Magic": {
-        skills: ["Mana control", "Immortality", "Time warping", "Super immortality"],
+        skills: ["Mana control"],
         name: "magic",
         nameFull: "Magic"
     },
     "Dark magic": {
-        skills: ["Dark influence", "Evil control", "Intimidation", "Demon training", "Blood meditation", "Demon's wealth"],
+        skills: [],
         name: "darkMagic",
         nameFull: "Dark magic"
     }
