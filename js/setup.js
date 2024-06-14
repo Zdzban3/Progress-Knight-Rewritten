@@ -28,7 +28,7 @@ function setupHeroTab() {
         jobCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
 
         const elementsData = [
-            { text: categoryName, className: "jobCategoryElementTitle" },
+            { text: jobCategories[categoryName].nameFull, className: "jobCategoryElementTitle" },
             { text: "Level" },
             { text: "Income" },
             { text: "XP" },
@@ -122,7 +122,7 @@ function setupSkillTab() {
         skillCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
 
         const elementsData = [
-            { text: categoryName, className: "skillCategoryElementTitle" },
+            { text: skillCategories[categoryName].nameFull, className: "skillCategoryElementTitle" },
             { text: "Level" },
             { text: "Effect" },
             { text: "XP" },
