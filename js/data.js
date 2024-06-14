@@ -326,7 +326,12 @@ const requirements = {
         job: [{ name: "Student", value: 1 }],
         skill: []
     },
+}
 
+const advancements = {
+    "Amulet": {
+        age: 25
+    }
 }
 
 const tooltips = {
@@ -402,6 +407,7 @@ var data = { //formerly gameData
     happiness: 1,
     evil: 0,
     storedOfflineTime: 0,
+    advancements: {},
 
     selectedTab: "default tab set in main.js",
     selectedSettings: null,
@@ -481,7 +487,11 @@ function assignBaseTasks() {
     for (const setting in settings) {
         if (!data.settings.hasOwnProperty(setting)) {
             data.settings[setting] = settings[setting]
-
+        }
+    }
+    for (const adv in advancements) {
+        if (!data.advancements.hasOwnProperty(adv)) {
+            data.advancements[adv] = advancements[adv]
         }
     }
     for (jobName in data.job) {
