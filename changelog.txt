@@ -1,2 +1,5 @@
+version 0.0.2α [2] 14/06/2024
+* fixed skill effects
+
 version 0.0.1α [1] 12/06/2024
 * begin
