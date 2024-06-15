@@ -9,6 +9,7 @@
     --color7: #181818;
     --color10: oklch(55% 0.045 195);
     --color11: oklch(75% 0.055 195);
+    --textShadow: black;
     --taskText: var(--color0);
     --taskTextBackground: var(--color0);
     --paused: oklch(75% 0.1 195);
@@ -28,13 +29,22 @@
     --theArcaneAssociation: oklch(60% 0.2 355);
     --theArcaneAssociationBackground: oklch(40% 0.16 355);
     --fundamentals: oklch(50% 0.1 105);
-    --fundamentalsBackground: oklch(35% 0.05 105);
+    --fundamentalsBackground: oklch(35% 0.065 105);
     --combat: oklch(45% 0.15 45);
     --combatBackground: oklch(30% 0.1 45);
     --magic: oklch(60% 0.15 325);
     --magicBackground: oklch(40% 0.1 325);
     --darkMagic: oklch(35% 0.08 10);
     --darkMagicBackground: oklch(22.5% 0.05 10);
+
+    --properties: oklch(60% 0.06 220);
+    --propertiesBackground: oklch(40% 0.04 220);
+    --furniture: oklch(30% 0.04 50);
+    --furnitureBackground: oklch(20% 0.025 50);
+    --equipment: oklch(60% 0.02 250);
+    --equipmentBackground: oklch(40% 0.015 250);
+    --personnel: oklch(60% 0.06 0);
+    --personnelBackground: oklch(40% 0.04 0);
 }
 
 body {

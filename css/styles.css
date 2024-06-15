@@ -364,7 +364,7 @@ body {
 }
 
 .amuletText {
-    color: var(--taskText);
+    color: var(--color0);
     font-size: 18px;
     margin: 5px 120px 15px 30px;
 }

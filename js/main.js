@@ -46,8 +46,7 @@ function applySkillEffects(effectName) {
     var effect = 1
     for (const skillName in data.skill) {
         const skill = data.skill[skillName]
-        const skillDescription = skill.description
-        if (skillDescription == effectName) {
+        if (skill.description == effectName) {
             const effectFormula = skill.effectFormula
             const skillEffect = skill.effect * skill.effectMult
             const skillLevel = skill.level
@@ -56,13 +55,18 @@ function applySkillEffects(effectName) {
                     effect *= 1 + (skillEffect * skillLevel)
                     break
                 case "reductive":
-                    effect *= math.pow(1 + skillEffect, math.log(skillLevel + 1, 1.2))
+                    effect *= 1 - log(skillLevel + 1, 6) / 10
                     break
                 case "squared":
-                    effect *= math.pow(1 + (skillEffect * skillLevel), 2)
+                    effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
             }
         }
     }
+    for (const itemName in data.buyable.other) {
+        const item = data.buyable.other[itemName]
+        if (item.owned && item.description == effectName) effect *= item.effect
+    }
+    if (data.buyable.home[data.selectedHome].description == effectName) effect *= data.buyable.home[data.selectedHome].effect
     return effect
 }
 
@@ -76,55 +80,56 @@ function getEffectSpecific(skillName) {
             effect *= 1 + (skillEffect * skillLevel)
             break
         case "reductive":
-            effect *= math.pow(1 + skillEffect, math.log(skillLevel + 1, 1.2))
+            effect *= 1 - log(skillLevel + 1, 6) / 10
             break
         case "squared":
-            effect *= math.pow(1 + (skillEffect * skillLevel), 2)
+            effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
     }
     return effect
 }
 
-function getTaskMaxXp(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
+function getTaskMaxXP(task, levelsBelow = 0) { //task is data.job[jobName] | data.skill[skillName]
     var taskLevel = task.level - levelsBelow
-    if (taskLevel == 0) {
-        return task.baseMaxXP
-    } else if (taskLevel == -1) {
-        return 0
-    }
+    if (taskLevel == 0) return task.baseMaxXP
+    if (taskLevel == -1) return 0
     taskLevel++
     switch (task.xpFormula) {
         case "normalJob":
-            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXP
+            return Math.pow(1.05, taskLevel - 1) * taskLevel * task.baseMaxXP
             break
         case "normalSkill":
-            return math.pow(1.005, taskLevel) * taskLevel * task.baseMaxXP
+            return Math.pow(1.01, taskLevel - 1) * taskLevel * task.baseMaxXP
             break
         case "squaredSkill":
-            return math.pow(1.01, taskLevel) * taskLevel * task.baseMaxXP
+            return Math.pow(1.04, taskLevel - 1) * taskLevel * task.baseMaxXP
             break
         case "offlineTime":
-            return math.pow(taskLevel, 1.25) * task.baseMaxXP
+            return Math.pow(1.01, taskLevel - 1) * taskLevel * task.baseMaxXP
             break
-    }
-}
-
-function sellItem(itemName) {
-    if (data.item[itemName].owned == true) {
-        data.item[itemName].owned = false
-        data.coins += data.item[itemName].price / 2
     }
 }
 
 function buyItem(itemName) {
-    if (data.item[itemName].owned == false, data.coins >= data.item[itemName].price) {
-        data.item[itemName].owned = true
-        data.coins -= data.item[itemName].price
+    if (itemName in data.buyable.other) {
+        const item = data.buyable.other[itemName]
+        if (item.owned == false && data.coins >= item.price) {
+            item.owned = true
+            data.coins -= item.price
+        } else if (item.owned == true) {
+            console.log(itemName, "sold")
+            item.owned = false
+            data.coins += item.price / 2
+        }
     }
-}
-
-function selectHome(homeName) {
-    if (data.selectedHome.name !== homeName) {
-        data.selectedHome = data.home[homeName]
+    if (itemName in data.buyable.home) {
+        const item = data.buyable.home[itemName]
+        if (item.name !== data.selectedHome && data.coins >= item.price) {
+            data.coins += data.buyable.home[data.selectedHome].price / 2
+            data.buyable.home[data.selectedHome].owned = false
+            data.selectedHome = item.name
+            item.owned = true
+            data.coins -= item.price
+        }
     }
 }
 
@@ -134,46 +139,34 @@ function getNet() {
 
 function getIncome() {
     var income = 0
-    for (i = 0; i < data.selectedJobs.length; i++) {
-        const job = data.selectedJobs[i]
-        if (job.hasOwnProperty("income")) {
-            switch (data.selectedJobs[i].incomeFormula) {
-                case "normal":
-                    var incomeMult = ((job.level) / 10) + 1
-                    break
-                case "less penalty":
-                    var incomeMult = ((job.level) / 9) + 1
-                    break
-            }
-            income += job.income * incomeMult * job.incomeMult
-        } else income += 0
+    for (const key in data.selectedJobs) { //key is a number
+        const jobName = data.selectedJobs[key].name
+        income += getIncomeSpecific(jobName)
     }
     return income
 }
 
 function getIncomeSpecific(jobName) {
     const job = data.job[jobName]
-    if (job.hasOwnProperty("income")) {
-        switch (data.job[jobName].incomeFormula) {
+    if ("income" in job) {
+        switch (job.incomeFormula) {
             case "normal":
-                var incomeMult = ((job.level) / 10) + 1
+                var incomeMult = 1 + Math.log10(job.level + 1)
                 break
             case "less penalty":
-                var incomeMult = ((job.level) / 9) + 1
+                var incomeMult = 1 + log(job.level + 1, 9)
                 break
         }
-        var income = data.job[jobName].income * incomeMult * data.job[jobName].incomeMult
+        var income = job.income * incomeMult * job.incomeMult
         return income
     } else return 0
 }
 
 function getExpense() {
     var expense = 0
-    var itemArray = Object.values(data.buyable.other)
-    for (i = 0; i < itemArray.length; i++) {
-        if (itemArray[i].owned == true) {
-            expense += itemArray[i].upkeep
-        }
+    for (const key in data.buyable.other) {
+        const item = data.buyable.other[key]
+        if (item.owned) expense += item.upkeep
     }
     expense += data.buyable.home[data.selectedHome].upkeep
     expense *= data.expenseMult
@@ -208,7 +201,20 @@ function applyIncome() {
 
 function goBankrupt() {
     data.coins = 0
-    data.currentHome = data.home["Homeless"] //set it to the best bought house
+
+    if (data.buyable.home[data.selectedHome].upkeep >= getIncome()) {
+        buyItem("Homeless")
+    }
+    var buyableArray = Object.keys(data.buyable.other).sort(function (a, b) { return data.buyable.other[b].upkeep - data.buyable.other[a].upkeep }) //sort by upkeep backwards
+    for (const key of buyableArray) {
+        const buyable = data.buyable.other[key]
+        if (buyable.owned) {
+            if (buyable.upkeep >= getNet()) {
+                buyItem(buyable)
+                break
+            } else buyItem(buyable)
+        }
+    }
 }
 
 function getLifespan() {
@@ -287,30 +293,30 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.jobXPMult * data.happiness 
+    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.jobXPMult * data.happiness
     currentJob.xp += jobXP
     while (currentJob.xp >= currentJob.maxXP) {
         currentJob.level++
-        currentJob.maxXP = getTaskMaxXp(currentJob)
+        currentJob.maxXP = getTaskMaxXP(currentJob)
     }
-    while (currentJob.xp < getTaskMaxXp(currentJob, 1)) {
+    while (currentJob.xp < getTaskMaxXP(currentJob, 1)) {
         currentJob.level--
-        currentJob.maxXP = getTaskMaxXp(currentJob)
+        currentJob.maxXP = getTaskMaxXP(currentJob)
     }
-    currentJob.maxXP = getTaskMaxXp(currentJob)
+    currentJob.maxXP = getTaskMaxXP(currentJob)
 }
 
 function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
     task.xp += applySpeed() * task.xpMult * data.happiness * (1 + task.maxLevel / 10)
     while (task.xp >= task.maxXP) {
         task.level++
-        task.maxXP = getTaskMaxXp(task)
+        task.maxXP = getTaskMaxXP(task)
     }
-    while (task.xp < getTaskMaxXp(task, 1)) {
+    while (task.xp < getTaskMaxXP(task, 1)) {
         task.level--
-        task.maxXP = getTaskMaxXp(task)
+        task.maxXP = getTaskMaxXP(task)
     }
-    task.maxXP = getTaskMaxXp(task)
+    task.maxXP = getTaskMaxXP(task)
 }
 
 function doSelectedSkills() {
@@ -332,13 +338,13 @@ function doCurrentSkill(skillName) {
     currentSkill.xp += skillXP
     while (currentSkill.xp >= currentSkill.maxXP) {
         currentSkill.level++
-        currentSkill.maxXP = getTaskMaxXp(currentSkill)
+        currentSkill.maxXP = getTaskMaxXP(currentSkill)
     }
-    while (currentSkill.xp < getTaskMaxXp(currentSkill, 1)) {
+    while (currentSkill.xp < getTaskMaxXP(currentSkill, 1)) {
         currentSkill.level--
-        currentSkill.maxXP = getTaskMaxXp(currentSkill)
+        currentSkill.maxXP = getTaskMaxXP(currentSkill)
     }
-    currentSkill.maxXP = getTaskMaxXp(currentSkill)
+    currentSkill.maxXP = getTaskMaxXP(currentSkill)
 }
 
 function showInfo() {
@@ -356,6 +362,7 @@ function isAlive() {
         hideInfo()
         return true
     } else {
+        data.days = data.lifespan
         showInfo()
         pause()
         return false
@@ -407,18 +414,12 @@ function autopromote() {
                 for (const selectedJob in data.selectedJobs) {
                     if (data.selectedJobs[selectedJob].name == job.name) isSelected = true
                 }
-                if (!isSelected && jobInWhatCategory(key) == jobInWhatCategory(data.selectedJobs[selectedJob].name)) {
-                    nextSelectedJob = key
-                }
+                if (!isSelected && jobInWhatCategory(key) == jobInWhatCategory(data.selectedJobs[selectedJob].name)) nextSelectedJob = key
             }
         }
-        var selectJobBool = false
-        for (const selectedJob2 in data.selectedJobs) {
-            if (nextSelectedJob !== undefined && data.selectedJobs[selectedJob2].name !== nextSelectedJob && jobIndexInCategory(data.selectedJobs[selectedJob].name) < jobIndexInCategory(nextSelectedJob)) {
-                selectJobBool = true
-            }
-        }
-        if (selectJobBool) selectJob(nextSelectedJob, selectedJob)
+        if (isComplete(requirements[data.selectedJobs[selectedJob].class])) {
+            if (nextSelectedJob !== undefined && jobIndexInCategory(data.selectedJobs[selectedJob].name) < jobIndexInCategory(nextSelectedJob)) selectJob(nextSelectedJob, selectedJob)
+        } else if (nextSelectedJob !== undefined) selectJob(nextSelectedJob, selectedJob)
     }
 }
 
@@ -486,14 +487,16 @@ function rebirth(rebirthStage) {
     if (rebirthStage == 1) {
         for (const key in data.job) {
             const task = data.job[key]
-            task.maxLevel = math.max(task.level, task.maxLevel)
+            task.maxLevel = Math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
         for (const key in data.skill) {
             const task = data.skill[key]
-            task.maxLevel = math.max(task.level, task.maxLevel)
+            task.maxLevel = Math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
+        for (const key in data.buyable.home) data.buyable.home[key].owned = false
+        for (const key in data.buyable.other) data.buyable.other[key].owned = false
         data.days = 365 * 14
         setTab('hero')
     }
@@ -556,6 +559,10 @@ function update() {
     doSelectedJobs()
     if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
     if (data.selectedSkills.length > data.maxSkills) selectSkill(data.selectedSkills[0].name)
+    for (const key in data.selectedJobs) {
+        const job = data.selectedJobs[key]
+        if (!(isComplete(requirements[job.class]))) selectJob(job.name, key)
+    }
     applyExpenses()
     applyIncome()
     updateUI()

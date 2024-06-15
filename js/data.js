@@ -39,9 +39,27 @@ const skillCategories = {
 };
 
 
-const itemCategories = {
-    "Properties": ["Homeless", "Tent", "Wooden hut", "Cottage", "House", "Large house", "Small palace", "Grand palace"],
-    "Misc": ["Book", "Dumbbells", "Personal squire", "Steel longsword", "Butler", "Sapphire charm", "Study desk", "Library"]
+const shopCategories = {
+    "Properties": {
+        items: ["Homeless", "Tent", "Wooden hut", "Cottage", "House", "Large house", "Small palace", "Grand palace"],
+        name: "properties",
+        nameFull: "Properties"
+    },
+    "Furniture": {
+        items: ["Book", "Dumbbells", "Study desk", "Library"],
+        name: "furniture",
+        nameFull: "Furniture"
+    },
+    "Equipment": {
+        items: ["Steel longsword", "Sapphire charm"],
+        name: "equipment",
+        nameFull: "Equipment"
+    },
+    "Personnel": {
+        items: ["Personal squire", "Butler"],
+        name: "personnel",
+        nameFull: "Personnel"
+    }
 }
 
 const jobs = {
@@ -62,7 +80,7 @@ const jobs = {
     "Holy knight": { name: "Holy knight", class: "holyKnight", baseMaxXP: 4e7, income: 15000 },
     "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", baseMaxXP: 1.5e8, income: 50000 },
     //T.A.A
-    "Student": { name: "Student", class: "student", baseMaxXP: 50, income: 5 },
+    "Student": { name: "Student", class: "student", baseMaxXP: 1e5, income: 100 },
 }
 
 const skills = {
@@ -84,27 +102,27 @@ const specialTasks = {
 }
 
 const buyableHomes = {
-    "Homeless": { name: "Homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
-    "Tent": { name: "Tent", owned: false, price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
-    "Wooden hut": { name: "Wooden hut", owned: false, price: 0, upkeep: 100, effect: 2, description: "Happiness" },
-    "Cottage": { name: "Cottage", owned: false, price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
-    "House": { name: "House", owned: false, price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
-    "Large house": { name: "Large house", owned: false, price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
-    "Small palace": { name: "Small palace", owned: false, price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
-    "Grand palace": { name: "Grand palace", owned: false, price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
+    "Homeless": { name: "Homeless", class: "homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
+    "Tent": { name: "Tent", class: "tent", price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
+    "Wooden hut": { name: "Wooden hut", class: "woodenHut", price: 0, upkeep: 100, effect: 2, description: "Happiness" },
+    "Cottage": { name: "Cottage", class: "cottage", price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
+    "House": { name: "House", class: "house", price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
+    "Large house": { name: "Large house", class: "largeHouse", price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
+    "Small palace": { name: "Small palace", class: "smallPalace", price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
+    "Grand palace": { name: "Grand palace", class: "grandPalace", price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
 }
 
 const buyableOther = {
     //items
-    "Book": { name: "Book", owned: false, price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
-    "Dumbbells": { name: "Dumbbells", owned: false, price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
-    "Steel longsword": { name: "Steel longsword", owned: false, price: 1000, upkeep: 0, effect: 2, description: "Military XP" },
-    "Sapphire charm": { name: "Sapphire charm", owned: false, price: 50000, upkeep: 0, effect: 3, description: "Magic XP" },
-    "Study desk": { name: "Study desk", owned: false, price: 1000000, upkeep: 0, effect: 2, description: "Skill XP" },
-    "Library": { name: "Library", owned: false, price: 10000000, upkeep: 0, effect: 1.5, description: "Skill XP" },
+    "Book": { name: "Book", class: "book", price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
+    "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
+    "Steel longsword": { name: "Steel longsword", class: "steelLongsword", price: 1e3, upkeep: 10, effect: 2, description: "Military XP" },
+    "Sapphire charm": { name: "Sapphire charm", class: "sapphireCharm", price: 5e4, upkeep: 100, effect: 3, description: "Magic XP" },
+    "Study desk": { name: "Study desk", class: "studyDesk", price: 1e6, upkeep: 1e3, effect: 2, description: "Skill XP" },
+    "Library": { name: "Library", class: "library", price: 1e7, upkeep: 1e5, effect: 1.5, description: "Skill XP" },
     //helpers
-    "Personal squire": { name: "Personal squire", owned: false, price: 200, upkeep: 0, effect: 2, description: "Job XP" },
-    "Butler": { name: "Butler", owned: false, price: 7500, upkeep: 0, effect: 1.5, description: "Happiness" },
+    "Personal squire": { name: "Personal squire", class: "personalSquire", price: 0, upkeep: 500, effect: 2, description: "Job XP" },
+    "Butler": { name: "Butler", class: "butler", price: 0, upkeep: 1e5, effect: 1.5, description: "Happiness" },
 }
 
 const settings = {
@@ -176,6 +194,19 @@ const requirements = {
             skill: [],
             evil: 1
         }
+    },
+    //shop
+    "properties": {
+        coins: 0
+    },
+    "furniture": {
+        coins: 0
+    },
+    "equipment": {
+        coins: 100
+    },
+    "personnel": {
+        coins: 1e6
     },
     //Tasks
     //jobs
@@ -320,7 +351,7 @@ const requirements = {
     },
     "battleTactics": {
         job: [],
-        skill: [{ name: "Concentration", value: 20 }]
+        skill: [{ name: "Productivity", value: 10 }, { name: "Concentration", value: 20 }]
     },
     "muscleMemory": {
         job: [],
@@ -334,6 +365,60 @@ const requirements = {
     "manaControl": {
         job: [{ name: "Student", value: 1 }],
         skill: []
+    },
+    //shop
+    //homes
+    "homeless": {
+        coins: -1e308
+    },
+    "tent": {
+        coins: 0
+    },
+    "woodenHut": {
+        coins: 0
+    },
+    "cottage": {
+        coins: 0
+    },
+    "house": {
+        coins: 0
+    },
+    "largeHouse": {
+        coins: 0
+    },
+    "smallPalace": {
+        coins: 0
+    },
+    "grandPalace": {
+        coins: 0
+    },
+    //other
+    //furniture
+    "book": {
+        coins: 0
+    },
+    "dumbbells": {
+        coins: 0
+    },
+    "studyDesk": {
+        coins: 0
+    },
+    "library": {
+        coins: 0
+    },
+    //equipment
+    "steelLongsword": {
+        coins: 0
+    },
+    "sapphireCharm": {
+        coins: 0
+    },
+    //personnel
+    "personalSquire": {
+        coins: 0
+    },
+    "butler": {
+        coins: 0
     },
 }
 
@@ -459,92 +544,114 @@ var data = { //formerly gameData
 }
 
 function assignBaseTasks() {
+    if (!(advancements in data)) data.advancements = {}
     for (const jobName in jobs) {
-        if (!data.job.hasOwnProperty(jobName)) {
+        if (!(jobName in data.job)) {
             data.job[jobName] = jobs[jobName]
         }
     }
     for (const skillName in skills) {
-        if (!data.skill.hasOwnProperty(skillName)) {
+        if (!(skillName in data.skill)) {
             data.skill[skillName] = skills[skillName]
         }
     }
     for (const taskName in specialTasks) {
-        if (!data.specialTask.hasOwnProperty(taskName)) {
+        if (!(taskName in data.specialTask)) {
             data.specialTask[taskName] = specialTasks[taskName]
         }
     }
     for (const category in jobCategories) {
-        if (!data.category.job.hasOwnProperty(category)) {
+        if (!(category in data.category.job)) {
             data.category.job[category] = { name: jobCategories[category].nameFull, xpMult: 1, incomeMult: 1 }
         }
     }
     for (const category in skillCategories) {
-        if (!data.category.skill.hasOwnProperty(category)) {
+        if (!(category in data.category.skill)) {
             data.category.skill[category] = { name: skillCategories[category].nameFull, xpMult: 1, effectMult: 1 }
         }
     }
     for (const buyable in buyableHomes) {
-        if (!data.buyable.home.hasOwnProperty(buyable)) {
+        if (!(buyable in data.buyable.home)) {
             data.buyable.home[buyable] = buyableHomes[buyable]
         }
     }
     for (const buyable in buyableOther) {
-        if (!data.buyable.home.hasOwnProperty(buyable)) {
+        if (!(buyable in data.buyable.other)) {
+            console.log(buyable)
             data.buyable.other[buyable] = buyableOther[buyable]
         }
     }
     for (const setting in settings) {
-        if (!data.settings.hasOwnProperty(setting)) {
+        if (!(setting in data.settings)) {
             data.settings[setting] = settings[setting]
         }
     }
     for (const adv in advancements) {
-        if (!data.advancements.hasOwnProperty(adv)) {
-            data.advancements[adv] = advancements[adv]
-        }
+        data.advancements[adv] = advancements[adv]
     }
-    for (jobName in data.job) {
-        const task = data.job[jobName]
-        if (!task.hasOwnProperty("xp")) {
+    for (const key in data.job) {
+        const task = data.job[key]
+        if (!("xp" in task)) {
             task.xp = 0
             task.maxXP = task.baseMaxXP
             task.level = 0
             task.maxLevel = 0
             task.xpMult = 1
-        }
-        if (!task.hasOwnProperty("xpFormula")) {
-            task.xpFormula = "normalJob"
-        }
-        if (!task.hasOwnProperty("incomeFormula")) {
-            task.incomeFormula = "normal"
-        }
-        if (!task.hasOwnProperty("description")) {
-            task.description = "Income"
-        }
-        if (!task.hasOwnProperty("incomeMult")) {
             task.incomeMult = 1
         }
+        if (!("xpFormula" in task)) {
+            task.xpFormula = "normalJob"
+        }
+        if (!("incomeFormula" in task)) {
+            task.incomeFormula = "normal"
+        }
+        if (!("description" in task)) {
+            task.description = "Income"
+        }
+        task.baseMaxXP = jobs[key].baseMaxXP
+        task.income = jobs[key].income
     }
-    for (skillName in data.skill) {
-        const task = data.skill[skillName]
-        if (!task.hasOwnProperty("xp")) {
+    for (const key in data.skill) {
+        const task = data.skill[key]
+        if (!("xp" in task)) {
             task.xp = 0
             task.maxXP = task.baseMaxXP
             task.level = 0
             task.maxLevel = 0
             task.xpMult = 1
-        }
-        if (!task.hasOwnProperty("xpFormula")) {
-            task.xpFormula = "normalSkill"
-        }
-        if (!task.hasOwnProperty("effectFormula")) {
-            task.effectFormula = "normal"
-        }
-        if (!task.hasOwnProperty("effectMult")) {
             task.effectMult = 1
         }
+        if (!("xpFormula" in task)) {
+            task.xpFormula = "normalSkill"
+        }
+        if (!("effectFormula" in task)) {
+            task.effectFormula = "normal"
+        }
+        task.baseMaxXP = skills[key].baseMaxXP
+        task.effect = skills[key].effect
+    }
+    for (const key in data.buyable.home) {
+        const home = data.buyable.home[key]
+        if (!("owned" in home)) {
+            console.log("dsaghdkl")
+            home.owned = false
+        }
+        home.price = buyableHomes[key].price
+        home.upkeep = buyableHomes[key].upkeep
+        home.class = buyableHomes[key].class //temp
+    }
+    for (const key in data.buyable.other) {
+        const buyable = data.buyable.other[key]
+        if (!("owned" in buyable)) {
+            console.log(key)
+            buyable.owned = false
+        }
+        if (!("owned" in buyable)) {
+            console.log(key)
+            buyable.owned = false
+        }
+        buyable.price = buyableOther[key].price
+        buyable.upkeep = buyableOther[key].upkeep
+        buyable.class = buyableOther[key].class //temp
     }
 }
-
-assignBaseTasks()

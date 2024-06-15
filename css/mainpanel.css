@@ -248,6 +248,11 @@
     background-color: var(--color6)
 }
 
+.shopCategoryRequirement {
+    padding-left: 10px;
+    background-color: var(--color6)
+}
+
 .categoryRequirementText {
     font-size: 15px;
     color: var(--color11);
@@ -293,4 +298,138 @@
 
 .theArcaneAssociation .taskReq {
     background-color: color-mix(in oklab, var(--theArcaneAssociationBackground) 90%, #000000 10%)
+}
+
+.shopCategoryContainer {
+    width: auto;
+    margin: 0px 10px 10px 10px;
+    height: fit-content;
+    vertical-align: middle;
+    line-height: 30px;
+    font-weight: 500;
+    user-select: none;
+}
+
+.shopCategoryElement {
+    width: auto;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.shopCategoryElement div:not(.shopCategoryElementTitle) {
+    width: 100%;
+    text-align: center;
+}
+
+.shopCategoryBackground {
+    width: auto;
+    height: fit-content;
+    padding: 0.05px 10px 0.05px 10px;
+    font-size: 14px;
+}
+
+.shopCategoryElementTitle {
+    width: 100%;
+    text-align: left;
+}
+
+.itemType {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.itemType div:not(.itemName) {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.itemName {
+    background-color: var(--progressBarBackground);
+    width: 100%;
+    height: 30px;
+}
+
+.itemName[data-active="true"] {
+    background-color: var(--progressBarSelectedBackground);
+}
+
+.itemPriceDisplay span.usedCoin {
+    margin-right: 3px;
+}
+
+.itemUpkeepDisplay span.usedCoin {
+    margin-right: 3px;
+}
+
+.itemNameText{
+    position: relative;
+    padding-left: 5px;
+}
+
+.itemActiveDisplay[data-active="false"] {
+    background-color: var(--color7);
+    border: 3px solid var(--color0);
+    box-sizing: border-box;
+    width: 12% !important;
+    margin-left: 8.6366666667%;
+    margin-right: 8.6366666667%;
+}
+
+.itemActiveDisplay[data-active="true"] {
+    background-color: var(--income);
+    border: 3px solid var(--color0);
+    box-sizing: border-box;
+    width: 12% !important;
+    margin-left: 8.6366666667%;
+    margin-right: 8.6366666667%;
+    background-clip: content-box;
+    box-shadow: inset 0 0 0 4px var(--color7)
+}
+
+.properties .shopCategoryElement {
+    background-color: var(--properties);
+    color: var(--taskText)
+}
+
+.properties .shopCategoryBackground {
+    background-color: var(--propertiesBackground);
+    color: var(--taskTextBackground)
+}
+
+.furniture .shopCategoryElement {
+    background-color: var(--furniture);
+    color: var(--taskText)
+}
+
+.furniture .shopCategoryBackground {
+    background-color: var(--furnitureBackground);
+    color: var(--taskTextBackground)
+}
+
+.equipment .shopCategoryElement {
+    background-color: var(--equipment);
+    color: var(--taskText)
+}
+
+.equipment .shopCategoryBackground {
+    background-color: var(--equipmentBackground);
+    color: var(--taskTextBackground)
+}
+
+.personnel .shopCategoryElement {
+    background-color: var(--personnel);
+    color: var(--taskText)
+}
+
+.personnel .shopCategoryBackground {
+    background-color: var(--personnelBackground);
+    color: var(--taskTextBackground)
 }

@@ -1,3 +1,7 @@
+version 0.1α [5] 16/06/2024
+* changed scaling for tasks
+* added shop, currently really unbalanced
+
 version 0.0.4α [4] 15/06/2024
 * added Amulet and rebirth 1
 

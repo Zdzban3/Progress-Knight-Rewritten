@@ -159,7 +159,7 @@ function setupSkillTab() {
 
                 const skillProgressBarText = createElementWithText("span", skillData.name, "skillProgressBarText", skillData.class + "ProgressBarText");
                 skillProgressBar.appendChild(skillProgressBarText);
-                
+
                 const skillEffectDisplay = document.createElement("div");
                 skillEffectDisplay.classList.add("skillEffectDisplay");
                 for (let i = 0; i < 8; i++) skillEffectDisplay.appendChild(document.createElement("span"));
@@ -185,18 +185,149 @@ function setupSkillTab() {
     });
 }
 
+function setupShopTab() {
+    const shopSubpanel = document.getElementById("shopSubpanel");
+    const shopCategoriesArray = Object.entries(shopCategories);
+    const shopDataEntriesHome = Object.entries(data.buyable.home);
+    const shopDataEntriesOther = Object.entries(data.buyable.other);
+
+    shopCategoriesArray.forEach(([categoryName, { items, name }]) => {
+        const shopCategoryContainer = document.createElement("div");
+        shopCategoryContainer.classList.add("shopCategoryContainer", name);
+
+        const shopCategoryElement = document.createElement("div");
+        shopCategoryElement.classList.add(name, "shopCategoryElement");
+
+        const shopCategoryBackground = document.createElement("div");
+        shopCategoryBackground.classList.add(name, "shopCategoryBackground");
+
+        const shopCategoryRequirement = document.createElement("div");
+        shopCategoryRequirement.classList.add(name, "shopCategoryRequirement");
+
+        const createElementWithText = (tag, text, className, attribute, attributeValue) => {
+            const element = document.createElement(tag);
+            if (className) element.classList.add(className);
+            element.appendChild(document.createTextNode(text));
+            if (attribute) element.setAttribute(attribute, attributeValue)
+            return element;
+        };
+
+        shopCategoryRequirement.appendChild(createElementWithText("span", "Required: ", "grayed"))
+        shopCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
+
+        const elementsData = [
+            { text: shopCategories[categoryName].nameFull, className: "shopCategoryElementTitle" },
+            { text: "Active" },
+            { text: "Effect" },
+            { text: "Price" },
+            { text: "Upkeep" }
+        ];
+
+        elementsData.forEach(({ text, className }) => {
+            shopCategoryElement.appendChild(createElementWithText("div", text, className));
+        });
+
+        shopDataEntriesOther.forEach(([itemKey, itemData]) => { //other
+            if (items.includes(itemKey)) {
+                const itemReq = document.createElement("div");
+                itemReq.classList.add("taskReq", itemData.class + "Requirement");
+
+                itemReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
+                itemReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+
+                const itemName = document.createElement("div");
+                itemName.classList.add("itemName", itemData.class + "itemName", "tooltip");
+                itemName.setAttribute("onclick", `buyItem('${itemData.name}')`)
+                const itemNameText = createElementWithText("span", itemData.name, "itemNameText", itemData.class + "itemNameText")
+                itemName.appendChild(itemNameText)
+
+                const itemTooltip = document.createElement("span");
+                itemTooltip.classList.add("tooltiptext", itemData.class + "Tooltiptext");
+                itemTooltip.innerText = tooltips[itemKey]
+                itemName.appendChild(itemTooltip);
+
+                const itemActive = document.createElement("div")
+                itemActive.classList.add("itemActiveDisplay", itemData.class + "ActiveDisplay")
+                itemActive.setAttribute("data-active", "false")
+                const itemEffect = document.createElement("div")
+                itemEffect.classList.add("itemEffectDisplay")
+                itemEffect.appendChild(document.createTextNode(""))
+                const itemPrice = document.createElement("div")
+                itemPrice.classList.add("itemPriceDisplay")
+                for (let i = 0; i < 8; i++) itemPrice.appendChild(document.createElement("span"));
+                const itemUpkeep = document.createElement("div")
+                itemUpkeep.classList.add("itemUpkeepDisplay")
+                for (let i = 0; i < 8; i++) itemUpkeep.appendChild(document.createElement("span"));
+
+                const itemType = document.createElement("div");
+                itemType.classList.add("itemType", itemData.class + "Type");
+                [itemReq, itemName, itemActive, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
+
+                shopCategoryBackground.appendChild(itemType);
+            }
+        });
+
+        shopDataEntriesHome.forEach(([itemKey, itemData]) => { //home
+            if (items.includes(itemKey)) {
+                const itemReq = document.createElement("div");
+                itemReq.classList.add("taskReq", itemData.class + "Requirement");
+
+                itemReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
+                itemReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+
+                const itemName = document.createElement("div");
+                itemName.classList.add("itemName", itemData.class + "itemName", "tooltip");
+                itemName.setAttribute("onclick", `buyItem('${itemData.name}')`)
+                const itemNameText = createElementWithText("span", itemData.name, "itemNameText", itemData.class + "itemNameText")
+                itemName.appendChild(itemNameText)
+
+                const itemTooltip = document.createElement("span");
+                itemTooltip.classList.add("tooltiptext", itemData.class + "Tooltiptext");
+                itemTooltip.innerText = tooltips[itemKey]
+                itemName.appendChild(itemTooltip);
+
+                const itemActive = document.createElement("div")
+                itemActive.classList.add("itemActiveDisplay", itemData.class + "ActiveDisplay")
+                itemActive.setAttribute("data-active", "false")
+                const itemEffect = document.createElement("div")
+                itemEffect.classList.add("itemEffectDisplay")
+                itemEffect.appendChild(document.createTextNode(""))
+                const itemPrice = document.createElement("div")
+                itemPrice.classList.add("itemPriceDisplay")
+                for (let i = 0; i < 8; i++) itemPrice.appendChild(document.createElement("span"));
+                const itemUpkeep = document.createElement("div")
+                itemUpkeep.classList.add("itemUpkeepDisplay")
+                for (let i = 0; i < 8; i++) itemUpkeep.appendChild(document.createElement("span"));
+
+                const itemType = document.createElement("div");
+                itemType.classList.add("itemType", itemData.class + "Type");
+                [itemReq, itemName, itemActive, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
+
+                shopCategoryBackground.appendChild(itemType);
+            }
+        });
+
+        shopCategoryContainer.appendChild(shopCategoryElement);
+        shopCategoryContainer.appendChild(shopCategoryBackground);
+        shopCategoryContainer.appendChild(shopCategoryRequirement);
+        shopSubpanel.appendChild(shopCategoryContainer);
+    });
+}
+
 
 function setupTabs() {
     setupHeroTab()
     setupSkillTab()
+    setupShopTab()
 }
 
 function startSetup() {
     if (localStorage.data == undefined) {
         save()
     }
-    setupTabs()
     load()
+    assignBaseTasks()
+    setupTabs()
     renderHero()
     renderSkills()
     setTab("hero")

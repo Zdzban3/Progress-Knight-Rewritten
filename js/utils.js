@@ -5,25 +5,25 @@ function format(number, decimals = 1) {
 
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
-    if (tier <= 0) return math.floor(number, decimals).toFixed(decimals);
+    if (tier <= 0) return Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals)
 
     if ((data.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         const suffix = units[tier];
         const scale = Math.pow(10, tier * 3);
         const scaled = number / scale;
-        return math.floor(scaled, decimals).toFixed(decimals) + suffix;
+        return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + suffix;
     } else {
         if (data.settings.numberNotation == 1) {
             const exp = Math.log10(number) | 0;
             const scale = Math.pow(10, exp);
             const scaled = number / scale;
-            return math.floor(scaled, decimals).toFixed(decimals) + "e" + exp;
+            return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + "e" + exp;
         }
         else {
             const exp = Math.log10(number) / 3 | 0;
             const scale = Math.pow(10, exp * 3);
             const scaled = number / scale;
-            return math.floor(scaled, decimals).toFixed(decimals) + "e" + exp * 3;
+            return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + "e" + exp * 3;
         }
     }
 }
@@ -95,8 +95,7 @@ function getCoinsData() {
 function formatWhole(number, decimals = 1) {
     if (number >= 1e3 || (number <= 0.99 && number != 0)) {
         return format(number, decimals)
-    }
-    return format(number, 0);
+    } else return format(number, 0);
 }
 
 function formatCoins(coins, element) {
@@ -193,8 +192,8 @@ function formatAge(days) {
         return "Age " + years + " Day " + day
 }
 
-function getBaseLog(x, y) {
-    return Math.log(y) / Math.log(x);
+function log(x, base) {
+    return Math.log(x) / Math.log(base)
 }
 
 function yearsToDays(years) {
@@ -221,19 +220,27 @@ function formatEffect(skillName) {
     return format(getEffectSpecific(skillName), 2) + "x " + data.skill[skillName].description
 }
 
+function formatItemEffect(item) { //item = data.buyable.home[item] or data.buyable.other[item]
+    return format(item.effect, 2) + "x " + item.description
+}
+
 function formatRequirements(name, element, parentElement, taskElement, el1, el2, el3, el4, el5, el6, el7, el8) {
     var text = ""
-    const jobReqs = requirements[name].job
-    const skillReqs = requirements[name].skill
-    for (var req in jobReqs) {
-        const jobName = jobReqs[req].name
-        const jobValue = jobReqs[req].value
-        if (jobValue > data.job[jobName].level) text += jobName + ": " + data.job[jobName].level + "/" + jobValue + "\xa0\xa0"
+    if (requirements[name].job) {
+        const jobReqs = requirements[name].job
+        for (var req in jobReqs) {
+            const jobName = jobReqs[req].name
+            const jobValue = jobReqs[req].value
+            if (jobValue > data.job[jobName].level) text += jobName + ": " + data.job[jobName].level + "/" + jobValue + "\xa0\xa0"
+        }
     }
-    for (var req in skillReqs) {
-        const skillName = skillReqs[req].name
-        const skillValue = skillReqs[req].value
-        if (skillValue > data.skill[skillName].level) text += skillName + ": " + data.skill[skillName].level + "/" + skillValue + "\xa0\xa0"
+    if (requirements[name].job) {
+        const skillReqs = requirements[name].skill
+        for (var req in skillReqs) {
+            const skillName = skillReqs[req].name
+            const skillValue = skillReqs[req].value
+            if (skillValue > data.skill[skillName].level) text += skillName + ": " + data.skill[skillName].level + "/" + skillValue + "\xa0\xa0"
+        }
     }
     if (requirements[name].age) {
         const ageReq = requirements[name].age
@@ -301,4 +308,19 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
         if (el8) el8.setAttribute("hidden", "")
     }
     element.textContent = text
+}
+
+function isComplete(requirement) { //requirement = data.requirement[key]
+    var isComplete = true
+    const jobReqs = requirement.job
+    const skillReqs = requirement.skill
+    for (var req in jobReqs) {
+        if (jobReqs[req].value > data.job[jobReqs[req].name].level) isComplete = false
+    }
+    for (var req in skillReqs) {
+        if (skillReqs[req].value > data.skill[skillReqs[req].name].level) isComplete = false
+    }
+    if (requirement.age > data.days / 365) isComplete = false
+    if (requirement.evil > data.evil) isComplete = false
+    return isComplete
 }
