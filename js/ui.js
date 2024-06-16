@@ -1,6 +1,5 @@
 
 function renderSidebar() {
-    const task = data.currentJob
     document.getElementById("ageDisplay").textContent = formatAge(data.days)
     document.getElementById("lifespanDisplay").textContent = formatWhole(daysToYears(data.lifespan))
     document.getElementById("realtimeDisplay").textContent = formatTime(data.currentRealtime)
@@ -613,17 +612,18 @@ function renderShop() {
                 let thisItem = Object.values(data.buyable.other).find(item => item.class === itemName)
                 if (thisItem == null) thisItem = Object.values(data.buyable.home).find(item => item.class === itemName)
 
-                itemType.querySelector(".itemEffectDisplay").innerText = formatItemEffect(thisItem)
-                formatCoins(thisItem.price, itemType.querySelector(".itemPriceDisplay"))
-                formatCoins(thisItem.upkeep * data.expenseMult, itemType.querySelector(".itemUpkeepDisplay"))
+                itemType.querySelector(".itemEffectDisplay").innerText = formatItemEffect(thisItem, 1)
+                formatCoins(thisItem.price, itemType.querySelector(".itemPriceDisplay"), true)
+                formatCoins(thisItem.upkeep * data.expenseMult, itemType.querySelector(".itemUpkeepDisplay"), true)
                 itemType.querySelector(".itemActiveDisplay").setAttribute("data-active", thisItem.owned)
+                itemType.querySelector(".itemName").setAttribute("data-active", thisItem.owned)
 
                 formatRequirements(itemName,
                     itemType.querySelector(".requirementText"),
                     itemType.querySelector(".taskReq"),
                     itemType,
                     itemType.querySelector(".itemName"),
-                    itemType.querySelector(".itemActiveDisplay"),
+                    itemType.querySelector(".itemActiveDisplayDiv"),
                     itemType.querySelector(".itemEffectDisplay"),
                     itemType.querySelector(".itemPriceDisplay"),
                     itemType.querySelector(".itemUpkeepDisplay"))

@@ -7,6 +7,7 @@
     --color5: #d0d0d0;
     --color6: #dddddd;
     --color7: #e9e9e9;
+    --grayed: #888888;
     --color10: oklch(75% 0.055 195);
     --color11: oklch(55% 0.045 195);
     --textShadow: black;
@@ -36,6 +37,17 @@
     --magicBackground: oklch(40% 0.1 325);
     --darkMagic: oklch(35% 0.08 10);
     --darkMagicBackground: oklch(22.5% 0.05 10);
+
+    --shopItem: oklch(60% 0 235);
+    --shopItemActive: oklch(60% 0.12 140);
+    --properties: oklch(60% 0.06 220);
+    --propertiesBackground: oklch(40% 0.04 220);
+    --furniture: oklch(30% 0.04 50);
+    --furnitureBackground: oklch(20% 0.025 50);
+    --equipment: oklch(60% 0.02 250);
+    --equipmentBackground: oklch(40% 0.015 250);
+    --personnel: oklch(60% 0.06 0);
+    --personnelBackground: oklch(40% 0.04 0);
 }
 
 body {
@@ -46,7 +58,7 @@ body {
     background-color: var(--color5);
 }
 
-.grayed {
+.grayed:not(.taskReq span) {
     text-shadow: 0 0 0 !important;
 }
 
@@ -55,5 +67,9 @@ body {
 }
 
 #sidebar {
+    text-shadow: 0 0 0 !important;
+}
+
+.categoryRequirementText {
     text-shadow: 0 0 0 !important;
 }

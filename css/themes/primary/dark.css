@@ -7,6 +7,7 @@
     --color5: #282828;
     --color6: #222222;
     --color7: #181818;
+    --grayed: #888888;
     --color10: oklch(55% 0.045 195);
     --color11: oklch(75% 0.055 195);
     --textShadow: black;
@@ -37,6 +38,8 @@
     --darkMagic: oklch(35% 0.08 10);
     --darkMagicBackground: oklch(22.5% 0.05 10);
 
+    --shopItem: oklch(60% 0 235);
+    --shopItemActive: oklch(60% 0.12 140);
     --properties: oklch(60% 0.06 220);
     --propertiesBackground: oklch(40% 0.04 220);
     --furniture: oklch(30% 0.04 50);

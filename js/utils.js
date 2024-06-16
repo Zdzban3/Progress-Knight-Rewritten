@@ -5,25 +5,25 @@ function format(number, decimals = 1) {
 
     // what tier? (determines SI symbol)
     const tier = Math.log10(number) / 3 | 0;
-    if (tier <= 0) return Math.floor(number * Math.pow(10, decimals)) / Math.pow(10, decimals)
+    if (tier <= 0) return number.toFixed(decimals)
 
     if ((data.settings.numberNotation == 0 || tier < 3) && (tier < units.length)) {
         const suffix = units[tier];
         const scale = Math.pow(10, tier * 3);
         const scaled = number / scale;
-        return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + suffix;
+        return scaled.toFixed(decimals) + suffix;
     } else {
         if (data.settings.numberNotation == 1) {
             const exp = Math.log10(number) | 0;
             const scale = Math.pow(10, exp);
             const scaled = number / scale;
-            return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + "e" + exp;
+            return scaled.toFixed(decimals) + "e" + exp;
         }
         else {
             const exp = Math.log10(number) / 3 | 0;
             const scale = Math.pow(10, exp * 3);
             const scaled = number / scale;
-            return (Math.floor(scaled * Math.pow(10, decimals)) / Math.pow(10, decimals)) + "e" + exp * 3;
+            return scaled.toFixed(decimals) + "e" + exp * 3;
         }
     }
 }
@@ -84,9 +84,9 @@ function getCoinsData() {
             { "name": "w", "color": "oklch(60% 0.08 50)", "value": 1e-2 },
         ];
         case 4: return [
-            { "name": "", "color": "oklch(75% 0.18 95)", "value": 240, "prefix": "£" },
-            { "name": "s", "color": "oklch(75% 0 0)", "value": 12 },
-            { "name": "d", "color": "oklch(55% 0.1 60)", "value": 1 },
+            { "name": "", "color": "oklch(75% 0.18 95)", "value": 4e4, "prefix": "£" },
+            { "name": "s", "color": "oklch(75% 0 0)", "value": 2e3 },
+            { "name": "d", "color": "oklch(55% 0.1 60)", "value": 500 / 3 },
         ];
         default: throw new Error("Invalid currency notation set");
     }
@@ -98,10 +98,16 @@ function formatWhole(number, decimals = 1) {
     } else return format(number, 0);
 }
 
-function formatCoins(coins, element) {
+function formatCoins(coins, element, showFree = false) {
     for (const c of element.children) {
         c.textContent = "";
         c.classList.remove("usedCoin")
+    }
+    if (coins == 0 && showFree) {
+        element.children[0].textContent = "Free"
+        element.children[0].style.color = "oklch(70% 0.14 145)"
+        element.children[0].className = "usedCoin"
+        return
     }
 
     switch (data.settings.currencyNotation) {
@@ -117,8 +123,15 @@ function formatCoins(coins, element) {
                 const prev = money2[i - 1];
                 const diff = prev ? prev.value / m.value : Infinity;
                 const amount = Math.floor(coins / m.value) % diff;
-                if ((amount > 0 || (coins < 1 && m.value == 1))) {
+                if (amount > 0) {
                     element.children[coinsUsed].textContent = (m.prefix ?? "") + format(amount, amount < 1000 ? 0 : 2) + m.name
+                    element.children[coinsUsed].style.color = m.color
+                    element.children[coinsUsed].className = m.class ? m.class : ""
+                    element.children[coinsUsed].className = "usedCoin"
+                    coinsUsed++
+                }
+                if ((m.value > coins && i == money2.length - 1)) {
+                    element.children[coinsUsed].textContent = (m.prefix ?? "") + format(coins / m.value, 2) + m.name
                     element.children[coinsUsed].style.color = m.color
                     element.children[coinsUsed].className = m.class ? m.class : ""
                     element.children[coinsUsed].className = "usedCoin"
@@ -129,7 +142,7 @@ function formatCoins(coins, element) {
             break;
         case 3:
             element.children[0].textContent = "$" + format(coins / 100, 2)
-            element.children[0].style.color = "oklch(50% 0.14 145)"
+            element.children[0].style.color = "oklch(70% 0.14 145)"
             element.children[0].className = "usedCoin"
             break;
         default:
@@ -220,12 +233,13 @@ function formatEffect(skillName) {
     return format(getEffectSpecific(skillName), 2) + "x " + data.skill[skillName].description
 }
 
-function formatItemEffect(item) { //item = data.buyable.home[item] or data.buyable.other[item]
-    return format(item.effect, 2) + "x " + item.description
+function formatItemEffect(item, decimals = 2) { //item = data.buyable.home[item] or data.buyable.other[item]
+    return format(item.effect, decimals) + "x " + item.description
 }
 
 function formatRequirements(name, element, parentElement, taskElement, el1, el2, el3, el4, el5, el6, el7, el8) {
     var text = ""
+    var exception = false
     if (requirements[name].job) {
         const jobReqs = requirements[name].job
         for (var req in jobReqs) {
@@ -244,11 +258,16 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
     }
     if (requirements[name].age) {
         const ageReq = requirements[name].age
-        if (ageReq > data.days / 365) text += "Age: " + format(data.days / 365, 0) + "/" + ageReq + "\xa0\xa0"
+        if (ageReq > data.days / 365) text += "Age: " + format(data.days / 365, 1) + "/" + format(ageReq, 0) + "\xa0\xa0"
     }
     if (requirements[name].evil) {
         const evilReq = requirements[name].evil
-        if (evilReq > data.evil) text += "Evil: " + format(data.evil, 0) + "/" + evilReq + "\xa0\xa0"
+        if (evilReq > data.evil) text += "Evil: " + format(data.evil, 0) + "/" + format(evilReq) + "\xa0\xa0"
+    }
+    if (requirements[name].coins) {
+        const coinsReq = requirements[name].coins
+        if (coinsReq > data.maxCoins) {formatCoins(data.maxCoins, parentElement.querySelector(".requirementCoins")); parentElement.querySelector(".requirementCoinsEnd").innerText = "/\xa0"; formatCoins(coinsReq, parentElement.querySelector(".requirementCoins2")); exception = true; parentElement.querySelector(".coinReqText").innerText = "Coins: "
+        } else parentElement.querySelector(".coinReqText").innerText = ""
     }
 
     if (requirements[name].show) {
@@ -273,6 +292,10 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
             const showEvilReq = requirements[name].show.evil
             if (showEvilReq > data.evil) show = false
         }
+        if (requirements[name].show.coins) {
+            const coinsReq = requirements[name].show.coins
+            if (coinsReq > data.maxCoins) show = false
+        }
         if (show) {
             parentElement.classList.remove("hidden")
             taskElement.classList.remove("hidden")
@@ -282,7 +305,7 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
         }
     }
 
-    if (text == "") {
+    if (text == "" && !exception) {
         element.setAttribute("hidden", "")
         parentElement.setAttribute("hidden", "")
 

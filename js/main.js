@@ -95,7 +95,7 @@ function getTaskMaxXP(task, levelsBelow = 0) { //task is data.job[jobName] | dat
     taskLevel++
     switch (task.xpFormula) {
         case "normalJob":
-            return Math.pow(1.05, taskLevel - 1) * taskLevel * task.baseMaxXP
+            return Math.pow(1.01, taskLevel - 1) * taskLevel * task.baseMaxXP
             break
         case "normalSkill":
             return Math.pow(1.01, taskLevel - 1) * taskLevel * task.baseMaxXP
@@ -116,7 +116,6 @@ function buyItem(itemName) {
             item.owned = true
             data.coins -= item.price
         } else if (item.owned == true) {
-            console.log(itemName, "sold")
             item.owned = false
             data.coins += item.price / 2
         }
@@ -124,7 +123,7 @@ function buyItem(itemName) {
     if (itemName in data.buyable.home) {
         const item = data.buyable.home[itemName]
         if (item.name !== data.selectedHome && data.coins >= item.price) {
-            data.coins += data.buyable.home[data.selectedHome].price / 2
+            data.coins += data.buyable.home[data.selectedHome].price / 1.2
             data.buyable.home[data.selectedHome].owned = false
             data.selectedHome = item.name
             item.owned = true
@@ -495,7 +494,9 @@ function rebirth(rebirthStage) {
             task.maxLevel = Math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
-        for (const key in data.buyable.home) data.buyable.home[key].owned = false
+        buyItem("Homeless")
+        data.maxCoins = 0
+        data.coins = 0
         for (const key in data.buyable.other) data.buyable.other[key].owned = false
         data.days = 365 * 14
         setTab('hero')
@@ -559,6 +560,7 @@ function update() {
     doSelectedJobs()
     if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
     if (data.selectedSkills.length > data.maxSkills) selectSkill(data.selectedSkills[0].name)
+    data.maxCoins = Math.max(data.coins, data.maxCoins)
     for (const key in data.selectedJobs) {
         const job = data.selectedJobs[key]
         if (!(isComplete(requirements[job.class]))) selectJob(job.name, key)

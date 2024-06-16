@@ -1,4 +1,8 @@
-version 0.1α [5] 16/06/2024
+version 0.1.1α [6] 16/06/2024
+* added Coins requirement
+* updated shop
+
+version 0.1.0α [5] 16/06/2024
 * changed scaling for tasks
 * added shop, currently really unbalanced
 

@@ -204,9 +204,10 @@ function setupShopTab() {
         const shopCategoryRequirement = document.createElement("div");
         shopCategoryRequirement.classList.add(name, "shopCategoryRequirement");
 
-        const createElementWithText = (tag, text, className, attribute, attributeValue) => {
+        const createElementWithText = (tag, text, className, attribute, attributeValue, secondClass) => {
             const element = document.createElement(tag);
             if (className) element.classList.add(className);
+            if (secondClass) element.classList.add(secondClass);
             element.appendChild(document.createTextNode(text));
             if (attribute) element.setAttribute(attribute, attributeValue)
             return element;
@@ -214,6 +215,14 @@ function setupShopTab() {
 
         shopCategoryRequirement.appendChild(createElementWithText("span", "Required: ", "grayed"))
         shopCategoryRequirement.appendChild(createElementWithText("div", "[placeholder]", "categoryRequirementText", "style", "display: inline"))
+        const shopCategoryRequirementCoins = createElementWithText("div", "", "requirementCoins", "style", "display: inline")
+        shopCategoryRequirement.appendChild(createElementWithText("div", "Coins: ", "categoryRequirementText", "style", "display: inline", "coinReqText"))
+        for (i = 0; i < 8; i++) { shopCategoryRequirementCoins.appendChild(document.createElement("span")) }
+        shopCategoryRequirementCoins.appendChild(createElementWithText("div", "", "requirementCoinsEnd", "style", "display: inline"))
+        const shopCategoryRequirementCoins2 = createElementWithText("div", "", "requirementCoins2", "style", "display: inline")
+        for (i = 0; i < 8; i++) { shopCategoryRequirementCoins2.appendChild(document.createElement("span")) }
+        shopCategoryRequirement.appendChild(shopCategoryRequirementCoins)
+        shopCategoryRequirement.appendChild(shopCategoryRequirementCoins2)
 
         const elementsData = [
             { text: shopCategories[categoryName].nameFull, className: "shopCategoryElementTitle" },
@@ -234,6 +243,14 @@ function setupShopTab() {
 
                 itemReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
                 itemReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+                const itemReqCoins = createElementWithText("div", "", "requirementCoins", "style", "display: inline")
+                itemReq.appendChild(createElementWithText("div", "Coins: ", "requirementText", "style", "display: inline", "coinReqText"))
+                for (i = 0; i < 8; i++) itemReqCoins.appendChild(document.createElement("span"))
+                itemReqCoins.appendChild(createElementWithText("div", "", "requirementCoinsEnd", "style", "display: inline"))
+                itemReq.appendChild(itemReqCoins)
+                const itemReqCoins2 = createElementWithText("div", "", "requirementCoins2", "style", "display: inline")
+                for (i = 0; i < 8; i++) { itemReqCoins2.appendChild(document.createElement("span")) }
+                itemReq.appendChild(itemReqCoins2)
 
                 const itemName = document.createElement("div");
                 itemName.classList.add("itemName", itemData.class + "itemName", "tooltip");
@@ -246,9 +263,12 @@ function setupShopTab() {
                 itemTooltip.innerText = tooltips[itemKey]
                 itemName.appendChild(itemTooltip);
 
+                const itemActiveDiv = document.createElement("div")
+                itemActiveDiv.classList.add("itemActiveDisplayDiv", itemData.class + "ActiveDisplayDiv")
                 const itemActive = document.createElement("div")
                 itemActive.classList.add("itemActiveDisplay", itemData.class + "ActiveDisplay")
                 itemActive.setAttribute("data-active", "false")
+                itemActiveDiv.appendChild(itemActive)
                 const itemEffect = document.createElement("div")
                 itemEffect.classList.add("itemEffectDisplay")
                 itemEffect.appendChild(document.createTextNode(""))
@@ -261,7 +281,7 @@ function setupShopTab() {
 
                 const itemType = document.createElement("div");
                 itemType.classList.add("itemType", itemData.class + "Type");
-                [itemReq, itemName, itemActive, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
+                [itemReq, itemName, itemActiveDiv, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
 
                 shopCategoryBackground.appendChild(itemType);
             }
@@ -274,10 +294,19 @@ function setupShopTab() {
 
                 itemReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
                 itemReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
+                const itemReqCoins = createElementWithText("div", "", "requirementCoins", "style", "display: inline")
+                itemReq.appendChild(createElementWithText("div", "Coins: ", "requirementText", "style", "display: inline", "coinReqText"))
+                for (i = 0; i < 8; i++) itemReqCoins.appendChild(document.createElement("span"))
+                itemReqCoins.appendChild(createElementWithText("div", "", "requirementCoinsEnd", "style", "display: inline"))
+                itemReq.appendChild(itemReqCoins)
+                const itemReqCoins2 = createElementWithText("div", "", "requirementCoins2", "style", "display: inline")
+                for (i = 0; i < 8; i++) { itemReqCoins2.appendChild(document.createElement("span")) }
+                itemReq.appendChild(itemReqCoins2)
 
                 const itemName = document.createElement("div");
                 itemName.classList.add("itemName", itemData.class + "itemName", "tooltip");
                 itemName.setAttribute("onclick", `buyItem('${itemData.name}')`)
+                itemName.setAttribute("data-active", "false")
                 const itemNameText = createElementWithText("span", itemData.name, "itemNameText", itemData.class + "itemNameText")
                 itemName.appendChild(itemNameText)
 
@@ -286,9 +315,12 @@ function setupShopTab() {
                 itemTooltip.innerText = tooltips[itemKey]
                 itemName.appendChild(itemTooltip);
 
+                const itemActiveDiv = document.createElement("div")
+                itemActiveDiv.classList.add("itemActiveDisplayDiv", itemData.class + "ActiveDisplayDiv")
                 const itemActive = document.createElement("div")
                 itemActive.classList.add("itemActiveDisplay", itemData.class + "ActiveDisplay")
                 itemActive.setAttribute("data-active", "false")
+                itemActiveDiv.appendChild(itemActive)
                 const itemEffect = document.createElement("div")
                 itemEffect.classList.add("itemEffectDisplay")
                 itemEffect.appendChild(document.createTextNode(""))
@@ -301,7 +333,7 @@ function setupShopTab() {
 
                 const itemType = document.createElement("div");
                 itemType.classList.add("itemType", itemData.class + "Type");
-                [itemReq, itemName, itemActive, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
+                [itemReq, itemName, itemActiveDiv, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
 
                 shopCategoryBackground.appendChild(itemType);
             }

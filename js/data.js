@@ -103,26 +103,35 @@ const specialTasks = {
 
 const buyableHomes = {
     "Homeless": { name: "Homeless", class: "homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
-    "Tent": { name: "Tent", class: "tent", price: 0, upkeep: 15, effect: 1.4, description: "Happiness" },
-    "Wooden hut": { name: "Wooden hut", class: "woodenHut", price: 0, upkeep: 100, effect: 2, description: "Happiness" },
-    "Cottage": { name: "Cottage", class: "cottage", price: 0, upkeep: 750, effect: 3.5, description: "Happiness" },
-    "House": { name: "House", class: "house", price: 0, upkeep: 3000, effect: 6, description: "Happiness" },
-    "Large house": { name: "Large house", class: "largeHouse", price: 0, upkeep: 25000, effect: 12, description: "Happiness" },
-    "Small palace": { name: "Small palace", class: "smallPalace", price: 0, upkeep: 300000, effect: 25, description: "Happiness" },
-    "Grand palace": { name: "Grand palace", class: "grandPalace", price: 0, upkeep: 5000000, effect: 60, description: "Happiness" },
+    "Tent": { name: "Tent", class: "tent", price: 5e3, upkeep: 15, effect: 1.4, description: "Happiness" },
+    "Wooden hut": { name: "Wooden hut", class: "woodenHut", price: 1e5, upkeep: 100, effect: 2, description: "Happiness" },
+    "Cottage": { name: "Cottage", class: "cottage", price: 1e6, upkeep: 750, effect: 3.5, description: "Happiness" },
+    "House": { name: "House", class: "house", price: 1e7, upkeep: 3000, effect: 6, description: "Happiness" },
+    "Large house": { name: "Large house", class: "largeHouse", price: 6e7, upkeep: 2.5e4, effect: 12, description: "Happiness" },
+    "Small palace": { name: "Small palace", class: "smallPalace", price: 5e8, upkeep: 3e5, effect: 25, description: "Happiness" },
+    "Grand palace": { name: "Grand palace", class: "grandPalace", price: 1e10, upkeep: 5e6, effect: 60, description: "Happiness" },
 }
 
 const buyableOther = {
-    //items
-    "Book": { name: "Book", class: "book", price: 10, upkeep: 0, effect: 1.5, description: "Skill XP" },
-    "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 50, upkeep: 0, effect: 1.5, description: "Strength XP" },
-    "Steel longsword": { name: "Steel longsword", class: "steelLongsword", price: 1e3, upkeep: 10, effect: 2, description: "Military XP" },
-    "Sapphire charm": { name: "Sapphire charm", class: "sapphireCharm", price: 5e4, upkeep: 100, effect: 3, description: "Magic XP" },
-    "Study desk": { name: "Study desk", class: "studyDesk", price: 1e6, upkeep: 1e3, effect: 2, description: "Skill XP" },
-    "Library": { name: "Library", class: "library", price: 1e7, upkeep: 1e5, effect: 1.5, description: "Skill XP" },
-    //helpers
-    "Personal squire": { name: "Personal squire", class: "personalSquire", price: 0, upkeep: 500, effect: 2, description: "Job XP" },
-    "Butler": { name: "Butler", class: "butler", price: 0, upkeep: 1e5, effect: 1.5, description: "Happiness" },
+    //furniture
+    "Book": { name: "Book", class: "book", price: 1e4, upkeep: 10, effect: 1.5, description: "Skill XP" },
+    "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 4e4, upkeep: 50, effect: 1.5, description: "Strength XP" },
+    "Study desk": { name: "Study desk", class: "studyDesk", price: 4e7, upkeep: 1e6, effect: 2, description: "Skill XP" },
+    "Library": { name: "Library", class: "library", price: 1e9, upkeep: 1e7, effect: 1.5, description: "Skill XP" },
+    //equipment
+    "Steel longsword": { name: "Steel longsword", class: "steelLongsword", price: 1e5, upkeep: 1000, effect: 2, description: "Military XP" },
+    "Sapphire charm": { name: "Sapphire charm", class: "sapphireCharm", price: 2.5e7, upkeep: 5e4, effect: 3, description: "Magic XP" },
+    //personnel
+    "Personal squire": { name: "Personal squire", class: "personalSquire", price: 0, upkeep: 200, effect: 2, description: "Job XP" },
+    "Butler": { name: "Butler", class: "butler", price: 0, upkeep: 7.5e3, effect: 1.5, description: "Happiness" },
+}
+
+const baseCurrency = {
+    "days": 14 * 365,
+    "lifespan": 60 * 365,
+    "coins": 0,
+    "maxCoins": 0,
+    "evil": 0,
 }
 
 const settings = {
@@ -186,12 +195,8 @@ const requirements = {
         }
     },
     "darkMagic": {
-        job: [],
-        skill: [],
         evil: 1,
         show: {
-            job: [],
-            skill: [],
             evil: 1
         }
     },
@@ -203,10 +208,22 @@ const requirements = {
         coins: 0
     },
     "equipment": {
-        coins: 100
+        coins: 1e4,
+        job: [{ name: "Footman", value: 10 }],
+        skill: [{ name: "Strength", value: 50 }, { name: "Battle tactics", value: 10 }],
+        show: {
+            coins: 1e3,
+            job: [{ name: "Squire", value: 10 }],
+            skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
+        }
     },
     "personnel": {
-        coins: 1e6
+        coins: 1e5,
+        job: [{ name: "Veteran footman", value: 10 }],
+        show: {
+            coins: 1e4,
+            job: [{ name: "Footman", value: 10 }],
+        }
     },
     //Tasks
     //jobs
@@ -267,7 +284,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
         age: 16,
         show: {
-            job: [{ name: "Footman", value: 1 }],
+            job: [{ name: "Squire", value: 10 }],
             skill: []
         }
     },
@@ -276,7 +293,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 40 }],
         age: 16,
         show: {
-            job: [{ name: "Veteran footman", value: 1 }],
+            job: [{ name: "Footman", value: 10 }],
             skill: []
         }
     },
@@ -285,7 +302,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 120 }, { name: "Battle tactics", value: 150 }],
         age: 16,
         show: {
-            job: [{ name: "Knight", value: 1 }],
+            job: [{ name: "Veteran footman", value: 10 }],
             skill: []
         }
     },
@@ -294,7 +311,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 200 }, { name: "Battle tactics", value: 300 }],
         age: 16,
         show: {
-            job: [{ name: "Veteran knight", value: 1 }],
+            job: [{ name: "Knight", value: 10 }],
             skill: []
         }
     },
@@ -303,7 +320,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 400 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
         age: 16,
         show: {
-            job: [{ name: "Elite knight", value: 1 }],
+            job: [{ name: "Veteran knight", value: 10 }],
             skill: []
         }
     },
@@ -312,7 +329,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 1000 }, { name: "Battle tactics", value: 1000 }, { name: "Mana control", value: 1000 }],
         age: 16,
         show: {
-            job: [{ name: "Holy knight", value: 1 }],
+            job: [{ name: "Elite knight", value: 10 }],
             skill: []
         }
     },
@@ -364,7 +381,10 @@ const requirements = {
     //magic
     "manaControl": {
         job: [{ name: "Student", value: 1 }],
-        skill: []
+        skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
+        show: {
+            skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
+        }
     },
     //shop
     //homes
@@ -372,53 +392,99 @@ const requirements = {
         coins: -1e308
     },
     "tent": {
-        coins: 0
+        coins: 1
     },
     "woodenHut": {
-        coins: 0
+        coins: 1e3
     },
     "cottage": {
-        coins: 0
+        coins: 1e4,
+        show: {
+            coins: 1e3
+        }
     },
     "house": {
-        coins: 0
+        coins: 1e5,
+        show: {
+            coins: 1e4
+        }
     },
     "largeHouse": {
-        coins: 0
+        coins: 1e6,
+        show: {
+            coins: 1e5
+        }
     },
     "smallPalace": {
-        coins: 0
+        coins: 1e7,
+        show: {
+            coins: 1e6
+        }
     },
     "grandPalace": {
-        coins: 0
+        coins: 1e8,
+        show: {
+            coins: 1e7
+        }
     },
     //other
     //furniture
     "book": {
-        coins: 0
+        coins: 0,
     },
     "dumbbells": {
-        coins: 0
+        coins: 5e3,
+        skill: [{ name: "Strength", value: 10}],
+        show: {
+            skill: [{ name: "Strength", value: 1}]
+        }
     },
     "studyDesk": {
-        coins: 0
+        coins: 5e6,
+        skill: [{ name: "Concentration", value: 100}],
+        show: {
+            coins: 5e4
+        }
     },
     "library": {
-        coins: 0
+        coins: 1e8,
+        show: {
+            coins: 1e7
+        }
     },
     //equipment
     "steelLongsword": {
-        coins: 0
+        coins: 2e4,
+        job: [{ name: "Footman", value: 10 }],
+        skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
+        age: 16
+
     },
     "sapphireCharm": {
-        coins: 0
+        coins: 5e6,
+        skill: [{ name: "Mana control", value: 100 }],
+        show: {
+            coins: 5e6,
+            skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
+            age: 20
+        }
     },
     //personnel
     "personalSquire": {
-        coins: 0
+        coins: 1e6,
+        job: [{ name: "Veteran footman", value: 10 }],
+        age: 16,
+        show: {
+            coins: 1e5,
+            job: [{ name: "Veteran footman", value: 10 }],
+            age: 16
+        }
     },
     "butler": {
-        coins: 0
+        coins: 2e7,
+        show: {
+            coins: 1e6
+        }
     },
 }
 
@@ -577,13 +643,17 @@ function assignBaseTasks() {
     }
     for (const buyable in buyableOther) {
         if (!(buyable in data.buyable.other)) {
-            console.log(buyable)
             data.buyable.other[buyable] = buyableOther[buyable]
         }
     }
     for (const setting in settings) {
         if (!(setting in data.settings)) {
             data.settings[setting] = settings[setting]
+        }
+    }
+    for (const currency in baseCurrency) {
+        if (!(currency in data)) {
+            data[currency] = baseCurrency[currency]
         }
     }
     for (const adv in advancements) {
@@ -633,7 +703,6 @@ function assignBaseTasks() {
     for (const key in data.buyable.home) {
         const home = data.buyable.home[key]
         if (!("owned" in home)) {
-            console.log("dsaghdkl")
             home.owned = false
         }
         home.price = buyableHomes[key].price
@@ -643,7 +712,6 @@ function assignBaseTasks() {
     for (const key in data.buyable.other) {
         const buyable = data.buyable.other[key]
         if (!("owned" in buyable)) {
-            console.log(key)
             buyable.owned = false
         }
         if (!("owned" in buyable)) {

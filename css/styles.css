@@ -50,6 +50,10 @@ body {
     display: none !important;
 }
 
+.main-panel .usedCoin {
+    margin-right: 3px
+}
+
 #info .red-letters {
     font-size: 22px;
     color: var(--red);
@@ -67,6 +71,14 @@ body {
     padding: 5px 10px 10px 15px;
     height: fit-content;
     min-width: var(--sidebarWidth, 320px)
+}
+
+#currentJobsDisplay div span {
+    color: var(--taskTextBackground)
+}
+
+#currentSkillsDisplay div span {
+    color: var(--taskTextBackground)
 }
 
 .sidebar.zoom0 {
@@ -152,7 +164,8 @@ body {
 }
 
 .resetSettings .subsetting {
-    background-color: #550000
+    background-color: #550000;
+    color: var(--taskText)
 }
 
 .resetSettings .subsetting:hover {
@@ -274,7 +287,7 @@ body {
 
 .grayed {
     margin: 0;
-    color: var(--color2);
+    color: var(--grayed);
 }
 
 #sidebar .grayed {
