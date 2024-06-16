@@ -1,7 +1,9 @@
 version 0.1.1α [6] 16/06/2024
 * added Coins requirement
 * updated shop requirements
+* fixed mobile UI in shop
 * fixed light theme in shop
+* changed £ value in British £ notation
 
 version 0.1.0α [5] 16/06/2024
 * changed scaling for tasks
