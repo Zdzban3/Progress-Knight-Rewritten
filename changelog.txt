@@ -1,6 +1,7 @@
 version 0.1.1α [6] 16/06/2024
 * added Coins requirement
-* updated shop
+* updated shop requirements
+* fixed light theme in shop
 
 version 0.1.0α [5] 16/06/2024
 * changed scaling for tasks
