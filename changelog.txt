@@ -1,3 +1,6 @@
+version 0.2.0α [7] 17/06/2024
+* added more jobs and skills
+
 version 0.1.1α [6] 16/06/2024
 * added Coins requirement
 * updated shop requirements

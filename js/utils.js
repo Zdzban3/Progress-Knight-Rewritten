@@ -262,7 +262,7 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
     }
     if (requirements[name].evil) {
         const evilReq = requirements[name].evil
-        if (evilReq > data.evil) text += "Evil: " + format(data.evil, 0) + "/" + format(evilReq) + "\xa0\xa0"
+        if (evilReq > data.evil) text += "Evil: " + format(data.evil, 0) + "/" + format(evilReq, 0) + "\xa0\xa0"
     }
     if (requirements[name].coins) {
         const coinsReq = requirements[name].coins

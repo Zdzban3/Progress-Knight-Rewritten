@@ -1,5 +1,10 @@
 function applyMultipliers() {
     data.happiness = applySkillEffects("Happiness")
+    data.lifespan = data.baseLifespan * applySkillEffects("Lifespan Length")
+    data.gameSpeed = 4 * applySkillEffects("Time Warping")
+    data.allXPMult = applySkillEffects("All XP")
+    data.incomeMult = applySkillEffects("Income")
+    data.evilGainMult = applySkillEffects("Evil Gain")
     data.jobXPMult = applySkillEffects("Job XP")
     data.skillXPMult = applySkillEffects("Skill XP")
     for (const task in data.job) {
@@ -156,7 +161,7 @@ function getIncomeSpecific(jobName) {
                 var incomeMult = 1 + log(job.level + 1, 9)
                 break
         }
-        var income = job.income * incomeMult * job.incomeMult
+        var income = job.income * incomeMult * job.incomeMult * data.incomeMult
         return income
     } else return 0
 }
@@ -177,7 +182,7 @@ function updateTime(value = 1) {
 }
 
 function getGameSpeed() {
-    var gameSpeed = data.baseGameSpeed * +!data.paused
+    var gameSpeed = data.gameSpeed * data.devGameSpeed * +!data.paused
     return gameSpeed
 }
 
@@ -292,7 +297,7 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.jobXPMult * data.happiness
+    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.allXPMult * data.jobXPMult * data.happiness
     currentJob.xp += jobXP
     while (currentJob.xp >= currentJob.maxXP) {
         currentJob.level++
@@ -333,7 +338,7 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXP = applySpeed() * currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.skillXPMult * data.happiness
+    var skillXP = applySpeed() * currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness
     currentSkill.xp += skillXP
     while (currentSkill.xp >= currentSkill.maxXP) {
         currentSkill.level++

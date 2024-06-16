@@ -10,7 +10,7 @@ const jobCategories = {
         nameFull: "Military"
     },
     "T.A.A": {
-        jobs: ["Student"],
+        jobs: ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"],
         name: "theArcaneAssociation",
         nameFull: "The Arcane Association"
     }
@@ -27,12 +27,12 @@ const skillCategories = {
         nameFull: "Combat"
     },
     "Magic": {
-        skills: ["Mana control"],
+        skills: ["Mana control", "Life essence", "Time warping", "Astral body"],
         name: "magic",
         nameFull: "Magic"
     },
     "Dark magic": {
-        skills: [],
+        skills: ["Dark influence", "Evil control", "Intimidation", "Demon training", "Blood meditation", "Demon's wealth"],
         name: "darkMagic",
         nameFull: "Dark magic"
     }
@@ -75,12 +75,17 @@ const jobs = {
     "Footman": { name: "Footman", class: "footman", baseMaxXP: 1000, income: 50 },
     "Veteran footman": { name: "Veteran footman", class: "veteranFootman", baseMaxXP: 10000, income: 120 },
     "Knight": { name: "Knight", class: "knight", baseMaxXP: 1e5, income: 300 },
-    "Veteran knight": { name: "Veteran knight", class: "veteranKnight", baseMaxXP: 1e6, income: 1000 },
-    "Elite knight": { name: "Elite knight", class: "eliteKnight", baseMaxXP: 7.5e6, income: 3000 },
-    "Holy knight": { name: "Holy knight", class: "holyKnight", baseMaxXP: 4e7, income: 15000 },
-    "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", baseMaxXP: 1.5e8, income: 50000 },
+    "Veteran knight": { name: "Veteran knight", class: "veteranKnight", baseMaxXP: 1e6, income: 1e3 },
+    "Elite knight": { name: "Elite knight", class: "eliteKnight", baseMaxXP: 7.5e6, income: 3e3 },
+    "Holy knight": { name: "Holy knight", class: "holyKnight", baseMaxXP: 4e7, income: 1.5e4 },
+    "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", baseMaxXP: 1.5e8, income: 5e4 },
     //T.A.A
     "Student": { name: "Student", class: "student", baseMaxXP: 1e5, income: 100 },
+    "Apprentice mage": {name: "Apprentice mage", class: "apprenticeMage", baseMaxXP: 1e6, income: 1e3},
+    "Mage": {name: "Mage", class: "mage", baseMaxXP: 1e7, income: 7.5e3},
+    "Wizard": {name: "Wizard", class: "wizard", baseMaxXP: 1e8, income: 5e4},
+    "Master wizard": {name: "Master wizard", class: "masterWizard", baseMaxXP: 1e10, income: 2.5e5},
+    "Chairman": {name: "Chairman", class: "chairman", baseMaxXP: 1e12, income: 1e6},
 }
 
 const skills = {
@@ -95,10 +100,20 @@ const skills = {
     "Muscle memory": { name: "Muscle memory", class: "muscleMemory", baseMaxXP: 100, effect: 0.01, description: "Strength XP" },
     //Magic
     "Mana control": { name: "Mana control", class: "manaControl", baseMaxXP: 100, effect: 0.01, description: "T.A.A XP" },
+    "Life essence": {name: "Life essence", class: "lifeEssence", baseMaxXP: 100, effect: 0.01, description: "Lifespan Length"},
+    "Time warping": {name: "Time warping", class: "timeWarping", baseMaxXP: 100, effect: 0.01, description: "Time Warping"},
+    "Astral body": {name: "Astral body", class: "astralBody", baseMaxXP: 100, effect: 0.01, description: "Lifespan Length"},
+    //Dark magic
+    "Dark influence": {name: "Dark influence", class: "darkInfluence", baseMaxXP: 100, effect: 0.01, description: "All XP"},
+    "Evil control": {name: "Evil control", class: "evilControl", baseMaxXP: 100, effect: 0.01, description: "Evil Gain"},
+    "Intimidation": {name: "Intimidation", class: "intimidation", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses"},
+    "Demon training": {name: "Demon training", class: "demonTraining", baseMaxXP: 100, effect: 0.01, description: "All XP"},
+    "Blood meditation": {name: "Blood meditation", class: "bloodMeditation", baseMaxXP: 100, effect: 0.01, description: "Evil Gain"},
+    "Demon's wealth": {name: "Demon's wealth", class: "demonsWealth", baseMaxXP: 100, effect: 0.002, description: "Income"},
 }
 
 const specialTasks = {
-    "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXp: 100, baseMaxXP: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" }
+    "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXP: 100, baseMaxXP: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" }
 }
 
 const buyableHomes = {
@@ -132,6 +147,13 @@ const baseCurrency = {
     "coins": 0,
     "maxCoins": 0,
     "evil": 0,
+}
+
+const baseData = {
+    "gameSpeed": 1,
+    "devGameSpeed": 1,
+    "evilGainMult": 1,
+    "allXPMult": 1,
 }
 
 const settings = {
@@ -190,8 +212,7 @@ const requirements = {
         job: [{ name: "Student", value: 1 }],
         skill: [],
         show: {
-            job: [{ name: "Student", value: 1 }],
-            skill: []
+            skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
         }
     },
     "darkMagic": {
@@ -339,6 +360,45 @@ const requirements = {
         skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
         age: 20
     },
+    "apprenticeMage": {
+        job: [{ name: "Student", value: 10}],
+        skill: [{ name: "Mana control", value: 400}],
+        show: {
+            skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
+        }
+    },
+    "mage": {
+        job: [{ name: "Apprentice mage", value: 10}],
+        skill: [{ name: "Mana control", value: 700}],
+        show: {
+            job: [{ name: "Student", value: 10}],
+            skill: [{ name: "Mana control", value: 400}],
+        }
+    },
+    "wizard": {
+        job: [{ name: "Mage", value: 10}],
+        skill: [{ name: "Mana control", value: 1000}],
+        show: {
+            job: [{ name: "Apprentice mage", value: 10}],
+            skill: [{ name: "Mana control", value: 700}],
+        }
+    },
+    "masterWizard": {
+        job: [{ name: "Wizard", value: 10}],
+        skill: [{ name: "Mana control", value: 1500}],
+        show: {
+            job: [{ name: "Mage", value: 10}],
+            skill: [{ name: "Mana control", value: 1000}],
+        }
+    },
+    "chairman": {
+        job: [{ name: "Master wizard", value: 10}],
+        skill: [{ name: "Mana control", value: 2000}],
+        show: {
+            job: [{ name: "Wizard", value: 10}],
+            skill: [{ name: "Mana control", value: 1500}],
+        }
+    },
     //skills
     //fundamentals
     "concentration": {
@@ -384,6 +444,52 @@ const requirements = {
         skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
         show: {
             skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
+        }
+    },
+    "lifeEssence": {
+        job: [{ name: "Apprentice mage", value: 10}],
+        show: {
+            skill: [{ name: "Mana control", value: 400}],
+            job: [{ name: "Student", value: 10 }]
+        }
+    },
+    "timeWarping": {
+        job: [{ name: "Mage", value: 10}],
+        show: {
+            skill: [{ name: "Mana control", value: 700}],
+            job: [{ name: "Apprentice mage", value: 10 }]
+        }
+    },
+    "astralBody": {
+        job: [{ name: "Chairman", value: 25}],
+        show: {
+            skill: [{ name: "Mana control", value: 1200}],
+            job: [{ name: "Master wizard", value: 10 }]
+        }
+    },
+    //dark magic
+    "darkInfluence": {
+        evil: 1,
+    },
+    "evilControl": {
+        evil: 1,
+    },
+    "intimidation": {
+        evil: 1,
+    },
+    "demonTraining": {
+        evil: 25,
+    },
+    "bloodMeditation": {
+        evil: 75,
+        show: {
+            evil: 25
+        }
+    },
+    "demonsWealth": {
+        evil: 500,
+        show: {
+            evil: 75
         }
     },
     //shop
@@ -529,9 +635,9 @@ const tooltips = {
     "Muscle memory": "Strengthen your neurons through habit and repetition, improving strength gains throughout the body.",
 
     "Mana control": "Strengthen your mana channels throughout your body, aiding you in becoming a more powerful magical user.",
-    "Immortality": "Lengthen your lifespan through the means of magic. However, is this truly the immortality you have tried seeking for...?",
+    "Life essence": "Lengthen your lifespan through the means of magic. However, is this truly the immortality you have tried seeking for...?",
     "Time warping": "Bend space and time through forbidden techniques, resulting in a faster gamespeed.",
-    "Super immortality": "Through harnessing ancient, forbidden techniques, lengthen your lifespan drastically beyond comprehension.",
+    "Astral body": "Through harnessing ancient, forbidden techniques, lengthen your lifespan drastically beyond comprehension.",
 
     "Dark influence": "Encompass yourself with formidable power bestowed upon you by evil, allowing you to pick up and absorb any job or skill with ease.",
     "Evil control": "Tame the raging and growing evil within you, improving evil gain in-between rebirths.",
@@ -654,6 +760,11 @@ function assignBaseTasks() {
     for (const currency in baseCurrency) {
         if (!(currency in data)) {
             data[currency] = baseCurrency[currency]
+        }
+    }
+    for (const key in baseData) {
+        if (!(key in data)) {
+            data[key] = baseData[key]
         }
     }
     for (const adv in advancements) {

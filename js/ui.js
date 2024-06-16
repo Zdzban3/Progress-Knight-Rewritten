@@ -11,7 +11,7 @@ function renderSidebar() {
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
     document.getElementById("happinessDisplay").textContent = format(data.happiness, 2)
-    document.getElementById("timeSpeedDisplay").textContent = format(data.baseGameSpeed / 4, 2)
+    document.getElementById("timeSpeedDisplay").textContent = format(data.gameSpeed / 4, 2)
 
     if (data.selectedJobs.length >= 1) {
         const job1 = data.selectedJobs.at(-1)
@@ -507,7 +507,7 @@ function renderHero() {
                     const jobLevelDisplay = formatLevel(thisJob.level);
                     const jobIncomeDisplay = getIncomeSpecific(thisJob.name);
                     const jobXPDisplay = thisJob.xp;
-                    const jobXPRateDisplay = thisJob.xpMult * (1 + thisJob.maxLevel / 10) * data.jobXPMult * data.happiness;
+                    const jobXPRateDisplay = thisJob.xpMult * (1 + thisJob.maxLevel / 10) * data.allXPMult * data.jobXPMult * data.happiness;
                     const jobXPLeftDisplay = thisJob.maxXP - thisJob.xp;
                     const jobMaxLevelDisplay = formatLevel(thisJob.maxLevel);
 
@@ -561,7 +561,7 @@ function renderSkills() {
                     const skillLevelDisplay = formatLevel(thisSkill.level);
                     const skillEffectDisplay = formatEffect(thisSkill.name);
                     const skillXPDisplay = thisSkill.xp;
-                    const skillXPRateDisplay = thisSkill.xpMult * (1 + thisSkill.maxLevel / 10) * data.skillXPMult * data.happiness;
+                    const skillXPRateDisplay = thisSkill.xpMult * (1 + thisSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness;
                     const skillXPLeftDisplay = thisSkill.maxXP - thisSkill.xp;
                     const skillMaxLevelDisplay = formatLevel(thisSkill.maxLevel);
 
