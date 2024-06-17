@@ -81,11 +81,11 @@ const jobs = {
     "Legendary knight": { name: "Legendary knight", class: "legendaryKnight", baseMaxXP: 1.5e8, income: 5e4 },
     //T.A.A
     "Student": { name: "Student", class: "student", baseMaxXP: 1e5, income: 100 },
-    "Apprentice mage": {name: "Apprentice mage", class: "apprenticeMage", baseMaxXP: 1e6, income: 1e3},
-    "Mage": {name: "Mage", class: "mage", baseMaxXP: 1e7, income: 7.5e3},
-    "Wizard": {name: "Wizard", class: "wizard", baseMaxXP: 1e8, income: 5e4},
-    "Master wizard": {name: "Master wizard", class: "masterWizard", baseMaxXP: 1e10, income: 2.5e5},
-    "Chairman": {name: "Chairman", class: "chairman", baseMaxXP: 1e12, income: 1e6},
+    "Apprentice mage": { name: "Apprentice mage", class: "apprenticeMage", baseMaxXP: 1e6, income: 1e3 },
+    "Mage": { name: "Mage", class: "mage", baseMaxXP: 1e7, income: 7.5e3 },
+    "Wizard": { name: "Wizard", class: "wizard", baseMaxXP: 1e8, income: 5e4 },
+    "Master wizard": { name: "Master wizard", class: "masterWizard", baseMaxXP: 1e10, income: 2.5e5 },
+    "Chairman": { name: "Chairman", class: "chairman", baseMaxXP: 1e12, income: 1e6 },
 }
 
 const skills = {
@@ -100,16 +100,16 @@ const skills = {
     "Muscle memory": { name: "Muscle memory", class: "muscleMemory", baseMaxXP: 100, effect: 0.01, description: "Strength XP" },
     //Magic
     "Mana control": { name: "Mana control", class: "manaControl", baseMaxXP: 100, effect: 0.01, description: "T.A.A XP" },
-    "Life essence": {name: "Life essence", class: "lifeEssence", baseMaxXP: 100, effect: 0.01, description: "Lifespan Length"},
-    "Time warping": {name: "Time warping", class: "timeWarping", baseMaxXP: 100, effect: 0.01, description: "Time Warping"},
-    "Astral body": {name: "Astral body", class: "astralBody", baseMaxXP: 100, effect: 0.01, description: "Lifespan Length"},
+    "Life essence": { name: "Life essence", class: "lifeEssence", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length" },
+    "Time warping": { name: "Time warping", class: "timeWarping", baseMaxXP: 100, effect: 0.01, effectFormula: "log13", description: "Time Warping" },
+    "Astral body": { name: "Astral body", class: "astralBody", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length" },
     //Dark magic
-    "Dark influence": {name: "Dark influence", class: "darkInfluence", baseMaxXP: 100, effect: 0.01, description: "All XP"},
-    "Evil control": {name: "Evil control", class: "evilControl", baseMaxXP: 100, effect: 0.01, description: "Evil Gain"},
-    "Intimidation": {name: "Intimidation", class: "intimidation", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses"},
-    "Demon training": {name: "Demon training", class: "demonTraining", baseMaxXP: 100, effect: 0.01, description: "All XP"},
-    "Blood meditation": {name: "Blood meditation", class: "bloodMeditation", baseMaxXP: 100, effect: 0.01, description: "Evil Gain"},
-    "Demon's wealth": {name: "Demon's wealth", class: "demonsWealth", baseMaxXP: 100, effect: 0.002, description: "Income"},
+    "Dark influence": { name: "Dark influence", class: "darkInfluence", baseMaxXP: 100, effect: 0.01, description: "All XP" },
+    "Evil control": { name: "Evil control", class: "evilControl", baseMaxXP: 100, effect: 0.01, description: "Evil Gain" },
+    "Intimidation": { name: "Intimidation", class: "intimidation", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
+    "Demon training": { name: "Demon training", class: "demonTraining", baseMaxXP: 100, effect: 0.01, description: "All XP" },
+    "Blood meditation": { name: "Blood meditation", class: "bloodMeditation", baseMaxXP: 100, effect: 0.01, description: "Evil Gain" },
+    "Demon's wealth": { name: "Demon's wealth", class: "demonsWealth", baseMaxXP: 100, effect: 0.002, description: "Income" },
 }
 
 const specialTasks = {
@@ -143,7 +143,7 @@ const buyableOther = {
 
 const baseCurrency = {
     "days": 14 * 365,
-    "lifespan": 60 * 365,
+    "lifespan": 70 * 365,
     "coins": 0,
     "maxCoins": 0,
     "evil": 0,
@@ -154,6 +154,10 @@ const baseData = {
     "devGameSpeed": 1,
     "evilGainMult": 1,
     "allXPMult": 1,
+}
+
+const constChangableData = {
+    "baseLifespan": 70 * 365,
 }
 
 const settings = {
@@ -361,42 +365,42 @@ const requirements = {
         age: 20
     },
     "apprenticeMage": {
-        job: [{ name: "Student", value: 10}],
-        skill: [{ name: "Mana control", value: 400}],
+        job: [{ name: "Student", value: 10 }],
+        skill: [{ name: "Mana control", value: 400 }],
         show: {
             skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }]
         }
     },
     "mage": {
-        job: [{ name: "Apprentice mage", value: 10}],
-        skill: [{ name: "Mana control", value: 700}],
+        job: [{ name: "Apprentice mage", value: 10 }],
+        skill: [{ name: "Mana control", value: 700 }],
         show: {
-            job: [{ name: "Student", value: 10}],
-            skill: [{ name: "Mana control", value: 400}],
+            job: [{ name: "Student", value: 10 }],
+            skill: [{ name: "Mana control", value: 400 }],
         }
     },
     "wizard": {
-        job: [{ name: "Mage", value: 10}],
-        skill: [{ name: "Mana control", value: 1000}],
+        job: [{ name: "Mage", value: 10 }],
+        skill: [{ name: "Mana control", value: 1000 }],
         show: {
-            job: [{ name: "Apprentice mage", value: 10}],
-            skill: [{ name: "Mana control", value: 700}],
+            job: [{ name: "Apprentice mage", value: 10 }],
+            skill: [{ name: "Mana control", value: 700 }],
         }
     },
     "masterWizard": {
-        job: [{ name: "Wizard", value: 10}],
-        skill: [{ name: "Mana control", value: 1500}],
+        job: [{ name: "Wizard", value: 10 }],
+        skill: [{ name: "Mana control", value: 1500 }],
         show: {
-            job: [{ name: "Mage", value: 10}],
-            skill: [{ name: "Mana control", value: 1000}],
+            job: [{ name: "Mage", value: 10 }],
+            skill: [{ name: "Mana control", value: 1000 }],
         }
     },
     "chairman": {
-        job: [{ name: "Master wizard", value: 10}],
-        skill: [{ name: "Mana control", value: 2000}],
+        job: [{ name: "Master wizard", value: 10 }],
+        skill: [{ name: "Mana control", value: 2000 }],
         show: {
-            job: [{ name: "Wizard", value: 10}],
-            skill: [{ name: "Mana control", value: 1500}],
+            job: [{ name: "Wizard", value: 10 }],
+            skill: [{ name: "Mana control", value: 1500 }],
         }
     },
     //skills
@@ -447,23 +451,23 @@ const requirements = {
         }
     },
     "lifeEssence": {
-        job: [{ name: "Apprentice mage", value: 10}],
+        job: [{ name: "Apprentice mage", value: 10 }],
         show: {
-            skill: [{ name: "Mana control", value: 400}],
+            skill: [{ name: "Mana control", value: 400 }],
             job: [{ name: "Student", value: 10 }]
         }
     },
     "timeWarping": {
-        job: [{ name: "Mage", value: 10}],
+        job: [{ name: "Mage", value: 10 }],
         show: {
-            skill: [{ name: "Mana control", value: 700}],
+            skill: [{ name: "Mana control", value: 700 }],
             job: [{ name: "Apprentice mage", value: 10 }]
         }
     },
     "astralBody": {
-        job: [{ name: "Chairman", value: 25}],
+        job: [{ name: "Chairman", value: 25 }],
         show: {
-            skill: [{ name: "Mana control", value: 1200}],
+            skill: [{ name: "Mana control", value: 1200 }],
             job: [{ name: "Master wizard", value: 10 }]
         }
     },
@@ -540,14 +544,14 @@ const requirements = {
     },
     "dumbbells": {
         coins: 5e3,
-        skill: [{ name: "Strength", value: 10}],
+        skill: [{ name: "Strength", value: 10 }],
         show: {
-            skill: [{ name: "Strength", value: 1}]
+            skill: [{ name: "Strength", value: 1 }]
         }
     },
     "studyDesk": {
         coins: 5e6,
-        skill: [{ name: "Concentration", value: 100}],
+        skill: [{ name: "Concentration", value: 100 }],
         show: {
             coins: 5e4
         }
@@ -678,7 +682,7 @@ var data = { //formerly gameData
 
     selectedTab: "default tab set in main.js",
     selectedSettings: null,
-    baseLifespan: 365 * 60,
+    baseLifespan: 365 * 70,
     baseGameSpeed: 4,
     paused: true,
     autopromote: false,
@@ -767,9 +771,8 @@ function assignBaseTasks() {
             data[key] = baseData[key]
         }
     }
-    for (const adv in advancements) {
-        data.advancements[adv] = advancements[adv]
-    }
+    for (const key in constChangableData) data[key] = constChangableData[key]
+    for (const adv in advancements) data.advancements[adv] = advancements[adv]
     for (const key in data.job) {
         const task = data.job[key]
         if (!("xp" in task)) {
@@ -791,6 +794,8 @@ function assignBaseTasks() {
         }
         task.baseMaxXP = jobs[key].baseMaxXP
         task.income = jobs[key].income
+        if (jobs[key].incomeFormula) task.incomeFormula = jobs[key].incomeFormula
+        if (jobs[key].xpFormula) task.xpFormula = jobs[key].xpFormula
     }
     for (const key in data.skill) {
         const task = data.skill[key]
@@ -810,6 +815,8 @@ function assignBaseTasks() {
         }
         task.baseMaxXP = skills[key].baseMaxXP
         task.effect = skills[key].effect
+        if (skills[key].effectFormula) task.effectFormula = skills[key].effectFormula
+        if (skills[key].xpFormula) task.xpFormula = skills[key].xpFormula
     }
     for (const key in data.buyable.home) {
         const home = data.buyable.home[key]

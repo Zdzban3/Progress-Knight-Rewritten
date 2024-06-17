@@ -124,7 +124,16 @@ body {
 
 .menuButton:hover {
     color: var(--color0);
-    background-color: var(--color1);
+    background-color: var(--color2);
+}
+
+#importExportBox {
+    margin-top: -10px
+}
+
+#importExportBox:hover {
+    color: var(--color0);
+    background-color: var(--color4);
 }
 
 .menuButton.currentTab {

@@ -40,7 +40,7 @@
                 </div>
                 <div class="display timeDisplay">
                     <p class="age"><span id="ageDisplay">Age 14 Day 0</span></p>
-                    <p class="lifespan grayed">Lifespan: <span id="lifespanDisplay">60</span> Years</p>
+                    <p class="lifespan grayed">Lifespan: <span id="lifespanDisplay">70</span> Years</p>
                     <p class="realtime grayed">Real Time: <span id="realtimeDisplay">00:00</span></p>
                 </div>
                 <div class="buttonGroup">
@@ -181,16 +181,16 @@
                     </div>
                     <div class="subpanel hidden" id="amuletPanel">
                         <div class="subsubpanel amuletPanel" id="amuletSubpanel">
-                            <div hidden class="amuletText" id="amuletText25">You stumble across a strange looking amulet
+                            <div hidden class="amuletText" id="amuletText1">You stumble across a strange looking amulet
                                 on
                                 your 25th birthday. It does not look like it has any worth on the market given that it's
                                 made from cheap-looking copper. However, you feel a weird urge to keep the amulet, so
                                 you slip it into your pocket for safekeeping. </div>
-                            <div hidden class="amuletText" id="amuletText40">On your 40th birthday, you feel the amulet
+                            <div hidden class="amuletText" id="amuletText2">On your 40th birthday, you feel the amulet
                                 shiver uncontrollably in your pocket. You take it out and the constant shivering
                                 suddenly stops. More to your bizarre surprise, you notice a strange etching on the
                                 centre of the amulet. </div>
-                            <div hidden class="amuletText" id="amuletText55">
+                            <div hidden class="amuletText" id="amuletText3">
                                 <div>On your 55th birthday, you once again encounter the strange, unexplained shivering
                                     from your amulet. But this time, a living eyeball emerges from the centre. Although
                                     terribly frightened, you realise you do not have many years to live left anyway so
@@ -216,6 +216,13 @@
                                 onclick="setSettings('changelog')">Changelog</div>
                         </div>
                         <div id="settingsSubpanel" class="settingsSubpanel settingsPanel hidden">
+                            <div class="groupedSettings">
+                                <div class="setting menuButton" onclick="importGameData()">Import save</div>
+                                <div class="setting menuButton" onclick="exportGameData()">Export save</div>
+                            </div>
+                            <form autocomplete="off">
+                                <input class="setting menuButton" id="importExportBox" placeholder="Enter save here" type="text">
+                            </form>
                             <div class="themes groupedSettings">
                                 <div class="setting settingDark menuButton" onclick="switchPrimaryTheme(true)">
                                     <span>Primary Theme: </span><span id="selectedPrimaryTheme">Dark</span>

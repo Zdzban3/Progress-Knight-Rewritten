@@ -50,11 +50,11 @@ function getCoinsData() {
             { "name": "r", "color": "#ed333b", "value": 1e12 },
             { "name": "S", "color": "#6666ff", "value": 1e10 },
             { "name": "e", "color": "#2ec27e", "value": 1e8 },
-            { "name": "p", "color": "#79b9c7", "value": 1e6 },
-            { "name": "g", "color": "#E5C100", "value": 10000 },
-            { "name": "s", "color": "#a8a8a8", "value": 100 },
-            { "name": "c", "color": "#a15c2f", "value": 1 },
-            { "name": "w", "color": "#633f24", "value": 1e-2 },
+            { "name": "p", "color": "oklch(75% 0.07 215)", "value": 1e6 },
+            { "name": "g", "color": "oklch(75% 0.18 95)", "value": 1e4 },
+            { "name": "s", "color": "oklch(75% 0 0)", "value": 1e2 },
+            { "name": "c", "color": "oklch(55% 0.1 60)", "value": 1 },
+            { "name": "w", "color": "oklch(60% 0.08 50)", "value": 1e-2 },
         ];
         case 2: return [
             { "name": "∞", "color": "#000000", "value": 1e50, "class": "currency-shadow-rainbow" },

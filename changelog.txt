@@ -1,3 +1,8 @@
+version 0.2.1α [8] 18/06/2024
+* set base lifespan to 70
+* fixed new skills
+* added import/export buttons
+
 version 0.2.0α [7] 17/06/2024
 * added more jobs and skills
 

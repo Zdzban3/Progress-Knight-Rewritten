@@ -12,7 +12,7 @@ function advancementAmulet() {
 }
 
 function amuletText() {
-    if (data.days / 365 > 25) { document.getElementById("amuletText25").removeAttribute("hidden") } else document.getElementById("amuletText25").setAttribute("hidden", "")
-    if (data.days / 365 > 40) { document.getElementById("amuletText40").removeAttribute("hidden") } else document.getElementById("amuletText40").setAttribute("hidden", "")
-    if (data.days / 365 > 55) { document.getElementById("amuletText55").removeAttribute("hidden") } else document.getElementById("amuletText55").setAttribute("hidden", "")
+    if (data.days / 365 > 25) { document.getElementById("amuletText1").removeAttribute("hidden") } else document.getElementById("amuletText1").setAttribute("hidden", "")
+    if (data.days / 365 > 45) { document.getElementById("amuletText2").removeAttribute("hidden") } else document.getElementById("amuletText2").setAttribute("hidden", "")
+    if (data.days / 365 > 65) { document.getElementById("amuletText3").removeAttribute("hidden") } else document.getElementById("amuletText3").setAttribute("hidden", "")
 }

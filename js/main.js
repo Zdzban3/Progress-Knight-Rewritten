@@ -62,8 +62,15 @@ function applySkillEffects(effectName) {
                 case "reductive":
                     effect *= 1 - log(skillLevel + 1, 6) / 10
                     break
+                case "log13":
+                    effect *= 1 + log(skillLevel + 1, 13)
+                    break
+                case "log33":
+                    effect *= 1 + log(skillLevel + 1, 33)
+                    break
                 case "squared":
                     effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
+                    break
             }
         }
     }
@@ -87,6 +94,12 @@ function getEffectSpecific(skillName) {
         case "reductive":
             effect *= 1 - log(skillLevel + 1, 6) / 10
             break
+            case "log13":
+                effect *= 1 + log(skillLevel + 1, 13)
+                break
+            case "log33":
+                effect *= 1 + log(skillLevel + 1, 33)
+                break
         case "squared":
             effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
     }
@@ -122,7 +135,7 @@ function buyItem(itemName) {
             data.coins -= item.price
         } else if (item.owned == true) {
             item.owned = false
-            data.coins += item.price / 2
+            data.coins += item.price / 1.2
         }
     }
     if (itemName in data.buyable.home) {
@@ -194,7 +207,7 @@ function applySpeed(value = 1) {
 function applyExpenses() {
     var coins = applySpeed(getExpense())
     data.coins -= coins
-    if (data.coins < 0) {
+    if (data.coins <= 0) {
         goBankrupt()
     }
 }
@@ -205,8 +218,10 @@ function applyIncome() {
 
 function goBankrupt() {
     data.coins = 0
+    console.log("bankrupt")
 
     if (data.buyable.home[data.selectedHome].upkeep >= getIncome()) {
+        console.log("1")
         buyItem("Homeless")
     }
     var buyableArray = Object.keys(data.buyable.other).sort(function (a, b) { return data.buyable.other[b].upkeep - data.buyable.other[a].upkeep }) //sort by upkeep backwards
@@ -214,9 +229,9 @@ function goBankrupt() {
         const buyable = data.buyable.other[key]
         if (buyable.owned) {
             if (buyable.upkeep >= getNet()) {
-                buyItem(buyable)
+                buyItem(key)
                 break
-            } else buyItem(buyable)
+            } else buyItem(key)
         }
     }
 }
@@ -505,6 +520,8 @@ function rebirth(rebirthStage) {
         for (const key in data.buyable.other) data.buyable.other[key].owned = false
         data.days = 365 * 14
         setTab('hero')
+        data.selectedJobs = []
+        data.selectedSkills = []
     }
 }
 
@@ -541,6 +558,27 @@ function load() {
     }
 }
 
+function importGameData() {
+    try {
+        const importExportBox = document.getElementById("importExportBox")
+        if (importExportBox.value == "") {
+            alert("It looks like you tried to load an empty save... Paste save data into the box, then click \"Import Save\" again.")
+            return
+        }
+        data = JSON.parse(window.atob(importExportBox.value))
+        save()
+        location.reload()
+    } catch (error) {
+        alert("It looks like you tried to load a corrupted save... If this issue persists, feel free to contact the developers!")
+    }
+}
+
+function exportGameData() {
+    const importExportBox = document.getElementById("importExportBox")
+    const saveString = window.btoa(JSON.stringify(data))
+    importExportBox.value = saveString
+}
+
 function reset(resetSettings = false) {
     localStorage.setItem("data", "undefined")
     if (resetSettings == true) {
@@ -570,8 +608,8 @@ function update() {
         const job = data.selectedJobs[key]
         if (!(isComplete(requirements[job.class]))) selectJob(job.name, key)
     }
-    applyExpenses()
     applyIncome()
+    applyExpenses()
     updateUI()
     amuletText()
 }
