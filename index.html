@@ -157,6 +157,11 @@
                         class="happiness">[happiness]</span><br>
                     <span class="grayed">Affects all XP gain</span>
                 </div>
+                <div class="display evilDisplay">
+                    <span class="evil">Evil: </span><span id="evilDisplay"
+                        class="evil">[evil]</span><br>
+                    <span class="grayed">Affects Dark magic XP gain</span>
+                </div>
             </div>
             <div id="mainpanels">
                 <div class="menu tab roboto-regular">
@@ -199,10 +204,20 @@
                                     again, losing all your levels and coins. However, you will gain xp multipliers for
                                     your heroes and skills equivalent to: 1 + the max level of the hero or skill / 10.
                                     This means you will learn everything again much more quickly than you did in your
-                                    previous life. <span style="color: red">Something tells you that the amulet might
+                                    previous life. <br><span style="color: var(--evil)">Something tells you that the amulet might
                                         evolve after living for 2 whole centuries... </i></span>
                                         <div class="rebirthButton" id="rebirth1" onclick="rebirth(1)">Touch the eye</div>
                                     </div>
+                            </div>
+                            <div hidden class="amuletText" id="amuletTextEvil">
+                                Your gut instinct was right. The moment you hit the grand age of 200, you hear an ominous hum coming from the amulet.
+                                A mouth emerges from its surface and begins to cackle, and proceeds to say: "So you've made it this far... Are you ready to embrace evil?"
+                                <br><i><div class="grayed" style="color: var(--evil)">
+                                    If you decide to embrace evil, all of your levels, coins and even max levels will be reset.
+                                    You will be reborn as a fresh slate. However, you will unlock a new line of skills and gain
+                                    <b><span id="evilGainDisplay"></span> evil</b>, which will heavily impact your future lives.
+                                </div></i>
+                                <div class="rebirthButton" id="rebirth2" onclick="rebirth(2)">Embrace Evil</div>
                             </div>
                         </div>
                     </div>

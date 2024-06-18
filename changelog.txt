@@ -1,3 +1,7 @@
+version 0.3.0α [9] 18/06/2024
+* added evil
+* changed autoskill
+
 version 0.2.1α [8] 18/06/2024
 * set base lifespan to 70
 * fixed new skills

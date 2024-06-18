@@ -10,8 +10,10 @@ function renderSidebar() {
     formatCoins(getIncome(), document.getElementById("incomeDisplay"))
     formatCoins(getExpense(), document.getElementById("expenseDisplay"))
 
-    document.getElementById("happinessDisplay").textContent = format(data.happiness, 2)
     document.getElementById("timeSpeedDisplay").textContent = format(data.gameSpeed / 4, 2)
+    document.getElementById("happinessDisplay").textContent = format(data.happiness, 2)
+    document.getElementById("evilDisplay").textContent = format(data.evil, 2)
+    document.getElementById("evilGainDisplay").textContent = format(data.evilGainMult, 2)
 
     if (data.selectedJobs.length >= 1) {
         const job1 = data.selectedJobs.at(-1)
@@ -561,7 +563,7 @@ function renderSkills() {
                     const skillLevelDisplay = formatLevel(thisSkill.level);
                     const skillEffectDisplay = formatEffect(thisSkill.name);
                     const skillXPDisplay = thisSkill.xp;
-                    const skillXPRateDisplay = thisSkill.xpMult * (1 + thisSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness;
+                    const skillXPRateDisplay = getSkillXP(thisSkill.name)
                     const skillXPLeftDisplay = thisSkill.maxXP - thisSkill.xp;
                     const skillMaxLevelDisplay = formatLevel(thisSkill.maxLevel);
 

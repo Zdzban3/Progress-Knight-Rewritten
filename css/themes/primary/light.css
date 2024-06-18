@@ -18,8 +18,9 @@
     --expense: oklch(45% 0.1 30);
     --income: oklch(40% 0.12 150);
     --net: oklch(40% 0.12 270);
-    --happiness: oklch(60% 0.12 105);
     --timeSpeed: oklch(40% 0.12 305);
+    --happiness: oklch(60% 0.12 105);
+    --evil: oklch(40% 0.1788 30);
     --red: #ff0000;
     --greenish: oklch(50% 0.12 140);
     --redish: oklch(50% 0.12 30);
@@ -48,6 +49,10 @@
     --equipmentBackground: oklch(40% 0.015 250);
     --personnel: oklch(60% 0.06 0);
     --personnelBackground: oklch(40% 0.04 0);
+
+    --evilBackground: oklch(80% 0.03 30);
+    --evilBackgroundHover: oklch(70% 0.06 30);
+    --evilBorder: oklch(60% 0.15 30);
 }
 
 body {

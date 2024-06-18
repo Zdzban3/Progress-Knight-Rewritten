@@ -94,12 +94,12 @@ function getEffectSpecific(skillName) {
         case "reductive":
             effect *= 1 - log(skillLevel + 1, 6) / 10
             break
-            case "log13":
-                effect *= 1 + log(skillLevel + 1, 13)
-                break
-            case "log33":
-                effect *= 1 + log(skillLevel + 1, 33)
-                break
+        case "log13":
+            effect *= 1 + log(skillLevel + 1, 13)
+            break
+        case "log33":
+            effect *= 1 + log(skillLevel + 1, 33)
+            break
         case "squared":
             effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
     }
@@ -218,10 +218,8 @@ function applyIncome() {
 
 function goBankrupt() {
     data.coins = 0
-    console.log("bankrupt")
 
     if (data.buyable.home[data.selectedHome].upkeep >= getIncome()) {
-        console.log("1")
         buyItem("Homeless")
     }
     var buyableArray = Object.keys(data.buyable.other).sort(function (a, b) { return data.buyable.other[b].upkeep - data.buyable.other[a].upkeep }) //sort by upkeep backwards
@@ -353,7 +351,7 @@ function doSelectedSkills() {
 
 function doCurrentSkill(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXP = applySpeed() * currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness
+    const skillXP = applySpeed() * getSkillXP(skillName)
     currentSkill.xp += skillXP
     while (currentSkill.xp >= currentSkill.maxXP) {
         currentSkill.level++
@@ -406,6 +404,13 @@ function jobIndexInCategory(task) {
     }
 }
 
+function getSkillXP(skillName) {
+    var currentSkill = data.skill[skillName]
+    var skillXP = currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness
+    if (skillInWhatCategory(skillName) == "darkMagic") skillXP *= data.evil
+    return skillXP
+}
+
 function autopromote() {
     if (data.selectedJobs[0] == undefined) selectJob("Beggar")
     if (data.selectedJobs.length < data.maxJobs) {
@@ -449,7 +454,7 @@ function autoskill() {
         var xpDict = {}
         for (const key in data.skill) {
             const skill = data.skill[key]
-            if (isComplete(requirements[data.skill[key].class])) xpDict[key] = skill.level
+            if (isComplete(requirements[data.skill[key].class])) xpDict[key] = skill.xp / getSkillXP(key)
         }
         const entries = getSortedKeysFromDict(xpDict)
         for (let i = 0; i < data.maxSkills; i++) {
@@ -500,6 +505,11 @@ function rebirthTask(task, rebirthStage) {
         task.level = 0
         task.xp = 0
     }
+    if (rebirthStage == 2) {
+        task.level = 0
+        task.xp = 0
+        task.maxLevel = 0
+    }
 }
 
 function rebirth(rebirthStage) {
@@ -523,8 +533,20 @@ function rebirth(rebirthStage) {
         data.selectedJobs = []
         data.selectedSkills = []
     }
+    if (rebirthStage == 2) {
+        for (const key in data.job) rebirthTask(data.job[key], 1)
+        for (const key in data.skill) rebirthTask(data.skill[key], 1)
+        buyItem("Homeless")
+        data.maxCoins = 0
+        data.coins = 0
+        for (const key in data.buyable.other) data.buyable.other[key].owned = false
+        data.days = 365 * 14
+        setTab('hero')
+        data.selectedJobs = []
+        data.selectedSkills = []
+        data.evil += data.evilGainMult
+    }
 }
-
 
 function setMenuWidth(width) {
     var root = document.querySelector(':root');

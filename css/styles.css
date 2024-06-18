@@ -284,6 +284,12 @@ body {
     font-weight: 450;
 }
 
+.evil {
+    font-size: 20px;
+    color: var(--evil);
+    font-weight: 450;
+}
+
 .timeSpeed {
     font-size: 20px;
     color: var(--timeSpeed);
@@ -400,9 +406,18 @@ body {
     color: var(--color0);
     font-size: 20px;
     user-select: none;
-    border: 5px solid var(--military)
+    border: 5px solid var(--color1)
 }
 
 .rebirthButton:hover {
     background-color: var(--color3);
+}
+
+#rebirth2 {
+    background-color: var(--evilBackground);
+    border: 5px solid var(--evilBorder)
+}
+
+#rebirth2:hover {
+    background-color: var(--evilBackgroundHover);
 }
