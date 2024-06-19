@@ -92,22 +92,22 @@ const skills = {
     //Fundamentals
     "Concentration": { name: "Concentration", class: "concentration", baseMaxXP: 100, effect: 0.01, description: "Skill XP" },
     "Productivity": { name: "Productivity", class: "productivity", baseMaxXP: 100, effect: 0.01, description: "Job XP" },
-    "Bargaining": { name: "Bargaining", class: "bargaining", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
-    "Meditation": { name: "Meditation", class: "meditation", baseMaxXP: 100, effect: 0.01, description: "Happiness" },
+    "Bargaining": { name: "Bargaining", class: "bargaining", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses", importance: 0.2 },
+    "Meditation": { name: "Meditation", class: "meditation", baseMaxXP: 100, effect: 0.01, description: "Happiness", importance: 2 },
     //Combat
-    "Strength": { name: "Strength", class: "strength", baseMaxXP: 100, effect: 0.01, description: "Military Income" },
-    "Battle tactics": { name: "Battle tactics", class: "battleTactics", baseMaxXP: 100, effect: 0.01, description: "Military XP" },
-    "Muscle memory": { name: "Muscle memory", class: "muscleMemory", baseMaxXP: 100, effect: 0.01, description: "Strength XP" },
+    "Strength": { name: "Strength", class: "strength", baseMaxXP: 100, effect: 0.01, description: "Military Income", importance: 0.8 },
+    "Battle tactics": { name: "Battle tactics", class: "battleTactics", baseMaxXP: 100, effect: 0.01, description: "Military XP", importance: 0.8 },
+    "Muscle memory": { name: "Muscle memory", class: "muscleMemory", baseMaxXP: 100, effect: 0.01, description: "Strength XP", importance: 0.2 },
     //Magic
-    "Mana control": { name: "Mana control", class: "manaControl", baseMaxXP: 100, effect: 0.01, description: "T.A.A XP" },
-    "Life essence": { name: "Life essence", class: "lifeEssence", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length" },
-    "Time warping": { name: "Time warping", class: "timeWarping", baseMaxXP: 100, effect: 0.01, effectFormula: "log13", description: "Time Warping" },
-    "Astral body": { name: "Astral body", class: "astralBody", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length" },
+    "Mana control": { name: "Mana control", class: "manaControl", baseMaxXP: 100, effect: 0.01, description: "T.A.A XP", importance: 0.8 },
+    "Life essence": { name: "Life essence", class: "lifeEssence", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length", importance: 0.2 },
+    "Time warping": { name: "Time warping", class: "timeWarping", baseMaxXP: 100, effect: 0.01, effectFormula: "log13", description: "Time Warping", importance: 0.5 },
+    "Astral body": { name: "Astral body", class: "astralBody", baseMaxXP: 100, effect: 0.01, effectFormula: "log33", description: "Lifespan Length", importance: 0.2 },
     //Dark magic
-    "Dark influence": { name: "Dark influence", class: "darkInfluence", baseMaxXP: 100, effect: 0.01, description: "All XP" },
+    "Dark influence": { name: "Dark influence", class: "darkInfluence", baseMaxXP: 100, effect: 0.01, description: "All XP", importance: 2 },
     "Evil control": { name: "Evil control", class: "evilControl", baseMaxXP: 100, effect: 0.01, description: "Evil Gain" },
-    "Intimidation": { name: "Intimidation", class: "intimidation", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses" },
-    "Demon training": { name: "Demon training", class: "demonTraining", baseMaxXP: 100, effect: 0.01, description: "All XP" },
+    "Intimidation": { name: "Intimidation", class: "intimidation", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses", importance: 0.2 },
+    "Demon training": { name: "Demon training", class: "demonTraining", baseMaxXP: 100, effect: 0.01, description: "All XP", importance: 2 },
     "Blood meditation": { name: "Blood meditation", class: "bloodMeditation", baseMaxXP: 100, effect: 0.01, description: "Evil Gain" },
     "Demon's wealth": { name: "Demon's wealth", class: "demonsWealth", baseMaxXP: 100, effect: 0.002, description: "Income" },
 }
@@ -118,24 +118,24 @@ const specialTasks = {
 
 const buyableHomes = {
     "Homeless": { name: "Homeless", class: "homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
-    "Tent": { name: "Tent", class: "tent", price: 5e3, upkeep: 15, effect: 1.4, description: "Happiness" },
+    "Tent": { name: "Tent", class: "tent", price: 2e3, upkeep: 15, effect: 1.4, description: "Happiness" },
     "Wooden hut": { name: "Wooden hut", class: "woodenHut", price: 1e5, upkeep: 100, effect: 2, description: "Happiness" },
-    "Cottage": { name: "Cottage", class: "cottage", price: 1e6, upkeep: 750, effect: 3.5, description: "Happiness" },
-    "House": { name: "House", class: "house", price: 1e7, upkeep: 3000, effect: 6, description: "Happiness" },
-    "Large house": { name: "Large house", class: "largeHouse", price: 6e7, upkeep: 2.5e4, effect: 12, description: "Happiness" },
-    "Small palace": { name: "Small palace", class: "smallPalace", price: 5e8, upkeep: 3e5, effect: 25, description: "Happiness" },
-    "Grand palace": { name: "Grand palace", class: "grandPalace", price: 1e10, upkeep: 5e6, effect: 60, description: "Happiness" },
+    "Cottage": { name: "Cottage", class: "cottage", price: 5e5, upkeep: 750, effect: 3.5, description: "Happiness" },
+    "House": { name: "House", class: "house", price: 5e6, upkeep: 3000, effect: 6, description: "Happiness" },
+    "Large house": { name: "Large house", class: "largeHouse", price: 2e7, upkeep: 2.5e4, effect: 12, description: "Happiness" },
+    "Small palace": { name: "Small palace", class: "smallPalace", price: 2e8, upkeep: 3e5, effect: 25, description: "Happiness" },
+    "Grand palace": { name: "Grand palace", class: "grandPalace", price: 5e9, upkeep: 5e6, effect: 60, description: "Happiness" },
 }
 
 const buyableOther = {
     //furniture
-    "Book": { name: "Book", class: "book", price: 1e4, upkeep: 10, effect: 1.5, description: "Skill XP" },
-    "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 4e4, upkeep: 50, effect: 1.5, description: "Strength XP" },
+    "Book": { name: "Book", class: "book", price: 2e3, upkeep: 10, effect: 1.5, description: "Skill XP" },
+    "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 1e4, upkeep: 50, effect: 1.5, description: "Strength XP" },
     "Study desk": { name: "Study desk", class: "studyDesk", price: 4e7, upkeep: 1e6, effect: 2, description: "Skill XP" },
-    "Library": { name: "Library", class: "library", price: 1e9, upkeep: 1e7, effect: 1.5, description: "Skill XP" },
+    "Library": { name: "Library", class: "library", price: 2e9, upkeep: 1e7, effect: 1.5, description: "Skill XP" },
     //equipment
     "Steel longsword": { name: "Steel longsword", class: "steelLongsword", price: 1e5, upkeep: 1000, effect: 2, description: "Military XP" },
-    "Sapphire charm": { name: "Sapphire charm", class: "sapphireCharm", price: 2.5e7, upkeep: 5e4, effect: 3, description: "Magic XP" },
+    "Sapphire charm": { name: "Sapphire charm", class: "sapphireCharm", price: 2e7, upkeep: 5e4, effect: 3, description: "Magic XP" },
     //personnel
     "Personal squire": { name: "Personal squire", class: "personalSquire", price: 0, upkeep: 200, effect: 2, description: "Job XP" },
     "Butler": { name: "Butler", class: "butler", price: 0, upkeep: 7.5e3, effect: 1.5, description: "Happiness" },
@@ -150,6 +150,7 @@ const baseCurrency = {
 }
 
 const baseData = {
+    "autobuy": false,
     "gameSpeed": 1,
     "devGameSpeed": 1,
     "evilGainMult": 1,
@@ -188,7 +189,6 @@ const requirements = {
     "military": {
         job: [],
         skill: [{ name: "Strength", value: 5 }],
-        age: 16,
         show: {
             job: [],
             skill: [{ name: "Productivity", value: 10 }]
@@ -197,7 +197,6 @@ const requirements = {
     "theArcaneAssociation": {
         job: [],
         skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
-        age: 20,
         show: {
             job: [],
             skill: [{ name: "Concentration", value: 30 }, { name: "Productivity", value: 20 }]
@@ -235,18 +234,16 @@ const requirements = {
     "equipment": {
         coins: 1e4,
         job: [{ name: "Footman", value: 10 }],
-        skill: [{ name: "Strength", value: 50 }, { name: "Battle tactics", value: 10 }],
         show: {
             coins: 1e3,
             job: [{ name: "Squire", value: 10 }],
-            skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
         }
     },
     "personnel": {
-        coins: 1e5,
+        coins: 4e4,
         job: [{ name: "Veteran footman", value: 10 }],
         show: {
-            coins: 1e4,
+            coins: 5e3,
             job: [{ name: "Footman", value: 10 }],
         }
     },
@@ -297,72 +294,63 @@ const requirements = {
     "squire": {
         job: [],
         skill: [{ name: "Strength", value: 5 }],
-        age: 16
     },
     "footman": {
         job: [{ name: "Squire", value: 10 }],
         skill: [{ name: "Strength", value: 20 }],
-        age: 16
     },
     "veteranFootman": {
         job: [{ name: "Footman", value: 10 }],
-        skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
-        age: 16,
+        skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 40 }],
         show: {
             job: [{ name: "Squire", value: 10 }],
-            skill: []
         }
     },
     "knight": {
         job: [{ name: "Veteran footman", value: 10 }],
-        skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 40 }],
-        age: 16,
+        skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 60 }],
         show: {
             job: [{ name: "Footman", value: 10 }],
-            skill: []
+            skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 40 }],
         }
     },
     "veteranKnight": {
         job: [{ name: "Knight", value: 10 }],
         skill: [{ name: "Strength", value: 120 }, { name: "Battle tactics", value: 150 }],
-        age: 16,
         show: {
             job: [{ name: "Veteran footman", value: 10 }],
-            skill: []
+            skill: [{ name: "Strength", value: 100 }, { name: "Battle tactics", value: 60 }],
         }
     },
     "eliteKnight": {
         job: [{ name: "Veteran knight", value: 10 }],
-        skill: [{ name: "Strength", value: 200 }, { name: "Battle tactics", value: 300 }],
-        age: 16,
+        skill: [{ name: "Strength", value: 300 }, { name: "Battle tactics", value: 200 }],
         show: {
             job: [{ name: "Knight", value: 10 }],
-            skill: []
+            skill: [{ name: "Strength", value: 120 }, { name: "Battle tactics", value: 150 }],
         }
     },
     "holyKnight": {
         job: [{ name: "Elite knight", value: 10 }],
-        skill: [{ name: "Strength", value: 400 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
-        age: 16,
+        skill: [{ name: "Strength", value: 500 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
         show: {
             job: [{ name: "Veteran knight", value: 10 }],
-            skill: []
+            skill: [{ name: "Strength", value: 300 }, { name: "Battle tactics", value: 200 }],
+            
         }
     },
     "legendaryKnight": {
         job: [{ name: "Holy knight", value: 10 }],
         skill: [{ name: "Strength", value: 1000 }, { name: "Battle tactics", value: 1000 }, { name: "Mana control", value: 1000 }],
-        age: 16,
         show: {
             job: [{ name: "Elite knight", value: 10 }],
-            skill: []
+            skill: [{ name: "Strength", value: 500 }, { name: "Battle tactics", value: 400 }, { name: "Mana control", value: 500 }],
         }
     },
     //t.a.a.
     "student": {
         job: [],
         skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
-        age: 20
     },
     "apprenticeMage": {
         job: [{ name: "Student", value: 10 }],
@@ -476,22 +464,27 @@ const requirements = {
         evil: 1,
     },
     "evilControl": {
+        skill: [{ name: "Meditation", value: 100 }],
         evil: 1,
     },
     "intimidation": {
+        skill: [{ name: "Bargaining", value: 5 }],
         evil: 1,
     },
     "demonTraining": {
+        skill: [{ name: "Dark influence", value: 20 }],
         evil: 25,
     },
     "bloodMeditation": {
         evil: 75,
+        skill: [{ name: "Meditation", value: 500 }, { name: "Dark influence", value: 500 }],
         show: {
             evil: 25
         }
     },
     "demonsWealth": {
         evil: 500,
+        skill: [{ name: "Intimidation", value: 20 }, { name: "Evil control", value: 20 }],
         show: {
             evil: 75
         }
@@ -566,34 +559,29 @@ const requirements = {
     "steelLongsword": {
         coins: 2e4,
         job: [{ name: "Footman", value: 10 }],
-        skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 10 }],
-        age: 16
 
     },
     "sapphireCharm": {
         coins: 5e6,
         skill: [{ name: "Mana control", value: 100 }],
         show: {
-            coins: 5e6,
+            coins: 5e5,
             skill: [{ name: "Concentration", value: 200 }, { name: "Meditation", value: 200 }],
-            age: 20
         }
     },
     //personnel
     "personalSquire": {
-        coins: 1e6,
+        coins: 2e5,
         job: [{ name: "Veteran footman", value: 10 }],
-        age: 16,
         show: {
-            coins: 1e5,
+            coins: 2e4,
             job: [{ name: "Veteran footman", value: 10 }],
-            age: 16
         }
     },
     "butler": {
-        coins: 2e7,
+        coins: 5e6,
         show: {
-            coins: 1e6
+            coins: 5e5
         }
     },
 }
@@ -813,6 +801,7 @@ function assignBaseTasks() {
         if (!("effectFormula" in task)) {
             task.effectFormula = "normal"
         }
+        if (skills[key].importance) {task.importance = skills[key].importance} else task.importance = 1
         task.baseMaxXP = skills[key].baseMaxXP
         task.effect = skills[key].effect
         if (skills[key].effectFormula) task.effectFormula = skills[key].effectFormula

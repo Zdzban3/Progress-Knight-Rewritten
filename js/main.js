@@ -454,13 +454,31 @@ function autoskill() {
         var xpDict = {}
         for (const key in data.skill) {
             const skill = data.skill[key]
-            if (isComplete(requirements[data.skill[key].class])) xpDict[key] = skill.xp / getSkillXP(key)
+            if (isComplete(requirements[data.skill[key].class])) xpDict[key] = -1 * (skill.xp - skill.maxXP) * Math.pow(skill.level, 2) / (getSkillXP(key) * skill.importance)
         }
         const entries = getSortedKeysFromDict(xpDict)
         for (let i = 0; i < data.maxSkills; i++) {
             if (entries[i] && checkIfSkillIsNotSelected(entries[i])) {
                 selectSkill(entries[i])
             }
+        }
+    }
+}
+
+function autobuy() {
+    var netIncome = getNet() * 1.5 / data.expenseMult
+    for (const key in data.buyable.home) {
+        const home = data.buyable.home[key]
+        if (home.effect > data.buyable.home[data.selectedHome].effect && home.price < data.coins && home.upkeep < netIncome) {
+            buyItem(key)
+            netIncome -= home.upkeep
+        }
+    }
+    for (const key in data.buyable.other) {
+        const item = data.buyable.other[key]
+        if (!item.owned && item.price < data.coins && item.upkeep < netIncome) {
+            buyItem(key)
+            netIncome -= item.upkeep
         }
     }
 }
@@ -534,8 +552,8 @@ function rebirth(rebirthStage) {
         data.selectedSkills = []
     }
     if (rebirthStage == 2) {
-        for (const key in data.job) rebirthTask(data.job[key], 1)
-        for (const key in data.skill) rebirthTask(data.skill[key], 1)
+        for (const key in data.job) rebirthTask(data.job[key], 2)
+        for (const key in data.skill) rebirthTask(data.skill[key], 2)
         buyItem("Homeless")
         data.maxCoins = 0
         data.coins = 0
@@ -609,11 +627,6 @@ function reset(resetSettings = false) {
     location.reload()
 }
 
-function everySecondUpdate() {
-    data.stats.realtime += 1
-    data.currentRealtime += 1 * +!data.paused
-}
-
 function update() {
     isAlive()
     applyMultipliers()
@@ -621,6 +634,7 @@ function update() {
     updateAdvancements()
     if (data.autopromote == true) autopromote()
     if (data.autoskill == true) autoskill()
+    if (data.autobuy == true) autobuy()
     doSelectedSkills()
     doSelectedJobs()
     if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)
@@ -643,6 +657,8 @@ function updateWithTime() {
         data.storedOfflineTime += data.updateTimeDiff
         data.updateTimeDiff = 0
     }
+    data.stats.realtime += data.updateTimeDiff / 1000
+    data.currentRealtime += data.updateTimeDiff / 1000 * +!data.paused
     update();
     data.lastUpdate = thisUpdate;
 }

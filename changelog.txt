@@ -1,3 +1,10 @@
+version 0.3.1α [10] 19/06/2024
+* removed age requirements from some jobs
+* added autobuy
+* autoskill now tries to select more important skills more often
+* evil reset now properly resets max levels
+* hide evil display if you don't have any evil
+
 version 0.3.0α [9] 18/06/2024
 * added evil
 * changed autoskill

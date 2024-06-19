@@ -13,8 +13,8 @@ function renderSidebar() {
     document.getElementById("timeSpeedDisplay").textContent = format(data.gameSpeed / 4, 2)
     document.getElementById("happinessDisplay").textContent = format(data.happiness, 2)
     document.getElementById("evilDisplay").textContent = format(data.evil, 2)
-    document.getElementById("evilGainDisplay").textContent = format(data.evilGainMult, 2)
-
+    document.getElementById("evilGainDisplay").textContent = Math.floor(data.evilGainMult * 100) / 100
+    if (data.evil == 0) {document.querySelector(".evilDisplay").classList.add("hidden")} else document.querySelector(".evilDisplay").classList.remove("hidden")
     if (data.selectedJobs.length >= 1) {
         const job1 = data.selectedJobs.at(-1)
         document.querySelector("#jobDisplay1 .jobProgressBarText").innerText = job1.name + " Lv" + job1.level
@@ -145,6 +145,15 @@ function toggleAutoSkill(change) {
         } else data.autoskill = true
     }
     if (data.autoskill) { document.getElementById("autoSkill").classList.add("toggled") } else document.getElementById("autoSkill").classList.remove("toggled")
+}
+
+function toggleAutoBuy(change) {
+    if (change) {
+        if (data.autobuy) {
+            data.autobuy = false
+        } else data.autobuy = true
+    }
+    if (data.autobuy) { document.getElementById("autoBuy").classList.add("toggled") } else document.getElementById("autoBuy").classList.remove("toggled")
 }
 
 function pause() {

@@ -248,7 +248,7 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
             if (jobValue > data.job[jobName].level) text += jobName + ": " + data.job[jobName].level + "/" + jobValue + "\xa0\xa0"
         }
     }
-    if (requirements[name].job) {
+    if (requirements[name].skill) {
         const skillReqs = requirements[name].skill
         for (var req in skillReqs) {
             const skillName = skillReqs[req].name
@@ -333,7 +333,7 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
     element.textContent = text
 }
 
-function isComplete(requirement) { //requirement = data.requirement[key]
+function isComplete(requirement) { //requirement = requirements[key]
     var isComplete = true
     const jobReqs = requirement.job
     const skillReqs = requirement.skill

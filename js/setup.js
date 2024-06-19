@@ -366,6 +366,7 @@ function startSetup() {
     setupAllAdvancements()
     toggleAutoPromote(false)
     toggleAutoSkill(false)
+    toggleAutoBuy(false)
     switchPrimaryTheme(false)
     switchSecondaryTheme(false)
     switchCoinsAmountDisplayed(false)
@@ -376,7 +377,6 @@ function startSetup() {
     switchTextShadow(false)
     switchExperimentalSettings(false)
     switchHideTitle(false)
-    everySecondInterval = setInterval(everySecondUpdate, 1000);
     updateInterval = setInterval(updateWithTime, 1000 / data.settings.updateSpeed)
     saveInterval = setInterval(save, data.settings.saveSpeed)
     switchUpdateSpeed(false)
