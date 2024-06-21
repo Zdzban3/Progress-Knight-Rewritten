@@ -1,4 +1,4 @@
-version 1.0.0α [1] 21/06/2024
+version 1.0.0 [1] 21/06/2024
 * minor visual fixes
 * removed quest mode
 * added links
