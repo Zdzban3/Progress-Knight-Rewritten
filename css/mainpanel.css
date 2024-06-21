@@ -379,7 +379,7 @@
     border: 3px solid #f0f0f0;
     box-sizing: border-box;
     width: 30px !important;
-    margin-left: calc(50% - 15px)
+    margin-left: calc(50% - 15px);
 } 
 
 .itemActiveDisplay[data-active="true"] {
@@ -389,7 +389,7 @@
     width: 30px !important;
     background-clip: content-box;
     box-shadow: inset 0 0 0 4px #181818;
-    margin-left: calc(50% - 15px)
+    margin-left: calc(50% - 15px);
 }
 
 .properties .shopCategoryElement {

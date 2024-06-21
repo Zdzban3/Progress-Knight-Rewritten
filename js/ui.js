@@ -476,20 +476,6 @@ function switchHideTitle(change = true) {
     }
 }
 
-var questMode = false
-function switchQuestMode() {
-    if (questMode) { questMode = false } else questMode = true
-    if (questMode) {
-        data.maxJobs = 30
-        data.maxSkills = 30
-        document.getElementById("questMode").innerText = "true"
-    } else {
-        data.maxJobs = 1
-        data.maxSkills = 1
-        document.getElementById("questMode").innerText = "false"
-    }
-}
-
 function renderProgressBar(percentage, element) {
     element.children[0].setAttribute("style", "width: " + percentage + "%")
 }
@@ -518,7 +504,7 @@ function renderHero() {
                     const jobLevelDisplay = formatLevel(thisJob.level);
                     const jobIncomeDisplay = getIncomeSpecific(thisJob.name);
                     const jobXPDisplay = thisJob.xp;
-                    const jobXPRateDisplay = thisJob.xpMult * (1 + thisJob.maxLevel / 10) * data.allXPMult * data.jobXPMult * data.happiness;
+                    const jobXPRateDisplay = getJobXP(thisJob.name)
                     const jobXPLeftDisplay = thisJob.maxXP - thisJob.xp;
                     const jobMaxLevelDisplay = formatLevel(thisJob.maxLevel);
 

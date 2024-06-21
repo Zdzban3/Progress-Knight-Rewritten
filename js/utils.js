@@ -267,7 +267,11 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
     if (requirements[name].coins) {
         const coinsReq = requirements[name].coins
         if (coinsReq > data.maxCoins) {formatCoins(data.maxCoins, parentElement.querySelector(".requirementCoins")); parentElement.querySelector(".requirementCoinsEnd").innerText = "/\xa0"; formatCoins(coinsReq, parentElement.querySelector(".requirementCoins2")); exception = true; parentElement.querySelector(".coinReqText").innerText = "Coins: "
-        } else parentElement.querySelector(".coinReqText").innerText = ""
+        } else {
+            parentElement.querySelector(".coinReqText").innerText = ""
+            parentElement.querySelector(".requirementCoins").innerText = ""
+            parentElement.querySelector(".requirementCoins2").innerText = ""
+        }
     }
 
     if (requirements[name].show) {

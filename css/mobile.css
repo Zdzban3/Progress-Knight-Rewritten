@@ -1,4 +1,20 @@
 :root {
-    --menuWidth: 800px;
-    --sidebarWidth: 240px;
+    --menuWidth: 900px;
+    --sidebarWidth: 290px;
+}
+
+.jobCategoryElementTitle {
+    width: 150%;
+}
+
+.jobProgressBar {
+    width: 150%;
+}
+
+.skillCategoryElementTitle {
+    width: 150%;
+}
+
+.skillProgressBar {
+    width: 150%;
 }

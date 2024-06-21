@@ -310,7 +310,7 @@ function doSelectedJobs() {
 
 function doCurrentJob(jobName) {
     var currentJob = data.job[jobName]
-    var jobXP = applySpeed() * currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.allXPMult * data.jobXPMult * data.happiness
+    var jobXP = applySpeed() * getJobXP(jobName)
     currentJob.xp += jobXP
     while (currentJob.xp >= currentJob.maxXP) {
         currentJob.level++
@@ -324,7 +324,7 @@ function doCurrentJob(jobName) {
 }
 
 function doTask(task) { //task is data.job[jobName] | data.skill[skillName]
-    task.xp += applySpeed() * task.xpMult * data.happiness * (1 + task.maxLevel / 10)
+    task.xp += applySpeed() * task.xpMult * data.happiness * (1 + task.maxLevel / 10) * data.baseXPMult
     while (task.xp >= task.maxXP) {
         task.level++
         task.maxXP = getTaskMaxXP(task)
@@ -406,9 +406,15 @@ function jobIndexInCategory(task) {
 
 function getSkillXP(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXP = currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness
+    var skillXP = currentSkill.xpMult * (1 + currentSkill.maxLevel / 10) * data.allXPMult * data.skillXPMult * data.happiness * data.baseXPMult
     if (skillInWhatCategory(skillName) == "darkMagic") skillXP *= data.evil
     return skillXP
+}
+
+function getJobXP(jobName) {
+    var currentJob = data.job[jobName]
+    var jobXP = currentJob.xpMult * (1 + currentJob.maxLevel / 10) * data.allXPMult * data.jobXPMult * data.happiness * data.baseXPMult
+    return jobXP
 }
 
 function autopromote() {
@@ -500,6 +506,7 @@ function getSortedKeysFromDict(dict) {
         }
     }
     return entries
+
 }
 
 function updateAdvancements() {
@@ -632,9 +639,9 @@ function update() {
     applyMultipliers()
     increaseDays()
     updateAdvancements()
-    if (data.autopromote == true) autopromote()
-    if (data.autoskill == true) autoskill()
-    if (data.autobuy == true) autobuy()
+    if (data.autopromote === true) autopromote()
+    if (data.autoskill === true) autoskill()
+    if (data.autobuy === true) autobuy()
     doSelectedSkills()
     doSelectedJobs()
     if (data.selectedJobs.length > data.maxJobs) selectJob(data.selectedJobs[0].name)

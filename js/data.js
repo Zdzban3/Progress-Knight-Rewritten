@@ -158,6 +158,7 @@ const baseData = {
 }
 
 const constChangableData = {
+    "baseXPMult": 1,
     "baseLifespan": 70 * 365,
 }
 
@@ -304,6 +305,7 @@ const requirements = {
         skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 40 }],
         show: {
             job: [{ name: "Squire", value: 10 }],
+            skill: [{ name: "Strength", value: 20 }],
         }
     },
     "knight": {

@@ -9,7 +9,7 @@
     --color7: #e9e9e9;
     --grayed: #888888;
     --color10: oklch(75% 0.055 195);
-    --color11: oklch(55% 0.045 195);
+    --color11: oklch(50% 0.045 195);
     --textShadow: black;
     --taskText: var(--color7);
     --taskTextBackground: var(--color7);

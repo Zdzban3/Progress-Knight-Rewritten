@@ -425,3 +425,12 @@ body {
 #rebirth2:hover {
     background-color: var(--evilBackgroundHover);
 }
+
+.settingsLink {
+    margin-left: 30px;
+    color: var(--color0)
+}
+
+.settingsLink a {
+    color: var(--color11)
+}

@@ -8,7 +8,7 @@
     --color6: #222222;
     --color7: #181818;
     --grayed: #888888;
-    --color10: oklch(55% 0.045 195);
+    --color10: oklch(50% 0.045 195);
     --color11: oklch(75% 0.055 195);
     --textShadow: black;
     --taskText: var(--color0);
