@@ -9,10 +9,11 @@ const jobCategories = {
         name: "military",
         nameFull: "Military"
     },
-    "T.A.A": {
+    "The Arcane Association": {
         jobs: ["Student", "Apprentice mage", "Mage", "Wizard", "Master wizard", "Chairman"],
         name: "theArcaneAssociation",
-        nameFull: "The Arcane Association"
+        nameFull: "The Arcane Association",
+        altName: "T.A.A"
     }
 }
 const skillCategories = {
@@ -729,11 +730,13 @@ function assignBaseTasks() {
     for (const category in jobCategories) {
         if (!(category in data.category.job)) {
             data.category.job[category] = { name: jobCategories[category].nameFull, xpMult: 1, incomeMult: 1 }
+            data.category.job[category].altName = jobCategories[category].altName
         }
     }
     for (const category in skillCategories) {
         if (!(category in data.category.skill)) {
             data.category.skill[category] = { name: skillCategories[category].nameFull, xpMult: 1, effectMult: 1 }
+            data.category.skill[category].altName = skillCategories[category].altName
         }
     }
     for (const buyable in buyableHomes) {

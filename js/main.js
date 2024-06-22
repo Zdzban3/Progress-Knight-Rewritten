@@ -20,25 +20,33 @@ function applyMultipliers() {
         data.skill[task].effectMult *= applySkillEffects(task + " Effect")
     }
     for (const category in data.category.job) {
-        data.category.job[category].incomeMult = applySkillEffects(data.category.job[category].name + " Income")
+        if (data.category.job[category].altName) {
+            data.category.job[category].incomeMult = applySkillEffects(data.category.job[category].altName + " Income")
+        } else data.category.job[category].incomeMult = applySkillEffects(data.category.job[category].name + " Income")
         for (const job of jobCategories[category].jobs) {
             data.job[job].incomeMult *= data.category.job[category].incomeMult
         }
     }
     for (const category in data.category.job) {
-        data.category.job[category].xpMult = applySkillEffects(data.category.job[category].name + " XP")
+        if (data.category.job[category].altName) {
+            data.category.job[category].xpMult = applySkillEffects(data.category.job[category].altName + " XP")
+        } else data.category.job[category].xpMult = applySkillEffects(data.category.job[category].name + " XP")
         for (const job of jobCategories[category].jobs) {
             data.job[job].xpMult *= data.category.job[category].xpMult
         }
     }
     for (const category in data.category.skill) {
-        data.category.skill[category].effectMult = applySkillEffects(data.category.skill[category].name + " Effect")
+        if (data.category.skill[category].altName) {
+            data.category.skill[category].effectMult = applySkillEffects(data.category.job[category].altName + " Effect")
+        } else data.category.skill[category].effectMult = applySkillEffects(data.category.skill[category].name + " Effect")
         for (const skill of skillCategories[category].skills) {
             data.skill[skill].effectMult *= data.category.skill[category].effectMult
         }
     }
     for (const category in data.category.skill) {
-        data.category.skill[category].xpMult = applySkillEffects(data.category.skill[category].name + " XP")
+        if (data.category.skill[category].altName) {
+            data.category.skill[category].xpMult = applySkillEffects(data.category.job[category].altName + " XP")
+        } else data.category.skill[category].xpMult = applySkillEffects(data.category.skill[category].name + " XP")
         for (const skill of skillCategories[category].skills) {
             data.skill[skill].xpMult *= data.category.skill[category].xpMult
         }
