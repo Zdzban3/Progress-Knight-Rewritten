@@ -309,9 +309,8 @@ function save() {
 }
 
 function load() {
-    if (localStorage["data"] != "undefined") data = JSON.parse(localStorage.getItem("data"))
-    if (localStorage["settings"] != "undefined") data.settings = JSON.parse(localStorage.getItem("settings"))
-
+    if (localStorage["data"] != undefined) data = JSON.parse(localStorage.getItem("data"))
+    if (localStorage["settings"] != undefined) data.settings = JSON.parse(localStorage.getItem("settings"))
 }
 
 function importGameData() {
