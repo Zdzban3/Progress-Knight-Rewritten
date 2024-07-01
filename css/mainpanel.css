@@ -46,7 +46,8 @@
     width: 100%;
     height: 30px;
     text-align: center;
-    white-space: nowrap;
+    line-height: 1.2;
+    align-content: center;
 }
 
 #statsOfflineProgressBar {
@@ -55,14 +56,28 @@
     font-weight: 500;
 }
 
+#beggarProgressBar.helpTutorial {
+    box-shadow: 0 0 20px 10px #ffa8;
+}
+
 .jobProgressBar {
     background-color: var(--progressBarBackground);
     width: 220%;
     height: 30px;
+    transition: background-color 0.1s ease-in;
 }
 
 .jobProgressBarProgress {
     background-color: var(--progressBarUnselected);
+    transition: inherit;
+}
+
+.jobProgressBar:hover {
+    background-color: color-mix(in oklab, var(--progressBarBackground) 70%, white);
+}
+
+.jobProgressBar:hover .jobProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarUnselected) 70%, white);
 }
 
 .selected.jobProgressBarProgress {
@@ -71,6 +86,14 @@
 
 .selected.jobProgressBar {
     background-color: var(--progressBarSelectedBackground);
+}
+
+.selected.jobProgressBar:hover {
+    background-color: color-mix(in oklab, var(--progressBarSelectedBackground) 70%, white);
+}
+
+.selected.jobProgressBar:hover .jobProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarSelected) 70%, white);
 }
 
 .jobProgressBarText {
@@ -88,6 +111,21 @@
     color: var(--taskText)
 }
 
+.carpentersGuild .jobCategoryElement {
+    background-color: var(--carpentersGuild);
+    color: var(--taskText)
+}
+
+.blacksmithersGuild .jobCategoryElement {
+    background-color: var(--blacksmithersGuild);
+    color: var(--taskText)
+}
+
+.merchantsGuild .jobCategoryElement {
+    background-color: var(--merchantsGuild);
+    color: var(--taskText)
+}
+
 .military .jobCategoryElement {
     background-color: var(--military);
     color: var(--taskText)
@@ -101,6 +139,21 @@
 .commonWork .jobCategoryBackground {
     background-color: var(--commonWorkBackground);
     color: var(--taskTextBackground)
+}
+
+.carpentersGuild .jobCategoryBackground {
+    background-color: var(--carpentersGuildBackground);
+    color: var(--taskText)
+}
+
+.blacksmithersGuild .jobCategoryBackground {
+    background-color: var(--blacksmithersGuildBackground);
+    color: var(--taskText)
+}
+
+.merchantsGuild .jobCategoryBackground {
+    background-color: var(--merchantsGuildBackground);
+    color: var(--taskText)
 }
 
 .military .jobCategoryBackground {
@@ -161,7 +214,13 @@
     width: 100%;
     height: 30px;
     text-align: center;
-    white-space: nowrap;
+    line-height: 1.2;
+    align-content: center;
+}
+
+.taskReq span {
+    line-height: 1.2;
+    align-content: center;
 }
 
 #statsOfflineProgressBar {
@@ -174,10 +233,20 @@
     background-color: var(--progressBarBackground);
     width: 220%;
     height: 30px;
+    transition: background-color 0.1s ease-in;
 }
 
 .skillProgressBarProgress {
     background-color: var(--progressBarUnselected);
+    transition: inherit;
+}
+
+.skillProgressBar:hover {
+    background-color: color-mix(in oklab, var(--progressBarBackground) 70%, white);
+}
+
+.skillProgressBar:hover .skillProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarUnselected) 70%, white);
 }
 
 .selected.skillProgressBarProgress {
@@ -188,18 +257,31 @@
     background-color: var(--progressBarSelectedBackground);
 }
 
+.selected.skillProgressBar:hover {
+    background-color: color-mix(in oklab, var(--progressBarSelectedBackground) 70%, white);
+}
+
+.selected.skillProgressBar:hover .skillProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarSelected) 70%, white);
+}
+
 .skillProgressBarText {
     position: relative;
     bottom: 30px;
     padding-left: 5px;
 }
 
-.skillIncomeDisplay span {
-    margin-right: 3px;
+.skillEffectDisplay {
+    width: 120% !important
 }
 
 .fundamentals .skillCategoryElement {
     background-color: var(--fundamentals);
+    color: var(--taskText)
+}
+
+.craftsmanship .skillCategoryElement {
+    background-color: var(--craftsmanship);
     color: var(--taskText)
 }
 
@@ -220,6 +302,11 @@
 
 .fundamentals .skillCategoryBackground {
     background-color: var(--fundamentalsBackground);
+    color: var(--taskTextBackground)
+}
+
+.craftsmanship .skillCategoryBackground {
+    background-color: var(--craftsmanshipBackground);
     color: var(--taskTextBackground)
 }
 
@@ -259,7 +346,7 @@
 }
 
 .requirementText {
-    color: var(--color10);
+    color: color-mix(in oklab, var(--color10), var(--color11));
     text-align: left !important;
     margin-left: 5px
 }
@@ -272,8 +359,36 @@
     display: flex;
 }
 
+.commonWork .taskReq {
+    background-color: color-mix(in oklab, var(--commonWorkBackground) 90%, #000000 10%)
+}
+
+.carpentersGuild .taskReq {
+    background-color: color-mix(in oklab, var(--carpentersGuildBackground) 90%, #000000 10%)
+}
+
+.blacksmithersGuild .taskReq {
+    background-color: color-mix(in oklab, var(--blacksmithersGuildBackground) 90%, #000000 10%)
+}
+
+.merchantsGuild .taskReq {
+    background-color: color-mix(in oklab, var(--merchantsGuildBackground) 90%, #000000 10%)
+}
+
+.military .taskReq {
+    background-color: color-mix(in oklab, var(--militaryBackground) 90%, #000000 10%)
+}
+
+.theArcaneAssociation .taskReq {
+    background-color: color-mix(in oklab, var(--theArcaneAssociationBackground) 90%, #000000 10%)
+}
+
 .fundamentals .taskReq {
     background-color: color-mix(in oklab, var(--fundamentalsBackground) 90%, #000000 10%)
+}
+
+.craftsmanship .taskReq {
+    background-color: color-mix(in oklab, var(--craftsmanshipBackground) 90%, #000000 10%)
 }
 
 .combat .taskReq {
@@ -286,18 +401,6 @@
 
 .darkMagic .taskReq {
     background-color: color-mix(in oklab, var(--darkMagicBackground) 90%, #000000 10%)
-}
-
-.commonWork .taskReq {
-    background-color: color-mix(in oklab, var(--commonWorkBackground) 90%, #000000 10%)
-}
-
-.military .taskReq {
-    background-color: color-mix(in oklab, var(--militaryBackground) 90%, #000000 10%)
-}
-
-.theArcaneAssociation .taskReq {
-    background-color: color-mix(in oklab, var(--theArcaneAssociationBackground) 90%, #000000 10%)
 }
 
 .shopCategoryContainer {
@@ -348,17 +451,27 @@
     width: 100%;
     height: 30px;
     text-align: center;
-    white-space: nowrap;
+    line-height: 1.2;
+    align-content: center;
 }
 
 .itemName {
     background-color: var(--shopItem);
     width: 100%;
     height: 30px;
+    transition: background-color 0.1s ease-in;
+}
+
+.itemName:hover {
+    background-color: color-mix(in oklab, var(--shopItem) 70%, var(--taskText))
 }
 
 .itemName[data-active="true"] {
     background-color: var(--shopItemActive);
+}
+
+.itemName[data-active="true"]:hover {
+    background-color: color-mix(in oklab, var(--shopItemActive) 70%, var(--taskText))
 }
 
 .itemPriceDisplay span.usedCoin {
@@ -376,15 +489,16 @@
 
 .itemActiveDisplay[data-active="false"] {
     background-color: #181818;
-    border: 3px solid #f0f0f0;
+    border: 3px solid var(--taskText);
     box-sizing: border-box;
     width: 30px !important;
     margin-left: calc(50% - 15px);
+    transition: background-color 0.1s ease-in;
 } 
 
 .itemActiveDisplay[data-active="true"] {
     background-color: oklch(80% 0.12 150);
-    border: 3px solid #f0f0f0;
+    border: 3px solid var(--taskText);
     box-sizing: border-box;
     width: 30px !important;
     background-clip: content-box;
@@ -433,7 +547,7 @@
 }
 
 .taskReq .requirementCoins .requirementCoinsEnd {
-    color: var(--color10);
+    color: color-mix(in oklab, var(--color10), var(--color11));
 }
 
 .shopCategoryRequirement .requirementCoins .requirementCoinsEnd {

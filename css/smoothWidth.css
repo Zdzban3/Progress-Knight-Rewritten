@@ -1,0 +1,7 @@
+.jobProgressBar {
+    transition: width 0.05s ease-in-out;
+}
+
+.skillProgressBar {
+    transition: width 0.05s ease-in-out;
+}

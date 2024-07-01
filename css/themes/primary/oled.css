@@ -1,0 +1,166 @@
+:root {
+    --color0: #ddd;
+    --color1: #777;
+    --color2: #222;
+    --color3: #111;
+    --color4: #111;
+    --color5: #000;
+    --color6: #000;
+    --color7: #000;
+    --grayed: #888;
+    --color10: oklch(50% 0.045 195);
+    --color11: oklch(75% 0.055 195);
+    --textShadow: black;
+    --taskText: var(--color0);
+    --taskTextBackground: var(--color0);
+    --paused: oklch(50% 0.066 195);
+    --toggled: oklch(50% 0.066 30);
+    --expense: oklch(55% 0.08 30);
+    --income: oklch(55% 0.08 150);
+    --net: oklch(55% 0.08 270);
+    --timeSpeed: oklch(45% 0.08 305);
+    --happiness: oklch(60% 0.08 105);
+    --evil: oklch(40% 0.2 30);
+    --red: #aa0000;
+    --greenish: oklch(45% 0.08 140);
+    --redish: oklch(45% 0.08 30);
+
+    --commonWork: oklch(45% 0.1 135 / 0.5);
+    --commonWorkBackground: oklch(30% 0.066 135 / 0.5);
+    --carpentersGuild: oklch(45% 0.06 100 / 0.5);
+    --carpentersGuildBackground: oklch(30% 0.04 100 / 0.5);
+    --blacksmithersGuild: oklch(25% 0.0133 25 / 0.5);
+    --blacksmithersGuildBackground: oklch(15% 0.01 25 / 0.5);
+    --merchantsGuild: oklch(35% 0.06 75 / 0.5);
+    --merchantsGuildBackground: oklch(25% 0.04 75 / 0.5);
+    --military: oklch(30% 0.1 25 / 0.5);
+    --militaryBackground: oklch(20% 0.066 25 / 0.5);
+    --theArcaneAssociation: oklch(40% 0.133 355 / 0.5);
+    --theArcaneAssociationBackground: oklch(25% 0.103 355 / 0.5);
+
+    --fundamentals: oklch(35% 0.066 105 / 0.5);
+    --fundamentalsBackground: oklch(25% 0.042 105 / 0.5);
+    --craftsmanship: oklch(35% 0.04 140 / 0.5);
+    --craftsmanshipBackground: oklch(25% 0.04 140 / 0.5);
+    --combat: oklch(30% 0.1 45 / 0.5);
+    --combatBackground: oklch(20% 0.066 45 / 0.5);
+    --magic: oklch(40% 0.1 325 / 0.5);
+    --magicBackground: oklch(25% 0.066 325 / 0.5);
+    --darkMagic: oklch(25% 0.055 10 / 0.5);
+    --darkMagicBackground: oklch(15% 0.035 10 / 0.5);
+
+    --shopItem: color-mix(in oklab, oklch(60% 0 235), transparent 70%);
+    --shopItemActive: color-mix(in oklab, oklch(60% 0.12 140), transparent 70%);
+    --properties: oklch(40% 0.04 220 / 0.5);
+    --propertiesBackground: oklch(25% 0.025 220 / 0.5);
+    --furniture: oklch(20% 0.025 50 / 0.5);
+    --furnitureBackground: oklch(13% 0.015 50 / 0.5);
+    --equipment: oklch(40% 0.013 250 / 0.5);
+    --equipmentBackground: oklch(25% 0.01 250 / 0.5);
+    --personnel: oklch(40% 0.06 0 / 0.5);
+    --personnelBackground: oklch(25% 0.025 0 / 0.5);
+
+    --evilBackground: oklch(13 0.02 30 / 0.5);
+    --evilBackgroundHover: oklch(20% 0.04 30 / 0.5);
+    --evilBorder: oklch(25% 0.1 30 / 0.5);
+}
+
+body {
+    background-color: var(--color7);
+}
+
+.tab {
+    background-color: var(--color5);
+}
+
+.jobProgressBar {
+    background-color: color-mix(in oklab, var(--progressBarBackground), transparent 70%);
+    width: 220%;
+    height: 30px;
+    transition: background-color 0.1s ease-in;
+}
+
+.jobProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarUnselected), transparent 70%);
+    transition: inherit;
+}
+
+.jobProgressBar:hover {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarBackground) 70%, white), transparent 70%);
+}
+
+.jobProgressBar:hover .jobProgressBarProgress {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarUnselected) 70%, white), transparent 70%);
+}
+
+.selected.jobProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarSelected), transparent 70%);
+}
+
+.selected.jobProgressBar {
+    background-color: color-mix(in oklab, var(--progressBarSelectedBackground), transparent 70%);
+}
+
+.selected.jobProgressBar:hover {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarSelectedBackground) 70%, white), transparent 70%);
+}
+
+.selected.jobProgressBar:hover .jobProgressBarProgress {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarSelected) 70%, white), transparent 70%);
+}
+
+.skillProgressBar {
+    background-color: color-mix(in oklab, var(--progressBarBackground), transparent 70%);
+    width: 220%;
+    height: 30px;
+    transition: background-color 0.1s ease-in;
+}
+
+.skillProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarUnselected), transparent 70%);
+    transition: inherit;
+}
+
+.skillProgressBar:hover {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarBackground) 70%, white), transparent 70%);
+}
+
+.skillProgressBar:hover .skillProgressBarProgress {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarUnselected) 70%, white), transparent 70%);
+}
+
+.selected.skillProgressBarProgress {
+    background-color: color-mix(in oklab, var(--progressBarSelected), transparent 70%);
+}
+
+.selected.skillProgressBar {
+    background-color: color-mix(in oklab, var(--progressBarSelectedBackground), transparent 70%);
+}
+
+.selected.skillProgressBar:hover {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarSelectedBackground) 70%, white), transparent 70%);
+}
+
+.selected.skillProgressBar:hover .skillProgressBarProgress {
+    background-color: color-mix(in oklab, color-mix(in oklab, var(--progressBarSelected) 70%, white), transparent 70%);
+}
+
+.itemActiveDisplay[data-active="false"] {
+    background-color: color-mix(in oklab, #181818, transparent 70%);
+    border: 3px solid var(--taskText);
+    box-sizing: border-box;
+    width: 30px !important;
+    margin-left: calc(50% - 15px);
+    transition: background-color 0.1s ease-in;
+} 
+
+.itemActiveDisplay[data-active="true"] {
+    background-color: color-mix(in oklab,oklch(80% 0.12 150), transparent 50%);
+    border: 3px solid var(--taskText);
+    box-sizing: border-box;
+    width: 30px !important;
+    background-clip: content-box;
+    box-shadow: inset 0 0 0 4px #181818;
+    margin-left: calc(50% - 15px);
+}
+

@@ -18,3 +18,7 @@
 .skillProgressBar {
     width: 150%;
 }
+
+.skillEffectDisplay {
+    width: 180% !important
+}

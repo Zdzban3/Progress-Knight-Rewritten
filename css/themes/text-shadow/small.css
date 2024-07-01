@@ -2,6 +2,30 @@ body {
     text-shadow: 0 1px 1px var(--textShadow);
 }
 
+.jobProgressBar {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
+.skillProgressBar {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
+.itemName {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
+.jobCategoryContainer {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
+.skillCategoryContainer {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
+.shopCategoryContainer {
+    box-shadow: 0 1px 4px -1px var(--textShadow)
+}
+
 #currentJobsDisplay div span {
     text-shadow: 0 1px 1px var(--textShadow) !important;
 }

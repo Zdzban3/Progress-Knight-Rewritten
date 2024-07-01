@@ -1,3 +1,21 @@
+version 1.1.0 [3] 02/07/2024
+* UI overhaul
+* added new setting
+* added OLED theme
+* added more stats
+* added more advancements (now some things will need to be unlocked first)
+* added 3 more job categories
+* added 1 more skill category
+* added 15 more jobs
+* added 3 more skills
+* shop price changes
+* fixed mobile UI
+* there might be a bug that needs the game to refresh after rebirth
+
+version 1.0.1 [2] 22/06/2024
+* fixed mana control effect
+* broke all the saves again somehow (need to reset)
+    
 version 1.0.0 [1] 21/06/2024
 * minor visual fixes
 * removed quest mode
