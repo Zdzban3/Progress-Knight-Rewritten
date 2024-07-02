@@ -15,7 +15,7 @@ function applySpeed(value = 1) {
 function applyExpenses() {
     var coins = applySpeed(getExpense())
     data.coins -= coins
-    if (data.coins <= 0) {
+    if (data.coins < 0) {
         goBankrupt()
     }
 }
