@@ -1,3 +1,6 @@
+version 1.1.2 [5] 02/07/2024
+* updated apprentice level jobs' incomes
+
 version 1.1.1 [4] 02/07/2024
 * fixed some bugs
 * shop requirements now show the current coin amount instead of the highest

@@ -93,17 +93,17 @@ const jobs = {
     "Miner": { name: "Miner", class: "miner", baseMaxXP: 800, income: 48 },
     //Carpenters guild
     "Novice carpenter": { name: "Novice carpenter", class: "noviceCarpenter", baseMaxXP: 1000, income: 30 },
-    "Apprentice carpenter": { name: "Apprentice carpenter", class: "apprenticeCarpenter", baseMaxXP: 2000, income: 2 },
+    "Apprentice carpenter": { name: "Apprentice carpenter", class: "apprenticeCarpenter", baseMaxXP: 2000, income: 80 },
     "Journeyman carpenter": { name: "Journeyman carpenter", class: "journeymanCarpenter", baseMaxXP: 5000, income: 250 },
     "Master carpenter": { name: "Master carpenter", class: "masterCarpenter", baseMaxXP: 15000, income: 1400 },
     //Blacksmithers guild
     "Novice blacksmith": { name: "Novice blacksmith", class: "noviceBlacksmith", baseMaxXP: 1500, income: 50 },
-    "Apprentice blacksmith": { name: "Apprentice blacksmith", class: "apprenticeBlacksmith", baseMaxXP: 3000, income: 3 },
+    "Apprentice blacksmith": { name: "Apprentice blacksmith", class: "apprenticeBlacksmith", baseMaxXP: 3000, income: 100 },
     "Journeyman blacksmith": { name: "Journeyman blacksmith", class: "journeymanBlacksmith", baseMaxXP: 7500, income: 340 },
     "Master blacksmith": { name: "Master blacksmith", class: "masterBlacksmith", baseMaxXP: 22500, income: 2000 },
     //Merchants guild
     "Novice merchant": { name: "Novice merchant", class: "noviceMerchant", baseMaxXP: 2500, income: 100 },
-    "Apprentice merchant": { name: "Apprentice merchant", class: "apprenticeMerchant", baseMaxXP: 5000, income: 4 },
+    "Apprentice merchant": { name: "Apprentice merchant", class: "apprenticeMerchant", baseMaxXP: 5000, income: 220 },
     "Journeyman merchant": { name: "Journeyman merchant", class: "journeymanMerchant", baseMaxXP: 1.2e4, income: 800 },
     "Master merchant": { name: "Master merchant", class: "masterMerchant", baseMaxXP: 4e4, income: 3500 },
     "Guild leader": { name: "Guild leader", class: "guildLeader", baseMaxXP: 2e5, income: 2e4 },
@@ -286,12 +286,12 @@ const tooltips = {
     "Miner": "Delve into dangerous caverns and mine valuable ores. The pay is quite meager compared to the risk involved.",
 
     "Novice carpenter": "Learn the basics of carpentry, focusing on simple wooden structures and repairs. A humble beginning in woodworking.",
-    "Apprentice carpenter": "Assist experienced carpenters and refine your skills in woodworking. Gain hands-on experience with more complex projects. Due to the expenses of the apprenticeship, the income is very low.",
+    "Apprentice carpenter": "Assist experienced carpenters and refine your skills in woodworking. Gain hands-on experience with more complex projects.",
     "Journeyman carpenter": "Work independently on a variety of carpentry tasks, from furniture making to building construction. An intermediate step in your career.",
     "Master carpenter": "Oversee large carpentry projects and mentor apprentices. A prestigious position with good income.",
 
     "Novice blacksmith": "Learn the fundamentals of blacksmithing, starting with simple metalworking tasks. A critical first step in metal craftsmanship.",
-    "Apprentice blacksmith": "Work under the guidance of a master blacksmith, honing your skills in forging and metal shaping. Progress to more intricate tasks. However, the pay is quite tiny as you have to pay for your training.",
+    "Apprentice blacksmith": "Work under the guidance of a master blacksmith, honing your skills in forging and metal shaping. Progress to more intricate tasks.",
     "Journeyman blacksmith": "Operate independently to create a variety of metal goods, from tools to decorative items. An essential phase in your professional growth.",
     "Master blacksmith": "Create high-quality weapons and armor, and train new blacksmiths. A well-respected and high-paying job.",
 
