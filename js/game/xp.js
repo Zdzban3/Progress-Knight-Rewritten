@@ -1,13 +1,13 @@
 function getSkillXP(skillName) {
     var currentSkill = data.skill[skillName]
-    var skillXP = currentSkill.xpMult * (1 + currentSkill.maxLevel * 0.02) * data.allXPMult * data.skillXPMult * data.happiness * data.baseXPMult
+    var skillXP = currentSkill.xpMult * (1 + currentSkill.maxLevel * 0.1) * data.allXPMult * data.skillXPMult * data.happiness * data.baseXPMult
     if (skillInWhatCategory(skillName) == "darkMagic") skillXP *= data.evil
     return skillXP
 }
 
 function getJobXP(jobName) {
     var currentJob = data.job[jobName]
-    var jobXP = currentJob.xpMult * (1 + currentJob.maxLevel * 0.2) * data.allXPMult * data.jobXPMult * data.happiness * data.baseXPMult
+    var jobXP = currentJob.xpMult * (1 + currentJob.maxLevel * 0.1) * data.allXPMult * data.jobXPMult * data.happiness * data.baseXPMult
     return jobXP
 }
 
