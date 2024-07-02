@@ -85,7 +85,6 @@ function assignData() {
         }
     }
 
-    var owned = 0
     for (const key in data.buyable) {
         if (key === "home" || key === "other") {
             delete data.buyable[key]

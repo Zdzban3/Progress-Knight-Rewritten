@@ -23,10 +23,10 @@ function rebirth(rebirthStage) {
             task.maxLevel = Math.max(task.level, task.maxLevel)
             rebirthTask(task, 1)
         }
+        for (const key in data.buyable) data.buyable[key].owned = false
         buyItem("Homeless")
         data.maxCoins = 0
         data.coins = 0
-        for (const key in data.buyable.other) data.buyable.other[key].owned = false
         data.days = 365 * 14
         setTab('hero')
         data.selectedJobs = []
@@ -40,7 +40,7 @@ function rebirth(rebirthStage) {
         buyItem("Homeless")
         data.maxCoins = 0
         data.coins = 0
-        for (const key in data.buyable.other) data.buyable.other[key].owned = false
+        for (const key in data.buyable) data.buyable[key].owned = false
         data.days = 365 * 14
         setTab('hero')
         data.selectedJobs = []

@@ -216,11 +216,11 @@ function autobuy() {
     for (const key in data.buyable) {
         const item = data.buyable[key]
         if (isComplete(requirements[item.class])) {
-            if (key in shopCategories["Properties"].items) {
+            if (shopCategories["Properties"].items.indexOf(key) >= 0) {
                 if (item.effect > data.buyable[data.selectedHome].effect) {
                     if (item.price < data.coins && item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
                         buyItem(key)
-                        netIncome -= home.upkeep
+                        netIncome -= item.upkeep
                     }
                 }
             } else if (!item.owned && item.price < data.coins) {
