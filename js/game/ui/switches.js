@@ -182,7 +182,7 @@ function switchMobile(change = true) {
         document.getElementById("mobileStylesheet").setAttribute('href', 'css/mobile.css');
         document.getElementById("selectedMobile").innerText = "true"
     } else {
-        document.getElementById("mobileStylesheet").setAttribute('href', 'unset');
+        document.getElementById("mobileStylesheet").setAttribute('href', 'css/unset');
         document.getElementById("selectedMobile").innerText = "false"
     }
 }
@@ -211,7 +211,7 @@ function switchTextShadow(change) {
         data.settings.textShadow = 0
     }
     if (data.settings.textShadow == 0) {
-        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "unset")
+        document.getElementById("themeTextShadowStylesheet").setAttribute("href", "css/unset")
         document.getElementById("textShadow").textContent = "None"
     } else if (data.settings.textShadow == 1) {
         document.getElementById("themeTextShadowStylesheet").setAttribute("href", "css/themes/text-shadow/small.css")
@@ -248,7 +248,7 @@ function switchSmoothWidth(change = true) {
         document.getElementById("smoothWidthStylesheet").setAttribute("href", "css/smoothWidth.css")
         document.getElementById("smoothWidth").innerText = true
     } else {
-        document.getElementById("smoothWidthStylesheet").setAttribute("href", "unset")
+        document.getElementById("smoothWidthStylesheet").setAttribute("href", "css/unset")
         document.getElementById("smoothWidth").innerText = false
     }
 }
