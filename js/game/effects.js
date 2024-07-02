@@ -8,6 +8,8 @@ function applyMultipliers() {
     data.evilGainMult = applySkillEffects("Evil Gain")
     data.jobXPMult = applySkillEffects("Job XP")
     data.skillXPMult = applySkillEffects("Skill XP")
+    data.maxJobs = Math.floor(applySkillEffects("Max Jobs"))
+    data.maxSkills = Math.floor(applySkillEffects("Max Skills"))
     for (const task in data.job) {
         data.job[task].xpMult = applySkillEffects(task + " XP")
         data.job[task].incomeMult = applySkillEffects(task + " Income")
@@ -153,12 +155,8 @@ function getIncomeSpecific(jobName) {
             case "normal":
                 var incomeMult = 1 + Math.log10(job.level + 1)
                 break
-            case "inverted":
-                var incomeMult = 1 - Math.log10(job.level + 1)
-                break
         }
-        if (incomeMult > 0) var income = job.income * incomeMult * job.incomeMult * data.incomeMult
-        else var income = job.income * incomeMult / job.incomeMult / data.incomeMult
+        var income = job.income * incomeMult * job.incomeMult * data.incomeMult
         return income
     } else return 0
 }

@@ -103,7 +103,7 @@ function formatCoins(coins, element, showFree = false) {
         c.textContent = "";
         c.classList.remove("usedCoin")
     }
-    if (coins == 0 && showFree) {
+    if (coins === 0 && showFree) {
         element.children[0].textContent = "Free"
         element.children[0].style.color = "oklch(70% 0.14 145)"
         element.children[0].className = "usedCoin"
@@ -130,7 +130,7 @@ function formatCoins(coins, element, showFree = false) {
                     element.children[coinsUsed].className = "usedCoin"
                     coinsUsed++
                 }
-                if ((m.value > coins && i == money2.length - 1)) {
+                if ((m.value > coins && i === money2.length - 1)) {
                     if (coins !== 0) element.children[coinsUsed].textContent = (m.prefix ?? "") + format(coins / m.value, 2) + m.name
                     if (coins === 0) element.children[coinsUsed].textContent = (m.prefix ?? "") + "0" + m.name
                     element.children[coinsUsed].style.color = m.color
@@ -268,15 +268,15 @@ function formatRequirements(name, element, parentElement, taskElement, el1, el2,
     if (requirements[name].coins) {
         const coinsReq = requirements[name].coins
         if (coinsReq > data.maxCoins) {
-            formatCoins(data.maxCoins, parentElement.querySelector(".requirementCoins"))
+            formatCoins(data.coins, parentElement.querySelector(".requirementCoins"))
             parentElement.querySelector(".requirementCoinsEnd").innerText = "/\xa0"
             formatCoins(coinsReq, parentElement.querySelector(".requirementCoins2"))
             exception = true
             parentElement.querySelector(".coinReqText").innerText = "Coins: "
         } else {
             parentElement.querySelector(".coinReqText").innerText = ""
-            parentElement.querySelector(".requirementCoins").innerText = ""
-            parentElement.querySelector(".requirementCoins2").innerText = ""
+            for (const span of parentElement.querySelector(".requirementCoins").children) span.innerText = ""
+            for (const span of parentElement.querySelector(".requirementCoins2").children) span.innerText = ""
         }
     }
 

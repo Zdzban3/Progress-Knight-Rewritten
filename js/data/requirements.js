@@ -83,14 +83,14 @@ const requirements = {
         job: [{ name: "Beggar", value: 10 }],
     },
     "fisherman": {
-        job: [{ name: "Beggar", value: 10 }],
-        skill: [{ name: "Concentration", value: 5 }],
+        job: [{ name: "Farmer", value: 10 }],
         show: {
             job: [{ name: "Beggar", value: 10 }],
         }
     },
     "miller": {
         job: [{ name: "Farmer", value: 10 }],
+        skill: [{ name: "Concentration", value: 25 }],
         show: {
             job: [{ name: "Beggar", value: 10 }],
         }
@@ -337,7 +337,6 @@ const requirements = {
     },
     "leadership": {
         skill: [{ name: "Concentration", value: 80 }, { name: "Bargaining", value: 60 }],
-        coins: 4e4,
         show: {
             skill: [{ name: "Bargaining", value: 10 }],
             coins: 4e4
@@ -438,7 +437,7 @@ const requirements = {
         coins: -1e308
     },
     "tent": {
-        coins: 1
+        coins: 100
     },
     "woodenHut": {
         coins: 1000
@@ -486,10 +485,10 @@ const requirements = {
         }
     },
     "studyDesk": {
-        coins: 4e5,
+        coins: 1e5,
         skill: [{ name: "Concentration", value: 100 }],
         show: {
-            coins: 5e4
+            coins: 1e4
         }
     },
     "library": {
@@ -520,10 +519,11 @@ const requirements = {
     //personnel
     "personalSquire": {
         coins: 2e5,
-        job: [{ name: "Veteran footman", value: 10 }],
+        job: [{ name: "Veteran footman", value: 5 }],
         show: {
             coins: 2e4,
-            job: [{ name: "Veteran footman", value: 10 }],
+            job: [{ name: "Footman", value: 10 }],
+            skill: [{ name: "Strength", value: 30 }, { name: "Battle tactics", value: 40 }],
         }
     },
     "butler": {

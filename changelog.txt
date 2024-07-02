@@ -1,3 +1,6 @@
+version 1.1.1 [4] 02/07/2024
+* fixed some bugs
+
 version 1.1.0 [3] 02/07/2024
 * UI overhaul
 * added new setting

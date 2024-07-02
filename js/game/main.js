@@ -335,9 +335,9 @@ function exportGameData() {
 }
 
 function reset(resetSettings = false) {
-    localStorage.setItem("data", "undefined")
+    localStorage.removeItem("data")
     if (resetSettings == true) {
-        localStorage.setItem("settings", "undefined")
+        localStorage.removeItem("settings")
     }
     location.reload()
 }
