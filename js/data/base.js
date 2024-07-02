@@ -206,6 +206,8 @@ const baseData = {
     "expenseMult": 1,
     "evilGainMult": 1,
     "allXPMult": 1,
+    "skillRebirthPower": 0.02,
+    "jobRebirthPower": 0.05,
     
     "selectedTab": "default tab set in main.js",
     "selectedSettings": "hidden",

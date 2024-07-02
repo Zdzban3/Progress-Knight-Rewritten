@@ -32,7 +32,8 @@ function goBankrupt() {
         const buyable = data.buyable[key]
         if (buyable.owned) {
             if (buyable.upkeep >= getNet()) {
-                buyItem(key)
+                if (shopCategories["Properties"].items.indexOf(key) >= 0) buyItem("Homeless")
+                else buyItem(key)
                 break
             } else buyItem(key)
         }
@@ -236,7 +237,7 @@ function autobuy() {
 function cantBuy(key) {
     const element = document.getElementById("shopSubpanel").querySelector(`.${data.buyable[key].class}itemName`)
     element.setAttribute("style", "background-color: var(--shopItemFlash)")
-    setTimeout(function() {
+    setTimeout(function () {
         element.removeAttribute("style")
     }, 200)
 }
