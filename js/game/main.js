@@ -27,12 +27,9 @@ function applyIncome() {
 function goBankrupt() {
     data.coins = 0
 
-    if (data.buyable.home[data.selectedHome].upkeep >= getIncome()) {
-        buyItem("Homeless")
-    }
-    var buyableArray = Object.keys(data.buyable.other).sort(function (a, b) { return data.buyable.other[b].upkeep - data.buyable.other[a].upkeep }) //sort by upkeep backwards
+    var buyableArray = Object.keys(data.buyable).sort(function (a, b) { return data.buyable[b].upkeep - data.buyable[a].upkeep }) //sort by upkeep backwards
     for (const key of buyableArray) {
-        const buyable = data.buyable.other[key]
+        const buyable = data.buyable[key]
         if (buyable.owned) {
             if (buyable.upkeep >= getNet()) {
                 buyItem(key)
@@ -131,7 +128,7 @@ function doSelectedSkills() {
 }
 
 function doSkill(key) {
-    var skill = data.skill[key]
+    const skill = data.skill[key]
     const skillXP = applySpeed() * getSkillXP(key)
     skill.xp += skillXP
     while (skill.xp >= skill.maxXP) {
@@ -216,53 +213,51 @@ function autoskill() {
 
 function autobuy() {
     var netIncome = getNet() / data.expenseMult
-    for (const key in data.buyable.home) {
-        const home = data.buyable.home[key]
-        if (isComplete(requirements[home.class])) {
-            if (home.effect > data.buyable.home[data.selectedHome].effect && home.price < data.coins && home.upkeep < netIncome) {
-                buyItem(key)
-                netIncome -= home.upkeep
-            } else if (home.effect > data.buyable.home[data.selectedHome].effect && data.coins - home.price > (home.upkeep - netIncome) * data.gameSpeed * 200) {
-                buyItem(key)
-                netIncome -= home.upkeep
-            }
-        }
-    }
-    for (const key in data.buyable.other) {
-        const item = data.buyable.other[key]
+    for (const key in data.buyable) {
+        const item = data.buyable[key]
         if (isComplete(requirements[item.class])) {
-            if (!item.owned && item.price < data.coins && item.upkeep < netIncome) {
-                buyItem(key)
-                netIncome -= item.upkeep
-            } else if (!item.owned && item.price < data.coins && data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
-                buyItem(key)
-                netIncome -= item.upkeep
+            if (key in shopCategories["Properties"].items) {
+                if (item.effect > data.buyable[data.selectedHome].effect) {
+                    if (item.price < data.coins && item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
+                        buyItem(key)
+                        netIncome -= home.upkeep
+                    }
+                }
+            } else if (!item.owned && item.price < data.coins) {
+                if (item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
+                    buyItem(key)
+                    netIncome -= item.upkeep
+                }
             }
         }
     }
 }
 
-function buyItem(itemName) {
-    if (itemName in data.buyable.other) {
-        const item = data.buyable.other[itemName]
-        if (item.owned == false && data.coins >= item.price) {
+function cantBuy(key) {
+    const element = document.getElementById("shopSubpanel").querySelector(`.${data.buyable[key].class}itemName`)
+    element.setAttribute("style", "background-color: var(--shopItemFlash)")
+    setTimeout(function() {
+        element.removeAttribute("style")
+    }, 200)
+}
+
+function buyItem(key) {
+    const item = data.buyable[key]
+    if (shopCategories["Properties"].items.indexOf(key) >= 0) {
+        if (item.owned === false && data.coins >= item.price) {
+            data.coins += data.buyable[data.selectedHome].price / 1.2
+            data.buyable[data.selectedHome].owned = false
+            data.selectedHome = key
             item.owned = true
             data.coins -= item.price
-        } else if (item.owned == true) {
-            item.owned = false
-            data.coins += item.price / 1.2
-        }
-    }
-    if (itemName in data.buyable.home) {
-        const item = data.buyable.home[itemName]
-        if (item.name !== data.selectedHome && data.coins >= item.price) {
-            data.coins += data.buyable.home[data.selectedHome].price / 1.2
-            data.buyable.home[data.selectedHome].owned = false
-            data.selectedHome = item.name
-            item.owned = true
-            data.coins -= item.price
-        }
-    }
+        } else cantBuy(key)
+    } else if (item.owned === false && data.coins >= item.price) {
+        item.owned = true
+        data.coins -= item.price
+    } else if (item.owned === true) {
+        item.owned = false
+        data.coins += item.price / 1.2
+    } else cantBuy(key)
 }
 
 function getSortedKeysFromDict(dict) {

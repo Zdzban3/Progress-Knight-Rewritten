@@ -51,6 +51,7 @@
 
     --shopItem: oklch(60% 0 235);
     --shopItemActive: oklch(60% 0.12 140);
+    --shopItemFlash: oklch(60% 0.12 25);
     --properties: oklch(60% 0.06 220);
     --propertiesBackground: oklch(40% 0.04 220);
     --furniture: oklch(30% 0.04 50);

@@ -227,29 +227,15 @@ function setupSkillTab() {
 function setupShopTab() {
     const shopSubpanel = document.getElementById("shopSubpanel");
     const shopCategoriesArray = Object.entries(shopCategories);
-    const shopDataEntriesHome = Object.entries(data.buyable.home);
-    const shopDataEntriesOther = Object.entries(data.buyable.other);
-    shopDataEntriesHome.sort(function (a, b) {
+    const shopDataEntries = Object.entries(data.buyable);
+    shopDataEntries.sort(function (a, b) {
         var aValue = 0
         var bValue = 0
-        for (const key in buyableHomes) {
+        for (const key in buyables) {
             aValue++
             if (a[0] === key) break
         }
-        for (const key in buyableHomes) {
-            bValue++
-            if (b[0] === key) break
-        }
-        return aValue - bValue
-    })
-    shopDataEntriesOther.sort(function (a, b) {
-        var aValue = 0
-        var bValue = 0
-        for (const key in buyableOther) {
-            aValue++
-            if (a[0] === key) break
-        }
-        for (const key in buyableOther) {
+        for (const key in buyables) {
             bValue++
             if (b[0] === key) break
         }
@@ -301,7 +287,7 @@ function setupShopTab() {
             shopCategoryElement.appendChild(createElementWithText("div", text, className));
         });
 
-        shopDataEntriesOther.forEach(([itemKey, itemData]) => { //other
+        shopDataEntries.forEach(([itemKey, itemData]) => {
             if (items.includes(itemKey)) {
                 const itemReq = document.createElement("div");
                 itemReq.classList.add("taskReq", itemData.class + "Requirement");
@@ -350,65 +336,13 @@ function setupShopTab() {
 
                 shopCategoryBackground.appendChild(itemType);
             }
-        });
-
-        shopDataEntriesHome.forEach(([itemKey, itemData]) => { //home
-            if (items.includes(itemKey)) {
-                const itemReq = document.createElement("div");
-                itemReq.classList.add("taskReq", itemData.class + "Requirement");
-
-                itemReq.appendChild(createElementWithText("span", "Required: ", "grayed"))
-                itemReq.appendChild(createElementWithText("div", "[placeholder]", "requirementText", "style", "display: inline"))
-                const itemReqCoins = createElementWithText("div", "", "requirementCoins", "style", "display: inline")
-                itemReq.appendChild(createElementWithText("div", "Coins: ", "requirementText", "style", "display: inline", "coinReqText"))
-                for (i = 0; i < 8; i++) itemReqCoins.appendChild(document.createElement("span"))
-                itemReqCoins.appendChild(createElementWithText("div", "", "requirementCoinsEnd", "style", "display: inline"))
-                itemReq.appendChild(itemReqCoins)
-                const itemReqCoins2 = createElementWithText("div", "", "requirementCoins2", "style", "display: inline")
-                for (i = 0; i < 8; i++) { itemReqCoins2.appendChild(document.createElement("span")) }
-                itemReq.appendChild(itemReqCoins2)
-
-                const itemName = document.createElement("div");
-                itemName.classList.add("itemName", itemData.class + "itemName", "tooltip");
-                itemName.setAttribute("onclick", `buyItem('${itemData.name}')`)
-                itemName.setAttribute("data-active", "false")
-                const itemNameText = createElementWithText("span", itemData.name, "itemNameText", itemData.class + "itemNameText")
-                itemName.appendChild(itemNameText)
-
-                const itemTooltip = document.createElement("span");
-                itemTooltip.classList.add("tooltiptext", itemData.class + "Tooltiptext");
-                itemTooltip.innerText = tooltips[itemKey]
-                itemName.appendChild(itemTooltip);
-
-                const itemActiveDiv = document.createElement("div")
-                itemActiveDiv.classList.add("itemActiveDisplayDiv", itemData.class + "ActiveDisplayDiv")
-                const itemActive = document.createElement("div")
-                itemActive.classList.add("itemActiveDisplay", itemData.class + "ActiveDisplay")
-                itemActive.setAttribute("data-active", "false")
-                itemActiveDiv.appendChild(itemActive)
-                const itemEffect = document.createElement("div")
-                itemEffect.classList.add("itemEffectDisplay")
-                itemEffect.appendChild(document.createTextNode(""))
-                const itemPrice = document.createElement("div")
-                itemPrice.classList.add("itemPriceDisplay")
-                for (let i = 0; i < 8; i++) itemPrice.appendChild(document.createElement("span"));
-                const itemUpkeep = document.createElement("div")
-                itemUpkeep.classList.add("itemUpkeepDisplay")
-                for (let i = 0; i < 8; i++) itemUpkeep.appendChild(document.createElement("span"));
-
-                const itemType = document.createElement("div");
-                itemType.classList.add("itemType", itemData.class + "Type");
-                [itemReq, itemName, itemActiveDiv, itemEffect, itemPrice, itemUpkeep].forEach(el => itemType.appendChild(el));
-
-                shopCategoryBackground.appendChild(itemType);
-            }
-        });
+        })
 
         shopCategoryContainer.appendChild(shopCategoryElement);
         shopCategoryContainer.appendChild(shopCategoryBackground);
         shopCategoryContainer.appendChild(shopCategoryRequirement);
         shopSubpanel.appendChild(shopCategoryContainer);
-    });
+    })
 }
 
 

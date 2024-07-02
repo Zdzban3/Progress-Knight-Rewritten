@@ -131,7 +131,7 @@ const skills = {
     "Productivity": { name: "Productivity", class: "productivity", baseMaxXP: 100, effect: 0.01, description: "Job XP" },
     "Meditation": { name: "Meditation", class: "meditation", baseMaxXP: 100, effect: 0.01, description: "Happiness", importance: 2 },
     "Bargaining": { name: "Bargaining", class: "bargaining", baseMaxXP: 100, effect: -0.01, effectFormula: "reductive", description: "Expenses", importance: 0.2 },
-    "Leadership": { name: "Leadership", class: "leadership", baseMaxXP: 100, effect: 0.01, description: "Personnel Effect" },
+    "Leadership": { name: "Leadership", class: "leadership", baseMaxXP: 100, effect: 0.0025, description: "Personnel Effect" },
     //Craftsmanship
     "Woodworking": { name: "Woodworking", class: "woodworking", baseMaxXP: 100, effect: 0.01, description: "Carpentry Efficiency" },
     "Metalworking": { name: "Metalworking", class: "metalworking", baseMaxXP: 100, effect: 0.01, description: "Blacksmithing Efficiency" },
@@ -157,7 +157,8 @@ const specialTasks = {
     "Offline time": { name: "Offline time", class: "offlineTime", xpMult: 0, xp: 0, maxXP: 100, baseMaxXP: 100, level: 0, maxLevel: 0, effect: 0, xpFormula: "offlineTime" }
 }
 
-const buyableHomes = {
+const buyables = {
+    //properties
     "Homeless": { name: "Homeless", class: "homeless", owned: true, price: 0, upkeep: 0, effect: 1, description: "Happiness" },
     "Tent": { name: "Tent", class: "tent", price: 2e3, upkeep: 10, effect: 1.4, description: "Happiness" },
     "Wooden hut": { name: "Wooden hut", class: "woodenHut", price: 2e4, upkeep: 60, effect: 2, description: "Happiness" },
@@ -166,9 +167,6 @@ const buyableHomes = {
     "Large house": { name: "Large house", class: "largeHouse", price: 4e6, upkeep: 3000, effect: 12, description: "Happiness" },
     "Small palace": { name: "Small palace", class: "smallPalace", price: 2e8, upkeep: 3e5, effect: 25, description: "Happiness" },
     "Grand palace": { name: "Grand palace", class: "grandPalace", price: 5e9, upkeep: 5e6, effect: 60, description: "Happiness" },
-}
-
-const buyableOther = {
     //furniture
     "Book": { name: "Book", class: "book", price: 2000, upkeep: 0, effect: 1.5, description: "Skill XP" },
     "Dumbbells": { name: "Dumbbells", class: "dumbbells", price: 5e3, upkeep: 0, effect: 1.5, description: "Strength XP" },
@@ -233,10 +231,7 @@ const baseData = {
         skill: {},
         shop: {}
     },
-    buyable: {
-        home: {},
-        other: {}
-    }
+    buyable: {}
 }
 
 const constChangableData = {

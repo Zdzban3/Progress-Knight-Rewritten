@@ -51,6 +51,7 @@
 
     --shopItem: color-mix(in oklab, oklch(60% 0 235), transparent 70%);
     --shopItemActive: color-mix(in oklab, oklch(60% 0.12 140), transparent 70%);
+    --shopItemFlash: color-mix(in oklab, oklch(60% 0.12 25), transparent 70%);
     --properties: oklch(40% 0.04 220 / 0.5);
     --propertiesBackground: oklch(25% 0.025 220 / 0.5);
     --furniture: oklch(20% 0.025 50 / 0.5);

@@ -15,11 +15,6 @@ function applyMultipliers() {
         data.job[task].xpMult = applySkillEffects(task + " XP")
         data.job[task].incomeMult = applySkillEffects(task + " Income")
     }
-    for (const task in data.skill) {
-        data.skill[task].xpMult = applySkillEffects(task + " XP")
-        data.skill[task].effectMult = applySkillEffects(task + " Effect")
-    }
-
     for (const key in data.category.job) {
         const category = data.category.job[key]
         if (category.altName) var categoryName = category.altName
@@ -40,87 +35,87 @@ function applyMultipliers() {
             category.incomeMult *= 1 / applySkillEffects("Expenses")
             category.xpMult *= 1 / applySkillEffects("Expenses")
         }
-        
+
         for (const job of jobCategories[key].jobs) {
             data.job[job].incomeMult *= category.incomeMult
             data.job[job].xpMult *= category.xpMult
         }
     }
 
+    for (const task in data.skill) {
+        data.skill[task].xpMult = applySkillEffects(task + " XP")
+        data.skill[task].effectMult = applySkillEffects(task + " Effect")
+    }
     for (const key in data.category.skill) {
         const category = data.category.skill[key]
-        if (category.altName) {
-            category.effectMult = applySkillEffects(category.altName + " Effect")
-            category.xpMult = applySkillEffects(category.altName + " XP")
-        } else {
-            category.effectMult = applySkillEffects(category.name + " Effect")
-            category.xpMult = applySkillEffects(category.name + " XP")
-        }
+        if (category.altName) var categoryName = category.altName
+        else var categoryName = category.name
+
+        category.effectMult = applySkillEffects(categoryName + " Effect")
+        category.xpMult = applySkillEffects(categoryName + " XP")
 
         for (const skill of skillCategories[key].skills) {
             data.skill[skill].effectMult *= category.effectMult
             data.skill[skill].xpMult *= category.xpMult
         }
     }
+
+    for (const item in data.buyable) {
+        data.buyable[item].effectMult = applySkillEffects(item + " Effect")
+    }
+    for (const key in data.category.shop) {
+        const category = data.category.shop[key]
+        if (category.altName) var categoryName = category.altName
+        else var categoryName = category.name
+        
+        category.effectMult = applySkillEffects(categoryName + " Effect")
+
+        for (const item of shopCategories[key].items) data.buyable[item].effectMult *= category.effectMult
+    }
 }
 
 function applySkillEffects(effectName) {
     var effect = 1
-    for (const skillName in data.skill) {
-        const skill = data.skill[skillName]
-        if (skill.description == effectName) {
-            const effectFormula = skill.effectFormula
-            const skillEffect = skill.effect * skill.effectMult
-            const skillLevel = skill.level
-            switch (effectFormula) {
-                case "normal":
-                    effect *= 1 + (skillEffect * skillLevel)
-                    break
-                case "reductive":
-                    effect *= 1 - log(skillLevel + 1, 6) / 10
-                    break
-                case "log13":
-                    effect *= 1 + log(skillLevel + 1, 13)
-                    break
-                case "log33":
-                    effect *= 1 + log(skillLevel + 1, 33)
-                    break
-                case "squared":
-                    effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
-                    break
-            }
-        }
+    for (const key in data.skill) {
+        const skill = data.skill[key]
+        if (skill.description === effectName) effect *= getEffectSpecific(key)
     }
-    for (const itemName in data.buyable.other) {
-        const item = data.buyable.other[itemName]
-        if (item.owned && item.description == effectName) effect *= item.effect
+    for (const key in data.buyable) {
+        const item = data.buyable[key]
+        if (item.owned && item.description === effectName) effect *= getEffectSpecific(key)
     }
-    if (data.buyable.home[data.selectedHome].description == effectName) effect *= data.buyable.home[data.selectedHome].effect
     return effect
 }
 
-function getEffectSpecific(skillName) {
-    var effect = 1
-    const skillLevel = data.skill[skillName].level
-    const effectFormula = data.skill[skillName].effectFormula
-    const skillEffect = data.skill[skillName].effect * data.skill[skillName].effectMult
-    switch (effectFormula) {
+function getEffectSpecific(key) {
+    var multiplier = 1
+    if (key in data.skill) {
+        var level = data.skill[key].level
+        var formula = data.skill[key].effectFormula
+        var effect = data.skill[key].effect * data.skill[key].effectMult
+    } else if (key in data.buyable) {
+        var level = 1
+        var formula = "buyable"
+        var effect = data.buyable[key].effect * data.buyable[key].effectMult
+    }
+    switch (formula) {
         case "normal":
-            effect *= 1 + (skillEffect * skillLevel)
+            multiplier *= 1 + (effect * level)
+            break
+        case "buyable":
+            multiplier *= effect * level
             break
         case "reductive":
-            effect *= 1 - log(skillLevel + 1, 6) / 10
+            multiplier *= 1 - log(level + 1, 6) / 10
             break
         case "log13":
-            effect *= 1 + log(skillLevel + 1, 13)
+            multiplier *= 1 + log(level + 1, 13)
             break
         case "log33":
-            effect *= 1 + log(skillLevel + 1, 33)
+            multiplier *= 1 + log(level + 1, 33)
             break
-        case "squared":
-            effect *= Math.pow(1 + (skillEffect * skillLevel), 2)
     }
-    return effect
+    return multiplier
 }
 
 function getNet() {
@@ -138,17 +133,13 @@ function getIncome() {
 
 function getExpense() {
     var expense = 0
-    for (const key in data.buyable.other) {
-        const item = data.buyable.other[key]
-        if (item.owned) expense += item.upkeep
-    }
-    expense += data.buyable.home[data.selectedHome].upkeep
+    for (const key in data.buyable) if (data.buyable[key].owned) expense += data.buyable[key].upkeep
     expense *= data.expenseMult
     return expense
 }
 
-function getIncomeSpecific(jobName) {
-    const job = data.job[jobName]
+function getIncomeSpecific(key) {
+    const job = data.job[key]
     if ("income" in job) {
         switch (job.incomeFormula) {
             case "normal":

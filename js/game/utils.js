@@ -235,7 +235,7 @@ function formatEffect(skillName) {
 }
 
 function formatItemEffect(item, decimals = 2) { //item = data.buyable.home[item] or data.buyable.other[item]
-    return format(item.effect, decimals) + "x " + item.description
+    return format(getEffectSpecific(item.name), decimals) + "x " + item.description
 }
 
 function formatRequirements(name, element, parentElement, taskElement, el1, el2, el3, el4, el5, el6, el7, el8) {

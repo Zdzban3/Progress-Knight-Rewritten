@@ -237,12 +237,11 @@ function renderShop() {
             container.querySelector(".shopCategoryElement"),
             container.querySelector(".shopCategoryBackground"))
 
-        itemTypes.forEach(itemType => { //not homes
+        itemTypes.forEach(itemType => {
             const itemName = itemType.classList[1].replace("Type", "")
-            let thisItem = Object.values(data.buyable.other).find(item => item.class === itemName)
-            if (thisItem == null) thisItem = Object.values(data.buyable.home).find(item => item.class === itemName)
+            let thisItem = Object.values(data.buyable).find(item => item.class === itemName)
 
-            itemType.querySelector(".itemEffectDisplay").innerText = formatItemEffect(thisItem, 1)
+            itemType.querySelector(".itemEffectDisplay").innerText = formatItemEffect(thisItem)
             formatCoins(thisItem.price, itemType.querySelector(".itemPriceDisplay"), true)
             formatCoins(thisItem.upkeep * data.expenseMult, itemType.querySelector(".itemUpkeepDisplay"), true)
             itemType.querySelector(".itemActiveDisplay").setAttribute("data-active", thisItem.owned)

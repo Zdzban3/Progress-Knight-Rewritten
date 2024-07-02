@@ -9,16 +9,15 @@ function assignData() {
 
     for (const key in constChangableData) data[key] = constChangableData[key]
     for (const key in advancements) data.advancements[key] = advancements[key]
-    
+
     for (const key in jobCategories) data.category.job[key] = { name: jobCategories[key].nameFull, altName: jobCategories[key].altName, xpMult: 1, incomeMult: 1 }
     for (const key in skillCategories) data.category.skill[key] = { name: skillCategories[key].nameFull, altName: skillCategories[key].altName, xpMult: 1, effectMult: 1 }
-    for (const key in shopCategories) data.category.shop[key] = { name: shopCategories[key].nameFull, altName: shopCategories[key].altName, xpMult: 1, effectMult: 1 }
+    for (const key in shopCategories) data.category.shop[key] = { name: shopCategories[key].nameFull, altName: shopCategories[key].altName, effectMult: 1 }
 
     for (const key in jobs) if (!(key in data.job)) data.job[key] = jobs[key]
     for (const key in skills) if (!(key in data.skill)) data.skill[key] = skills[key]
     for (const key in specialTasks) if (!(key in data.specialTask)) data.specialTask[key] = specialTasks[key]
-    for (const key in buyableHomes) if (!(key in data.buyable.home)) data.buyable.home[key] = buyableHomes[key]
-    for (const key in buyableOther) if (!(key in data.buyable.other)) data.buyable.other[key] = buyableOther[key]
+    for (const key in buyables) if (!(key in data.buyable)) data.buyable[key] = buyables[key]
 
 
     for (const key in data.job) {
@@ -86,19 +85,24 @@ function assignData() {
         }
     }
 
-    for (const key in data.buyable.home) {
-        const home = data.buyable.home[key]
-        if (!("owned" in home)) home.owned = false
-        home.price = buyableHomes[key].price
-        home.upkeep = buyableHomes[key].upkeep
-        home.class = buyableHomes[key].class
-    }
+    var owned = 0
+    for (const key in data.buyable) {
+        if (key === "home" || key === "other") {
+            delete data.buyable[key]
+            continue
+        }
+        const item = data.buyable[key]
 
-    for (const key in data.buyable.other) {
-        const buyable = data.buyable.other[key]
-        if (!("owned" in buyable)) buyable.owned = false
-        buyable.price = buyableOther[key].price
-        buyable.upkeep = buyableOther[key].upkeep
-        buyable.class = buyableOther[key].class
+        if (!("owned" in item)) item.owned = false
+        item.price = buyables[key].price
+        item.upkeep = buyables[key].upkeep
+        item.class = buyables[key].class
+        item.effectMult = 1
+        
+        if (item.owned && shopCategories["Properties"].items.indexOf(key) >= 0 && item.name !== data.selectedHome) {
+            data.selectedHome = "Homeless"
+            data.buyable["Homeless"].owned = true
+            item.owned = false
+        }
     }
 }
