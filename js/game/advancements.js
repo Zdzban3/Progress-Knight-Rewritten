@@ -13,7 +13,7 @@ const advancements = { //hide: 0 - never, 1 - rebirth 1, 2 - rebirth 2, etc
     },
     "Autobuy": {
         maxRequirement: ["autoskill", "meditation"],
-        maxCoins: 1e6,
+        maxCoins: 5e5,
     },
     "Amulet": {
         maxAge: 25,

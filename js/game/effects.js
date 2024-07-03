@@ -12,29 +12,16 @@ function applyMultipliers() {
     data.maxSkills = Math.floor(applySkillEffects("Max Skills"))
 
     for (const task in data.job) {
-        data.job[task].xpMult = applySkillEffects(task + " XP")
-        data.job[task].incomeMult = applySkillEffects(task + " Income")
+        data.job[task].xpMult = applySkillEffects(task + " XP") * applySkillEffects(task + " Efficiency")
+        data.job[task].incomeMult = applySkillEffects(task + " Income") * applySkillEffects(task + " Efficiency")
     }
     for (const key in data.category.job) {
         const category = data.category.job[key]
         if (category.altName) var categoryName = category.altName
-        else var categoryName = category.name
+        else var categoryName = category.nameFull
 
-        category.incomeMult = applySkillEffects(categoryName + " Income")
-        category.xpMult = applySkillEffects(categoryName + " XP")
-
-        if (key === "Carpenters Guild") {
-            category.incomeMult *= applySkillEffects("Carpentry Efficiency")
-            category.xpMult *= applySkillEffects("Carpentry Efficiency")
-        }
-        if (key === "Blacksmithers Guild") {
-            category.incomeMult *= applySkillEffects("Blacksmithing Efficiency")
-            category.xpMult *= applySkillEffects("Blacksmithing Efficiency")
-        }
-        if (key === "Merchants Guild") {
-            category.incomeMult *= 1 / applySkillEffects("Expenses")
-            category.xpMult *= 1 / applySkillEffects("Expenses")
-        }
+        category.incomeMult = applySkillEffects(categoryName + " Income") * applySkillEffects(categoryName + " Efficiency")
+        category.xpMult = applySkillEffects(categoryName + " XP") * applySkillEffects(categoryName + " Efficiency")
 
         for (const job of jobCategories[key].jobs) {
             data.job[job].incomeMult *= category.incomeMult
@@ -43,16 +30,16 @@ function applyMultipliers() {
     }
 
     for (const task in data.skill) {
-        data.skill[task].xpMult = applySkillEffects(task + " XP")
-        data.skill[task].effectMult = applySkillEffects(task + " Effect")
+        data.skill[task].xpMult = applySkillEffects(task + " XP") * applySkillEffects(task + " Efficiency")
+        data.skill[task].effectMult = applySkillEffects(task + " Effect") * applySkillEffects(task + " Efficiency")
     }
     for (const key in data.category.skill) {
         const category = data.category.skill[key]
         if (category.altName) var categoryName = category.altName
-        else var categoryName = category.name
+        else var categoryName = category.nameFull
 
-        category.effectMult = applySkillEffects(categoryName + " Effect")
-        category.xpMult = applySkillEffects(categoryName + " XP")
+        category.effectMult = applySkillEffects(categoryName + " Effect") * applySkillEffects(categoryName + " Efficiency")
+        category.xpMult = applySkillEffects(categoryName + " XP") * applySkillEffects(categoryName + " Efficiency")
 
         for (const skill of skillCategories[key].skills) {
             data.skill[skill].effectMult *= category.effectMult
@@ -66,7 +53,7 @@ function applyMultipliers() {
     for (const key in data.category.shop) {
         const category = data.category.shop[key]
         if (category.altName) var categoryName = category.altName
-        else var categoryName = category.name
+        else var categoryName = category.nameFull
         
         category.effectMult = applySkillEffects(categoryName + " Effect")
 

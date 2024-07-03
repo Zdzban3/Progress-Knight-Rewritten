@@ -11,8 +11,11 @@ function assignData() {
     for (const key in advancements) data.advancements[key] = advancements[key]
 
     for (const key in jobCategories) data.category.job[key] = { name: jobCategories[key].nameFull, altName: jobCategories[key].altName, xpMult: 1, incomeMult: 1 }
+    for (const key in data.category.job) if (!(key in jobCategories)) delete data.category.job[key]
     for (const key in skillCategories) data.category.skill[key] = { name: skillCategories[key].nameFull, altName: skillCategories[key].altName, xpMult: 1, effectMult: 1 }
+    for (const key in data.category.skill) if (!(key in skillCategories)) delete data.category.skill[key]
     for (const key in shopCategories) data.category.shop[key] = { name: shopCategories[key].nameFull, altName: shopCategories[key].altName, effectMult: 1 }
+    for (const key in data.category.shop) if (!(key in shopCategories)) delete data.category.shop[key]
 
     for (const key in jobs) if (!(key in data.job)) data.job[key] = jobs[key]
     for (const key in skills) if (!(key in data.skill)) data.skill[key] = skills[key]

@@ -1,5 +1,5 @@
 const jobCategories = {
-    "Common work": {
+    "Common Work": {
         jobs: ["Beggar", "Farmer", "Fisherman", "Miller", "Lumberjack", "Miner"],
         name: "commonWork",
         nameFull: "Common Work"
@@ -7,17 +7,20 @@ const jobCategories = {
     "Carpenters Guild": {
         jobs: ["Novice carpenter", "Apprentice carpenter", "Journeyman carpenter", "Master carpenter"],
         name: "carpentersGuild",
-        nameFull: "Carpenters Guild"
+        nameFull: "Carpenters Guild",
+        altName: "Carpentry"
     },
     "Blacksmithers Guild": {
         jobs: ["Novice blacksmith", "Apprentice blacksmith", "Journeyman blacksmith", "Master blacksmith"],
         name: "blacksmithersGuild",
-        nameFull: "Blacksmithers Guild"
+        nameFull: "Blacksmithers Guild",
+        altName: "Blacksmithing"
     },
     "Merchants Guild": {
         jobs: ["Novice merchant", "Apprentice merchant", "Journeyman merchant", "Master merchant", "Guild leader"],
         name: "merchantsGuild",
-        nameFull: "Merchants Guild"
+        nameFull: "Merchants Guild",
+        altName: "Merchant"
     },
     "Military": {
         jobs: ["Squire", "Footman", "Veteran footman", "Knight", "Veteran knight", "Elite knight", "Holy knight", "Legendary knight"],

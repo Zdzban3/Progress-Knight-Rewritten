@@ -154,16 +154,26 @@ function isAlive() {
     return false
 }
 
-function jobInWhatCategory(task) {
-    for (const category in jobCategories)
-        if (jobCategories[category].jobs.find((element) => element == task))
-            return jobCategories[category].name
+function jobInWhatCategory(task, property = "name") {
+    for (const key in jobCategories) {
+        const category = jobCategories[key]
+        if (category.jobs.find((element) => element == task))
+            if (property === "altName")
+                if (category.altName) return category.altName
+                else return category.nameFull
+            else return category[property]
+    }
 }
 
-function skillInWhatCategory(task) {
-    for (const category in skillCategories)
-        if (skillCategories[category].skills.find((element) => element == task))
-            return skillCategories[category].name
+function skillInWhatCategory(task, property = "name") {
+    for (const key in skillCategories) {
+        const category = skillCategories[key]
+        if (category.skills.find((element) => element == task))
+            if (property === "altName")
+                if (category.altName) return category.altName
+                else return category.nameFull
+            else return category[property]
+    }
 }
 
 function jobIndexInCategory(task) {
@@ -217,17 +227,52 @@ function autobuy() {
     for (const key in data.buyable) {
         const item = data.buyable[key]
         if (isComplete(requirements[item.class])) {
-            if (shopCategories["Properties"].items.indexOf(key) >= 0) {
+            if (shopCategories["Properties"].items.indexOf(key) >= 0) { //for homes
                 if (item.effect > data.buyable[data.selectedHome].effect) {
                     if (item.price < data.coins && item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
                         buyItem(key)
                         netIncome -= item.upkeep
                     }
                 }
-            } else if (!item.owned && item.price < data.coins) {
-                if (item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
-                    buyItem(key)
-                    netIncome -= item.upkeep
+            } else {
+                let pass = true
+                for (const key2 in jobCategories) {
+                    if (jobCategories[key2].altName) var categoryName = jobCategories[key2].altName
+                    else var categoryName = jobCategories[key2].nameFull
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === categoryName)
+                        for (const key3 in data.selectedJobs) {
+                            if (jobInWhatCategory(data.selectedJobs[key3].name, "altName") !== categoryName) pass = false
+                            else pass = true
+                        }
+                }
+                for (const key2 in data.job) {
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === data.job[key2].name)
+                        for (const key3 in data.selectedJobs) {
+                            if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") !== data.selectedJobs[key3].name) pass = false
+                            else pass = true
+                        }
+                }
+                for (const key2 in skillCategories) {
+                    if (skillCategories[key2].altName) var categoryName = skillCategories[key2].altName
+                    else var categoryName = skillCategories[key2].nameFull
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === categoryName)
+                        for (const key3 in data.selectedSkills) {
+                            if (skillInWhatCategory(data.selectedSkills[key3].name, "altName") !== categoryName) pass = false
+                            else pass = true
+                        }
+                }
+                for (const key2 in data.skill) {
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === data.skill[key2].name)
+                        for (const key3 in data.selectedSkills) {
+                            if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") !== data.selectedSkills[key3].name) pass = false
+                            else pass = true
+                        }
+                }
+                if (pass && !item.owned && item.price < data.coins) {
+                    if (item.upkeep < netIncome || data.coins - item.price > (item.upkeep - netIncome) * data.gameSpeed * 200) {
+                        buyItem(key)
+                        netIncome -= item.upkeep
+                    }
                 }
             }
         }
