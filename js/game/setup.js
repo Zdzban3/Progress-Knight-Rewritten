@@ -184,7 +184,7 @@ function setupSkillTab() {
 
                 const skillProgressBar = document.createElement("div");
                 skillProgressBar.classList.add("skillProgressBar", skillData.class + "ProgressBar", "tooltip");
-                skillProgressBar.setAttribute("onclick", "selectSkill('" + skillData.name + "')");
+                skillProgressBar.setAttribute("onclick", "selectSkill(`" + skillData.name + "`)");
 
                 const skillProgressBarProgress = document.createElement("div");
                 skillProgressBarProgress.classList.add("skillProgressBarProgress", skillData.class + "ProgressBarProgress");
