@@ -158,10 +158,7 @@ function jobInWhatCategory(task, property = "name") {
     for (const key in jobCategories) {
         const category = jobCategories[key]
         if (category.jobs.find((element) => element == task))
-            if (property === "altName")
-                if (category.altName) return category.altName
-                else return category.nameFull
-            else return category[property]
+            return category[property]
     }
 }
 
@@ -170,9 +167,7 @@ function skillInWhatCategory(task, property = "name") {
         const category = skillCategories[key]
         if (category.skills.find((element) => element == task))
             if (property === "altName")
-                if (category.altName) return category.altName
-                else return category.nameFull
-            else return category[property]
+                return category[property]
     }
 }
 
@@ -237,11 +232,9 @@ function autobuy() {
             } else {
                 let pass = true
                 for (const key2 in jobCategories) {
-                    if (jobCategories[key2].altName) var categoryName = jobCategories[key2].altName
-                    else var categoryName = jobCategories[key2].nameFull
-                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === categoryName)
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === jobCategories[key2].altName)
                         for (const key3 in data.selectedJobs) {
-                            if (jobInWhatCategory(data.selectedJobs[key3].name, "altName") !== categoryName) pass = false
+                            if (jobInWhatCategory(data.selectedJobs[key3].name, "altName") !== categoryNamejobCategories[key2].altName) pass = false
                             else pass = true
                         }
                 }
@@ -253,11 +246,9 @@ function autobuy() {
                         }
                 }
                 for (const key2 in skillCategories) {
-                    if (skillCategories[key2].altName) var categoryName = skillCategories[key2].altName
-                    else var categoryName = skillCategories[key2].nameFull
-                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === categoryName)
+                    if (item.description.replace(" XP", "").replace(" Income", "").replace(" Efficiency", "") === skillCategories[key2].altName)
                         for (const key3 in data.selectedSkills) {
-                            if (skillInWhatCategory(data.selectedSkills[key3].name, "altName") !== categoryName) pass = false
+                            if (skillInWhatCategory(data.selectedSkills[key3].name, "altName") !== skillCategories[key2].altName) pass = false
                             else pass = true
                         }
                 }

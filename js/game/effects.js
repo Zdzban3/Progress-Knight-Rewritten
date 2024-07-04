@@ -17,11 +17,10 @@ function applyMultipliers() {
     }
     for (const key in data.category.job) {
         const category = data.category.job[key]
-        if (category.altName) var categoryName = category.altName
-        else var categoryName = category.nameFull
+        const name = category.altName
 
-        category.incomeMult = applySkillEffects(categoryName + " Income") * applySkillEffects(categoryName + " Efficiency")
-        category.xpMult = applySkillEffects(categoryName + " XP") * applySkillEffects(categoryName + " Efficiency")
+        category.incomeMult = applySkillEffects(name + " Income") * applySkillEffects(name + " Efficiency")
+        category.xpMult = applySkillEffects(name + " XP") * applySkillEffects(name + " Efficiency")
 
         for (const job of jobCategories[key].jobs) {
             data.job[job].incomeMult *= category.incomeMult
@@ -35,11 +34,10 @@ function applyMultipliers() {
     }
     for (const key in data.category.skill) {
         const category = data.category.skill[key]
-        if (category.altName) var categoryName = category.altName
-        else var categoryName = category.nameFull
+        const name = category.altName
 
-        category.effectMult = applySkillEffects(categoryName + " Effect") * applySkillEffects(categoryName + " Efficiency")
-        category.xpMult = applySkillEffects(categoryName + " XP") * applySkillEffects(categoryName + " Efficiency")
+        category.effectMult = applySkillEffects(name + " Effect") * applySkillEffects(name + " Efficiency")
+        category.xpMult = applySkillEffects(name + " XP") * applySkillEffects(name + " Efficiency")
 
         for (const skill of skillCategories[key].skills) {
             data.skill[skill].effectMult *= category.effectMult
@@ -52,10 +50,9 @@ function applyMultipliers() {
     }
     for (const key in data.category.shop) {
         const category = data.category.shop[key]
-        if (category.altName) var categoryName = category.altName
-        else var categoryName = category.nameFull
+        const name = category.altName
         
-        category.effectMult = applySkillEffects(categoryName + " Effect")
+        category.effectMult = applySkillEffects(name + " Effect")
 
         for (const item of shopCategories[key].items) data.buyable[item].effectMult *= category.effectMult
     }
