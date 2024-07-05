@@ -166,8 +166,7 @@ function skillInWhatCategory(task, property = "name") {
     for (const key in skillCategories) {
         const category = skillCategories[key]
         if (category.skills.find((element) => element == task))
-            if (property === "altName")
-                return category[property]
+            return category[property]
     }
 }
 
