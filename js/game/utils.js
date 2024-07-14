@@ -138,7 +138,7 @@ function formatCoins(coins, element, showFree = false) {
                     element.children[coinsUsed].className = "usedCoin"
                     coinsUsed++
                 }
-                if (coinsUsed >= data.settings.coinsDisplayed) break;
+                if (coinsUsed >= data.settings.coinsDisplayed || amount >= 1000) break;
             }
             break;
         case 3:
